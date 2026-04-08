@@ -2,6 +2,10 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -81,6 +85,13 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --primary: 24 95% 53%;
+  --primary-extra-light: 24 95% 55%;
+  --primary-light: 24 95% 60%;
+  --primary-glow: 24 95% 65%;
+  --primary-dark: 24 95% 45%;
+  --shadow-glow: 0 0 20px rgba(255, 140, 0, 0.5);
+  --shadow-orange: 0 0 30px rgba(255, 140, 0, 0.8);
 }
 
 .dark {
@@ -117,6 +128,17 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+@keyframes gradient-slide {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-gradient-slide {
+  background-size: 200% auto;
+  animation: gradient-slide 6s ease-in-out infinite;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -125,6 +147,5 @@
     @apply bg-background text-foreground;
   }
   html {
-    @apply font-sans;
   }
 }
