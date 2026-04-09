@@ -23,15 +23,15 @@ const data = [
 
 export default function WeeklyActivityChart() {
   return (
-    <div className="w-full bg-[#111] p-6 rounded-2xl border border-orange-500/10">
+    <div className="w-full bg-[#111] p-6 rounded-2xl border border-teal-500/10">
       {/* Header Section */}
       <div className="flex justify-between items-start mb-8">
         <div>
           <h3 className="text-white text-xl font-bold font-cuprum">Weekly Activity</h3>
           <p className="text-gray-500 text-sm">Daily prediction volume</p>
         </div>
-        <div className="p-2 bg-orange-500/10 rounded-full border border-orange-500/20">
-          <Clock className="w-5 h-5 text-orange-500" />
+        <div className="p-2 bg-teal-500/10 rounded-full border border-teal-500/20">
+          <Clock className="w-5 h-5 text-teal-500" />
         </div>
       </div>
 
@@ -63,24 +63,24 @@ export default function WeeklyActivityChart() {
 
             <Tooltip 
               contentStyle={{ backgroundColor: '#111', borderColor: '#333', borderRadius: '8px' }}
-              itemStyle={{ color: '#f97316' }}
-              cursor={{ stroke: '#f97316', strokeWidth: 1, strokeDasharray: '5 5' }}
+              itemStyle={{ color: '#14b8a6' }}
+              cursor={{ stroke: '#14b8a6', strokeWidth: 1, strokeDasharray: '5 5' }}
             />
 
             <Line
               type="monotone"
               dataKey="volume"
-              stroke="#f97316"
+              stroke="#14b8a6"
               strokeWidth={3}
               dot={{ 
-                fill: '#f97316', 
+                fill: '#14b8a6', 
                 r: 6, 
                 strokeWidth: 2, 
                 stroke: '#111' // Creates the gap effect around the dot
               }}
               activeDot={{ 
                 r: 8, 
-                fill: '#f97316',
+                fill: '#14b8a6',
                 stroke: '#fff',
                 strokeWidth: 2 
               }}

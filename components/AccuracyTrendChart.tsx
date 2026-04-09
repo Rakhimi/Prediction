@@ -29,8 +29,8 @@ export default function AccuracyTrendChart() {
           <h3 className="text-white text-lg font-bold">Accuracy Trend</h3>
           <p className="text-gray-500 text-sm">Monthly prediction accuracy</p>
         </div>
-        <div className="p-2 bg-orange-500/10 rounded-lg border border-orange-500/20">
-          <TrendingUp className="w-5 h-5 text-orange-500" />
+        <div className="p-2 bg-teal-500/10 rounded-lg border border-teal-500/20">
+          <TrendingUp className="w-5 h-5 text-teal-500" />
         </div>
       </div>
 
@@ -39,10 +39,10 @@ export default function AccuracyTrendChart() {
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={data}>
             <defs>
-              {/* Defining the Orange Gradient */}
+              {/* Defining the Teal Gradient */}
               <linearGradient id="colorAccuracy" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#f97316" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="#f97316" stopOpacity={0} />
+                <stop offset="5%" stopColor="#14b8a6" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="#14b8a6" stopOpacity={0} />
               </linearGradient>
             </defs>
 
@@ -71,13 +71,13 @@ export default function AccuracyTrendChart() {
 
             <Tooltip 
               contentStyle={{ backgroundColor: '#111', borderColor: '#333', color: '#fff' }}
-              itemStyle={{ color: '#f97316' }}
+              itemStyle={{ color: '#14b8a6' }}
             />
 
             <Area
               type="monotone"
               dataKey="accuracy"
-              stroke="#f97316"
+              stroke="#14b8a6"
               strokeWidth={3}
               fillOpacity={1}
               fill="url(#colorAccuracy)"

@@ -14,12 +14,12 @@ export default function Navbar() {
   const [active, setActive] = useState("Home");
 
   return (
-    <div className="w-full bg-gradient-to-r from-black via-[#1a1410] to-black border-b border-orange-500/10">
+    <div className="w-full bg-gradient-to-r from-black via-[#1a1410] to-black border-b border-teal-500/10">
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         
         {/* Logo */}
         <div className="flex items-center gap-2">
-          <img src="/logo.svg" alt="Logo" className="h-8 w-auto" />
+          <img src="/logo.png" alt="Logo" className="h-8 w-auto" />
         </div>
 
         {/* RIGHT SIDE GROUP (nav + controls together) */}
@@ -39,7 +39,7 @@ export default function Navbar() {
                     cursor-pointer flex items-center gap-2 px-4 py-2 rounded-lg
                     font-semibold transition-all duration-300
                     ${isActive
-                      ? "bg-orange-500 text-black shadow-md scale-105"
+                      ? "bg-teal-500 text-black shadow-md scale-105"
                       : "text-gray-400 hover:text-white hover:bg-white/5"
                     }
                   `}
@@ -61,7 +61,7 @@ export default function Navbar() {
             </button>
 
             {/* Avatar */}
-            <div className="w-9 h-9 rounded-full bg-orange-500 flex items-center justify-center font-semibold text-black">
+            <div className="w-9 h-9 rounded-full bg-teal-500 flex items-center justify-center font-semibold text-black">
               K
             </div>
           </div>

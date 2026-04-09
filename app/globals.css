@@ -86,12 +86,12 @@
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
   --primary: 24 95% 53%;
-  --primary-extra-light: 24 95% 55%;
-  --primary-light: 24 95% 60%;
-  --primary-glow: 24 95% 65%;
-  --primary-dark: 24 95% 45%;
-  --shadow-glow: 0 0 20px rgba(255, 140, 0, 0.5);
-  --shadow-orange: 0 0 30px rgba(255, 140, 0, 0.8);
+  --primary-extra-light: 180 85% 55%;
+  --primary-light: 180 85% 50%;
+  --primary-glow: 180 85% 60%;
+  --primary-dark: 180 85% 40%;
+  --shadow-glow: 0 0 20px rgba(0, 200, 180, 0.5);
+  --shadow-teal: 0 0 30px rgba(0, 200, 180, 0.8);
 }
 
 .dark {
