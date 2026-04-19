@@ -6,6 +6,8 @@ import PredictionDistribution from "@/components/PredictionDistribution";
 import WeeklyActivityChart from "@/components/WeeklyActivityChart";
 import Navbar from "@/components/Navbar";
 
+//LnkZgFmzrmLQUZGf
+
 export default function Home() {
   return (
     <div className="min-h-screen flex flex-col">
