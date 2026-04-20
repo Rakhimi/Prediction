@@ -4,14 +4,12 @@ import { Tv, TrendingUp, UserPlus, Wallet, Trophy, Target, Activity, ChartColumn
 import AccuracyTrendChart from "@/components/AccuracyTrendChart";
 import PredictionDistribution from "@/components/PredictionDistribution";
 import WeeklyActivityChart from "@/components/WeeklyActivityChart";
-import Navbar from "@/components/Navbar";
 
 //LnkZgFmzrmLQUZGf
 
 export default function Home() {
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar/>
       {/* Banner Section (2/3 height) */}
       <div className="relative h-[66vh] w-full">
         <Image

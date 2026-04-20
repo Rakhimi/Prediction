@@ -14,13 +14,24 @@ datasource db {
 
 model Match {
   id         Int      @id @default(autoincrement())
-  matchId    Int      @unique  // from API
+  matchId    Int      @unique
+
   homeTeam   String
   awayTeam   String
   matchDate  DateTime
 
-  analyzed   Boolean  @default(false)
+  // Structured AI output
+  homeTeamForm   String   // e.g. "W,L,D,L,W"
+  awayTeamForm   String   // e.g. "L,L,W,D,W"
+
+  homeOdds   Float?
+  drawOdds   Float?
+  awayOdds   Float?
+
+  // Unstructured AI output
   analysis   String?
+
+  analyzed   Boolean  @default(false)
 
   createdAt  DateTime @default(now())
 }
