@@ -16,19 +16,33 @@ model Match {
   id         Int      @id @default(autoincrement())
   matchId    Int      @unique
 
+  league     String
+
   homeTeam   String
   awayTeam   String
   matchDate  DateTime
 
-  // Structured AI output
-  homeTeamForm   String   // e.g. "W,L,D,L,W"
-  awayTeamForm   String   // e.g. "L,L,W,D,W"
+  // Form
+  homeTeamForm   String   // "W,L,D,L,W"
+  awayTeamForm   String   // "L,L,W,D,W"
 
+  // Odds
   homeOdds   Float?
   drawOdds   Float?
   awayOdds   Float?
 
-  // Unstructured AI output
+  over25Odds Float?
+  under25Odds Float?
+
+  // AI Probabilities
+  homeWinProb Float?
+  drawProb    Float?
+  awayWinProb Float?
+
+  // Head-to-head summary
+  headToHead  String[]
+
+  // Analysis
   analysis   String?
 
   analyzed   Boolean  @default(false)

@@ -7,9 +7,16 @@ export default function Page() {
   const [loadingId, setLoadingId] = useState<number | null>(null);
 
   useEffect(() => {
-    fetch("http://localhost:3000/api/football-list")
+    fetch("/api/football-list")
       .then((res) => res.json())
-      .then((data) => setMatches(data));
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setMatches(data);
+        } else {
+          console.error("API Error:", data);
+          setMatches([]); // prevent crash
+        }
+      });
   }, []);
 
   const handleAnalyze = async (match: any) => {
@@ -23,6 +30,10 @@ export default function Page() {
     setLoadingId(null);
     alert("Analysis stored!");
   };
+
+  {matches.length === 0 && (
+    <p className="text-gray-400">No matches found</p>
+  )}
 
   return (
     <div className="m-20 px-6 space-y-6">
