@@ -23,8 +23,8 @@ model Match {
   matchDate  DateTime
 
   // Form
-  homeTeamForm   String   // "W,L,D,L,W"
-  awayTeamForm   String   // "L,L,W,D,W"
+  homeTeamForm   String?   // "W,L,D,L,W"
+  awayTeamForm   String?   // "L,L,W,D,W"
 
   // Odds
   homeOdds   Float?

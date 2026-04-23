@@ -13,8 +13,8 @@ type Match = {
   homeTeam: string;
   awayTeam: string;
   matchDate: Date; 
-  homeTeamForm: string;
-  awayTeamForm: string;
+  homeTeamForm: string | null;
+  awayTeamForm: string | null;
   homeOdds: number | null; 
   drawOdds: number | null;
   awayOdds: number | null;
@@ -25,26 +25,6 @@ type Match = {
   drawProb: number | null;
   analysis: string | null;
   headToHead: string[] 
-};
-
-const renderForm = (form: string) => {
-  return form.split(",").map((item, i) => {
-    let color =
-      item === "W"
-        ? "bg-green-500"
-        : item === "D"
-        ? "bg-yellow-500"
-        : "bg-red-500";
-
-    return (
-      <div
-        key={i}
-        className={`${color} text-white w-6 h-6 flex items-center justify-center rounded-full text-xs`}
-      >
-        {item}
-      </div>
-    );
-  });
 };
 
 const getPrediction = (match: Match) => {
@@ -68,7 +48,9 @@ const getConfidence = (match: Match) => {
 };
 
 export default function MatchAccordion({ matches }: { matches: Match[] }) {
-  const renderForm = (form: string) => {
+  const renderForm = (form: string | null) => {
+    if (!form) return null; // or return []
+
     return form.split(",").map((item, i) => {
       let color =
         item === "W"

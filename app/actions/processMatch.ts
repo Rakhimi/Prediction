@@ -7,8 +7,6 @@ export async function processMatch(match: any) {
     match.awayTeam.name
   );
 
-  console.log("result", result)
-
   if (!result) return;
 
   await prisma.match.upsert({
