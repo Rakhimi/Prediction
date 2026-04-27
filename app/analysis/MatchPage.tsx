@@ -2,8 +2,15 @@
 
 import { useState, useMemo } from "react";
 import MatchAccordion from "@/components/MatchAccordion";
+import { Lock } from "lucide-react";
 
-export default function MatchPageClient({ matches }: { matches: any[] }) {
+export default function MatchPageClient({
+  matches,
+  isMember,
+}: {
+  matches: any[];
+  isMember: boolean;
+}) {
   const [tab, setTab] = useState<"upcoming" | "today" | "completed">("upcoming");
   const [search, setSearch] = useState("");
   const [fromDate, setFromDate] = useState("");
@@ -110,8 +117,36 @@ export default function MatchPageClient({ matches }: { matches: any[] }) {
       </div>
 
       {/* MATCH LIST */}
-      <div className="cursor-pointer">
-        <MatchAccordion matches={filteredMatches} />
+      <div className="relative">
+        {isMember ? (
+          <MatchAccordion matches={filteredMatches} />
+        ) : (
+          <div className="relative rounded-2xl border border-white/10 overflow-hidden">
+
+            {/* blurred preview */}
+            <div className="blur-sm pointer-events-none opacity-60">
+              <MatchAccordion matches={filteredMatches.slice(0, 3)} />
+            </div>
+
+            {/* lock overlay */}
+            <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/70 z-10 px-6 text-center">
+              <Lock className="w-10 h-10 text-teal-500 mb-4" />
+              <h2 className="text-2xl font-bold mb-2">
+                Premium Members Only
+              </h2>
+              <p className="text-gray-300 mb-6 max-w-md">
+                Unlock full match predictions, AI analysis and winning insights.
+              </p>
+
+              <a
+                href="https://new8myr.com"
+                className="px-6 py-3 rounded-xl bg-teal-500 text-black font-bold hover:bg-teal-400 transition"
+              >
+                Join Now
+              </a>
+            </div>
+          </div>
+        )}
       </div>
 
       {filteredMatches.length === 0 && (

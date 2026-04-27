@@ -12,6 +12,17 @@ datasource db {
   provider = "postgresql"
 }
 
+model Member {
+  id                    Int      @id @default(autoincrement())
+  providerUid           String   @unique
+  isMember              Boolean  @default(false)
+  ftdAmount             String   @default("0.00")
+  recentDepositAmount   String   @default("0.00")
+  lastSyncedAt          DateTime?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+}
+
 model Match {
   id         Int      @id @default(autoincrement())
   matchId    Int      @unique
