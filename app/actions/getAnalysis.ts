@@ -36,7 +36,7 @@ Return ONLY valid JSON:
 
   "headToHead": ["2-1", "0-0", "3-2", "1-1", "4-0"],
 
-  "analysis": "short betting-style paragraph (3-4 sentences max)"
+  "analysis": "betting-style paragraph (6-7 sentences max)"
 }
 
 Rules:
