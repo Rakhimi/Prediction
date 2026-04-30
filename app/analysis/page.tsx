@@ -1,29 +1,11 @@
-import { cookies } from "next/headers";
-import { parseSessionCookie } from "@/lib/session";
 import MatchPageClient from "./MatchPage";
 import { prisma } from "@/lib/prisma";
+import { getCurrentMember } from "@/lib/auth";
 
 export default async function Page() {
 
-  const cookieStore = await cookies();
-  const token = cookieStore.get("n8s_session")?.value;
-
-  let isMember = false;
-
-  if (token) {
-    const session = parseSessionCookie(
-      token,
-      process.env.APP_SESSION_SECRET!
-    );
-
-    if (session) {
-      const user = await prisma.member.findUnique({
-        where: { providerUid: session.uid },
-      });
-
-      isMember = !!user?.isMember;
-    }
-  }
+  const member = await getCurrentMember();
+  const isMember = !!member?.isMember;
 
   const matches = await prisma.match.findMany({
     orderBy: {

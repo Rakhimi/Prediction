@@ -123,7 +123,7 @@ export async function GET(req: Request) {
 
   const sessionCookie = createSessionCookie(String(uid), sessionSecret);
 
-  const res = NextResponse.redirect(new URL("/premium", url.origin));
+  const res = NextResponse.redirect(new URL("/", url.origin));
   res.cookies.set("n8s_session", sessionCookie, {
     httpOnly: true,
     sameSite: "lax",
