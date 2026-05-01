@@ -24,9 +24,18 @@ export async function GET(req: Request) {
   const url = new URL(req.url);
 
   const uid = url.searchParams.get("uid");
+  const username = url.searchParams.get("username");
   const ts = url.searchParams.get("ts");
   const nonce = url.searchParams.get("nonce");
   const h = url.searchParams.get("h");
+
+  console.log("INCOMING QUERY:", {
+    uid,
+    username,
+    ts,
+    nonce,
+    h,
+  });
 
   if (!uid || !ts || !nonce || !h) {
     return errorResponse("Invalid Params");
@@ -42,7 +51,7 @@ export async function GET(req: Request) {
   }
 
   const incomingValid = verifyHmacSha256Hex(
-    { uid, ts, nonce },
+    { uid, username, ts, nonce },
     h,
     providerSecret
   );
