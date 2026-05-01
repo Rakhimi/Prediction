@@ -7,6 +7,8 @@ import {
   verifyHmacSha256Hex,
 } from "@/lib/signature";
 import { createSessionCookie } from "@/lib/session";
+import dns from "dns";
+dns.setDefaultResultOrder("ipv4first");
 
 function errorResponse(msg: string, code = 400) {
   return NextResponse.json(
