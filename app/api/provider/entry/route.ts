@@ -81,6 +81,13 @@ export async function GET(req: Request) {
   });
 
   let upstream;
+
+  console.log("BODY SENT:", JSON.stringify({
+    data: {
+      ...requestData,
+      h: requestH
+    }
+  }));
   try {
     upstream = await fetch(providerApiUrl, {
       method: "POST",
