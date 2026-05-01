@@ -71,20 +71,45 @@ export async function GET(req: Request) {
   const requestData = { uid, ts: requestTs, nonce: requestNonce };
   const requestH = hmacSha256Hex(requestData, providerSecret);
 
-  const upstream = await fetch(providerApiUrl, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      data: {
-        ...requestData,
-        h: requestH,
-      },
-    }),
+  console.log("PROVIDER API URL:", providerApiUrl);
+
+  console.log("REQUEST DATA:", {
+    uid,
+    requestTs,
+    requestNonce,
+    requestH,
   });
 
-  const upstreamJson = await upstream.json().catch(() => null);
+  let upstream;
+  try {
+    upstream = await fetch(providerApiUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        data: {
+          ...requestData,
+          h: requestH,
+        },
+      }),
+    });
+  } catch (err) {
+    console.error("FETCH FAILED:", err);
+    return errorResponse("Fetch Failed");
+  }
+
+  console.log("UPSTREAM STATUS:", upstream.status);
+
+  const rawText = await upstream.text();
+  console.log("UPSTREAM RAW RESPONSE:", rawText);
+
+  let upstreamJson = null;
+  try {
+    upstreamJson = JSON.parse(rawText);
+  } catch (e) {
+    console.error("INVALID JSON");
+  }
 
   if (!upstreamJson || upstreamJson.status !== true) {
     return errorResponse(upstreamJson?.msg ?? "Provider API Error");
