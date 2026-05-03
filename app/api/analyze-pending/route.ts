@@ -1,7 +1,13 @@
 import { prisma } from "@/lib/prisma";
 import { processMatch } from "@/app/actions/processMatch";
+import { NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(req: Request) {
+  const CRON_SECRET = process.env.CRON_SECRET;
+
+  if (req.headers.get("x-cron-secret") !== CRON_SECRET) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
   const pending = await prisma.match.findMany({
     where: {
       analyzed: false,

@@ -1,6 +1,12 @@
 import { NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(req: Request) {
+  const CRON_SECRET = process.env.CRON_SECRET;
+
+  if (req.headers.get("x-cron-secret") !== CRON_SECRET) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   try {
     const today = new Date().toISOString().split("T")[0];
 
@@ -23,6 +29,7 @@ export async function GET() {
     return NextResponse.json(data.matches || []);
   } catch (error) {
     console.error("SERVER ERROR:", error);
+
     return NextResponse.json(
       { error: "Failed to fetch matches" },
       { status: 500 }
