@@ -166,7 +166,9 @@ export async function GET(req: Request) {
 
   const sessionCookie = createSessionCookie(String(uid), sessionSecret);
 
-  const res = NextResponse.redirect(new URL("/", url.origin));
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+
+  const res = NextResponse.redirect(`${baseUrl}/`);
   res.cookies.set("n8s_session", sessionCookie, {
     httpOnly: true,
     sameSite: "lax",
