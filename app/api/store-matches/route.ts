@@ -1,24 +1,30 @@
-// /api/store-matches
 import { prisma } from "@/lib/prisma";
+import { getFootballMatches } from "@/lib/football";
 
 export async function GET() {
-  const res = await fetch(`${process.env.BASE_URL}/api/football-list`);
-  const matches = await res.json();
+  try {
+    const matches = await getFootballMatches();
 
-  for (const match of matches) {
-    await prisma.match.upsert({
-      where: { matchId: match.id },
-      update: {},
-      create: {
-        matchId: match.id,
-        homeTeam: match.homeTeam.name,
-        awayTeam: match.awayTeam.name,
-        matchDate: new Date(match.utcDate),
-        league: match.competition?.name ?? "unknown",
-        analyzed: false,
-      },
-    });
+    console.log("MATCH COUNT:", matches.length);
+
+    for (const match of matches) {
+      await prisma.match.upsert({
+        where: { matchId: match.id },
+        update: {},
+        create: {
+          matchId: match.id,
+          homeTeam: match.homeTeam.name,
+          awayTeam: match.awayTeam.name,
+          matchDate: new Date(match.utcDate),
+          league: match.competition?.name ?? "unknown",
+          analyzed: false,
+        },
+      });
+    }
+
+    return Response.json({ success: true, inserted: matches.length });
+  } catch (err) {
+    console.error("STORE MATCH ERROR:", err);
+    return Response.json({ error: "store failed" }, { status: 500 });
   }
-
-  return Response.json({ success: true });
 }
