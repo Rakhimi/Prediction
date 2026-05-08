@@ -142,11 +142,9 @@ const RegisterModal: React.FC<Props> = ({
 
       const text = await res.text();
 
-      console.log("STATUS:", res.status);
-      console.log("HEADERS:", res.headers);
       console.log("BODY:", text);
 
-      const data = await res.json();
+      const data = JSON.parse(text);
 
       if (!res.ok) {
         throw new Error(

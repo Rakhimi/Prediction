@@ -27,11 +27,16 @@ export async function POST(req: Request) {
       .toString("hex");
 
     // SORT KEYS ASCENDING
-    const payload = new URLSearchParams({
+    const params = {
       nonce,
       ts: ts.toString(),
       uid: uid.toString(),
-    }).toString();
+    };
+
+    const payload = Object.keys(params)
+      .sort()
+      .map((key) => `${key}=${params[key as keyof typeof params]}`)
+      .join("&");
 
     const h = crypto
       .createHmac("sha256", SECRET_KEY)
