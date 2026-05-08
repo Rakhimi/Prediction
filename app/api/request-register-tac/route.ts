@@ -8,36 +8,29 @@ export async function POST(req: Request) {
     const body = await req.json();
 
     const phoneNumber = body.phoneNumber;
-    const uid = body.uid;
 
-    if (!phoneNumber || !uid) {
+    if (!phoneNumber) {
       return NextResponse.json(
-        {
-          success: false,
-          message: "phoneNumber and uid required",
-        },
+        { success: false, message: "phoneNumber required" },
         { status: 400 }
       );
     }
 
     const ts = Math.floor(Date.now() / 1000);
+    const nonce = crypto.randomBytes(16).toString("hex");
 
-    const nonce = crypto
-      .randomBytes(16)
-      .toString("hex");
-
-    // SORT KEYS ASCENDING
+    // IMPORTANT: ONLY these 3 fields
     const params = {
-      uid: uid.toString(),
       nonce,
       ts: ts.toString(),
+      phoneNumber: phoneNumber.toString(),
     };
 
-    // IMPORTANT: manual strict order + NO encoding
-    const payload =
-      "nonce=" + params.nonce +
-      "&ts=" + params.ts +
-      "&uid=" + params.uid;
+    // sort keys ascending
+    const payload = Object.keys(params)
+      .sort()
+      .map((k) => `${k}=${params[k as keyof typeof params]}`)
+      .join("&");
 
     const h = crypto
       .createHmac("sha256", SECRET_KEY)
@@ -48,11 +41,9 @@ export async function POST(req: Request) {
       "https://callback-api-staging.ez-stake.com/api-callback/match-prediction/request-register-tac/new8scoreai",
       {
         method: "POST",
-
         headers: {
           "Content-Type": "application/json",
         },
-
         body: JSON.stringify({
           data: {
             phoneNumber,
@@ -64,17 +55,16 @@ export async function POST(req: Request) {
       }
     );
 
-    const data = await res.json();
+    const text = await res.text();
 
-    return NextResponse.json(data);
-  } catch (error) {
-    console.error("REQUEST TAC ERROR:", error);
+    console.log("TAC RESPONSE:", text);
 
+    return NextResponse.json({
+      raw: text,
+    });
+  } catch (err) {
     return NextResponse.json(
-      {
-        success: false,
-        message: "Server error",
-      },
+      { success: false, message: "Server error" },
       { status: 500 }
     );
   }
