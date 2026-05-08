@@ -8,13 +8,15 @@ export async function GET() {
     console.log("MATCH COUNT:", matches.length);
 
     for (const match of matches) {
+      console.log("MATCH:", match); // 👈 important
+
       await prisma.match.upsert({
         where: { matchId: match.id },
         update: {},
         create: {
           matchId: match.id,
-          homeTeam: match.homeTeam.name,
-          awayTeam: match.awayTeam.name,
+          homeTeam: match.homeTeam?.name,
+          awayTeam: match.awayTeam?.name,
           matchDate: new Date(match.utcDate),
           league: match.competition?.name ?? "unknown",
           analyzed: false,
@@ -22,9 +24,14 @@ export async function GET() {
       });
     }
 
-    return Response.json({ success: true, inserted: matches.length });
-  } catch (err) {
-    console.error("STORE MATCH ERROR:", err);
-    return Response.json({ error: "store failed" }, { status: 500 });
+    return Response.json({ success: true, count: matches.length });
+
+  } catch (err: any) {
+    console.error("STORE ERROR:", err);
+
+    return Response.json(
+      { error: err.message || "unknown error" },
+      { status: 500 }
+    );
   }
 }

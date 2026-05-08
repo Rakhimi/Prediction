@@ -15,12 +15,12 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useAuthModal } from "@/stores/useAuthModal";
+import { Button } from "./ui/button";
 
 const navItems = [
   { label: "Home", icon: Home, href: "/" },
   { label: "Match Prediction", icon: TrendingUp, href: "/analysis" },
-  { label: "League Blog", icon: BookOpen, href: "/blog" },
-  { label: "FAQ", icon: HelpCircle, href: "/faq" },
 ];
 
 type NavbarProps = {
@@ -35,6 +35,8 @@ type NavbarProps = {
 export default function Navbar({ member }: NavbarProps) {
   const pathname = usePathname();
 
+  const openLogin = useAuthModal((s) => s.openLogin);
+  const openRegister = useAuthModal((s) => s.openRegister);
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -181,13 +183,6 @@ export default function Navbar({ member }: NavbarProps) {
 
                       {/* Actions */}
                       <div className="pt-3 border-t border-white/10 space-y-2">
-                        <Link
-                          href="/premium"
-                          className="w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/5 text-sm text-gray-300"
-                        >
-                          <User className="w-4 h-4" />
-                          Premium Area
-                        </Link>
 
                         <Link
                           href="/api/logout"
@@ -209,12 +204,8 @@ export default function Navbar({ member }: NavbarProps) {
                         predictions.
                       </p>
 
-                      <Link
-                        href="/"
-                        className="block text-center bg-teal-500 text-black py-2 rounded-lg font-semibold"
-                      >
-                        Go Home
-                      </Link>
+                      <Button className="w-full bg-teal-500 text-black py-2 rounded-lg font-semibold cursor-pointer" onClick={openLogin}>Login</Button>
+                      <Button className="w-full bg-teal-500 text-black py-2 rounded-lg font-semibold cursor-pointer" onClick={openRegister}>Register</Button>
                     </div>
                   )}
                 </div>

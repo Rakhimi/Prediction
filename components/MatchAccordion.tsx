@@ -47,6 +47,11 @@ const getConfidence = (match: Match) => {
   );
 };
 
+const getTeamLogo = (teamName: string) => {
+  const normalized = teamName.toLowerCase().replace(/[^a-z0-9]/g, "");
+  return `/club_logo/${normalized}.png`;
+};
+
 export default function MatchAccordion({ matches }: { matches: Match[] }) {
   const renderForm = (form: string | null) => {
     if (!form) return null; // or return []
@@ -109,26 +114,41 @@ export default function MatchAccordion({ matches }: { matches: Match[] }) {
 
                   {/* TEAMS */}
                   <div className="flex items-center justify-between">
-                    
                     {/* HOME */}
-                    <div className="flex flex-col items-center gap-2 w-1/3">
-                      <p className="font-semibold text-lg">{match.homeTeam}</p>
-                      <div className="flex gap-1">
-                        {renderForm(match.homeTeamForm)}
+                    <div className="flex items-center justify-end gap-3 w-1/3">
+                      <div className="flex flex-col items-end gap-2">
+                        <p className="font-semibold text-lg">{match.homeTeam}</p>
+                        <div className="flex gap-1">
+                          {renderForm(match.homeTeamForm)}
+                        </div>
                       </div>
+
+                      <img
+                        src={getTeamLogo(match.homeTeam)}
+                        alt={match.homeTeam}
+                        className="w-10 h-10 object-contain"
+                      />
                     </div>
 
                     <div className="text-gray-500 font-bold text-xl">VS</div>
 
                     {/* AWAY */}
-                    <div className="flex flex-col items-center gap-2 w-1/3">
-                      <p className="font-semibold text-lg">{match.awayTeam}</p>
-                      <div className="flex gap-1">
-                        {renderForm(match.awayTeamForm)}
+                    <div className="flex items-center justify-start gap-3 w-1/3">
+                      <img
+                        src={getTeamLogo(match.awayTeam)}
+                        alt={match.awayTeam}
+                        className="w-10 h-10 object-contain"
+                      />
+
+                      <div className="flex flex-col items-start gap-2">
+                        <p className="font-semibold text-lg">{match.awayTeam}</p>
+                        <div className="flex gap-1">
+                          {renderForm(match.awayTeamForm)}
+                        </div>
                       </div>
                     </div>
-                  </div>
 
+                  </div>
                   {/* PREDICTION + ANALYSIS */}
                   <div className="bg-orange-500/10 border border-orange-500/20 rounded-xl p-5 space-y-3">
                     <div className="flex gap-4 items-center">

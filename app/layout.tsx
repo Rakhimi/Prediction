@@ -3,6 +3,7 @@ import { Cuprum } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { getCurrentMember } from "@/lib/auth";
+import AuthModalWrapper from "@/components/AuthModalWrapper";
 
 const cuprum = Cuprum({
   subsets: ["latin"],
@@ -27,6 +28,7 @@ export default async function RootLayout({
       <body className="min-h-full flex flex-col font-cuprum">
         <Navbar member={member} />
         {children}
+        <AuthModalWrapper />
       </body>
     </html>
   );
