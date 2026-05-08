@@ -129,18 +129,16 @@ const RegisterModal: React.FC<Props> = ({
 
       const fullPhone = `60${cleanedMobile}`;
 
-      const res = await fetch(
-        "/api/request-register-tac",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            phoneNumber: fullPhone,
-          }),
-        }
-      );
+      const res = await fetch("/api/request-register-tac", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          phoneNumber: fullPhone,
+          uid: form.username,
+        }),
+      });
 
       const data = await res.json();
 
