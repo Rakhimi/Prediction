@@ -146,10 +146,8 @@ const RegisterModal: React.FC<Props> = ({
 
       const data = JSON.parse(text);
 
-      if (!res.ok) {
-        throw new Error(
-          data.message || "Failed to send TAC"
-        );
+      if (!res.ok || data.status === false) {
+        throw new Error(data.msg || "Failed to send TAC");
       }
 
       setCountdown(120);

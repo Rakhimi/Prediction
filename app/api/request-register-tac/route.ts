@@ -28,15 +28,16 @@ export async function POST(req: Request) {
 
     // SORT KEYS ASCENDING
     const params = {
+      uid: uid.toString(),
       nonce,
       ts: ts.toString(),
-      uid: uid.toString(),
     };
 
-    const payload = Object.keys(params)
-      .sort()
-      .map((key) => `${key}=${params[key as keyof typeof params]}`)
-      .join("&");
+    // IMPORTANT: manual strict order + NO encoding
+    const payload =
+      "nonce=" + params.nonce +
+      "&ts=" + params.ts +
+      "&uid=" + params.uid;
 
     const h = crypto
       .createHmac("sha256", SECRET_KEY)
