@@ -42,6 +42,19 @@ export async function POST(req: Request) {
       .update(payload)
       .digest("hex");
 
+    console.log({
+      payload,
+      h,
+      body: {
+        data: {
+          phoneNumber: phoneNumber.toString(),
+          ts: ts.toString(),
+          nonce,
+          h,
+        },
+      },
+    });
+
     const res = await fetch(
       "https://callback-api-staging.ez-stake.com/api-callback/match-prediction/request-register-tac/new8scoreai",
       {
@@ -50,13 +63,13 @@ export async function POST(req: Request) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          data: {
-            phoneNumber,
-            ts,
-            nonce,
-            h,
-          },
-        }),
+        data: {
+          phoneNumber: phoneNumber.toString(),
+          ts: ts.toString(),
+          nonce,
+          h,
+        },
+      }),
       }
     );
 
