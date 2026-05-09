@@ -20,10 +20,22 @@ export async function POST(req: Request) {
     const nonce = crypto.randomBytes(16).toString("hex");
 
     // sort keys ascending
-    const payload =
-      `nonce=${nonce}` +
-      `&phoneNumber=${phoneNumber}` +
-      `&ts=${ts}`;
+    const dataToSign = {
+      phoneNumber: phoneNumber.toString(),
+      ts: ts.toString(),
+      nonce,
+    };
+
+    const sortedKeys = Object.keys(dataToSign).sort();
+
+    const payload = sortedKeys
+      .map((key) => {
+        const value =
+          dataToSign[key as keyof typeof dataToSign];
+
+        return `${encodeURIComponent(key)}=${encodeURIComponent(value)}`;
+      })
+      .join("&");
 
     const h = crypto
       .createHmac("sha256", SECRET_KEY)
