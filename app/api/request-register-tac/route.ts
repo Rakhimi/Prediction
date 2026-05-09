@@ -19,18 +19,11 @@ export async function POST(req: Request) {
     const ts = Math.floor(Date.now() / 1000);
     const nonce = crypto.randomBytes(16).toString("hex");
 
-    // IMPORTANT: ONLY these 3 fields
-    const params = {
-      nonce,
-      ts: ts.toString(),
-      phoneNumber: phoneNumber.toString(),
-    };
-
     // sort keys ascending
-    const payload = Object.keys(params)
-      .sort()
-      .map((k) => `${k}=${params[k as keyof typeof params]}`)
-      .join("&");
+    const payload =
+      `nonce=${nonce}` +
+      `&phoneNumber=${phoneNumber}` +
+      `&ts=${ts}`;
 
     const h = crypto
       .createHmac("sha256", SECRET_KEY)
