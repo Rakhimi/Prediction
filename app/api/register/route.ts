@@ -78,7 +78,7 @@ export async function POST(req: Request) {
     }
 
     const res = await fetch(
-      "https://new8myr.com/api/register",
+      "https://callback-api-staging.ez-stake.com/api/register",
       {
         method: "POST",
         headers: {
