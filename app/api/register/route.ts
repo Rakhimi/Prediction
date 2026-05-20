@@ -110,6 +110,8 @@ export async function POST(req: Request) {
 
     const data = await res.json();
 
+    console.log("REGISTER RESPONSE:", data);
+
     if (!res.ok) {
       return NextResponse.json(
         {
