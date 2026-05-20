@@ -34,6 +34,8 @@ const LoginModal: React.FC<Props> = ({ isOpen, onClose }) => {
 
       const token = response.data.token;
 
+      console.log("response",response)
+
       // Store token locally
       localStorage.setItem(
         "match_prediction_token",

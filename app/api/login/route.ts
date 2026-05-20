@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
     const h = generateSignature(requestData);
 
     const response = await fetch(
-      "https://callback-api.butterusd001.xyz/api/match-prediction/login/new8scoreai",
+      "https://callback-api-staging.ez-stake.com/api/match-prediction/login/new8scoreai",
       {
         method: "POST",
         headers: {
@@ -55,32 +55,54 @@ export async function POST(req: NextRequest) {
 
     const text = await response.text();
 
-    console.log("STATUS:", response.status); 
+    console.log("STATUS:", response.status);
     console.log("RAW RESPONSE:", text);
 
-    let data; 
-    
+    let data;
+
     try {
-     data = JSON.parse(text); 
+      data = JSON.parse(text);
+    } catch (err) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Provider returned invalid JSON",
+          raw: text,
+        },
+        { status: 500 }
+      );
+    }
 
-    } catch (err) { 
-        return NextResponse.json( 
-            { 
-                success: false, 
-                message: "Provider returned invalid JSON", 
-                raw: text,
-
-            }, { status: 500 } 
-        ); 
+    // IMPORTANT
+    if (!data?.status) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: data?.msg || "Login failed",
+          providerResponse: data,
+        },
+        { status: 400 }
+      );
     }
 
     const token = data.output?.data?.token;
+
+    if (!token) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Token missing from provider",
+        },
+        { status: 400 }
+      );
+    }
 
     return NextResponse.json({
       success: true,
       token,
     });
-  } catch (error) {
+
+    } catch (error) {
     console.error(error);
 
     return NextResponse.json(
