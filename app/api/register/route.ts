@@ -1,6 +1,26 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import crypto from "crypto";
 
-export async function POST(req: Request) {
+const SECRET_KEY = process.env.PROVIDER_SECRET!;
+
+function generateSignature(data: Record<string, any>) {
+  const sortedKeys = Object.keys(data).sort();
+
+  const payload = sortedKeys
+    .map((key) => {
+      return `${encodeURIComponent(key)}=${encodeURIComponent(
+        data[key]
+      )}`;
+    })
+    .join("&");
+
+  return crypto
+    .createHmac("sha256", SECRET_KEY)
+    .update(payload)
+    .digest("hex");
+}
+
+export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
@@ -8,8 +28,8 @@ export async function POST(req: Request) {
     const requiredFields = [
       "username",
       "password",
+      "confirmPassword",
       "mobileno",
-      "mobileTac",
       "firstName",
     ];
 
@@ -63,62 +83,91 @@ export async function POST(req: Request) {
       );
     }
 
-    // Mobile validation
-    if (
-      body.mobileno.length < 9 ||
-      body.mobileno.length > 10
-    ) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "Invalid mobile number",
-        },
-        { status: 400 }
-      );
-    }
+    const ts = Math.floor(Date.now() / 1000);
 
-    const res = await fetch(
-      "https://callback-api.butterusd001.xyz/api/register",
+    const nonce = crypto
+      .randomBytes(16)
+      .toString("hex");
+
+    const requestData = {
+      currency: "MYR",
+
+      username: body.username,
+      password: body.password,
+      confirmPassword: body.confirmPassword,
+
+      countryCode: body.countryCode || 60,
+
+      mobileno: body.mobileno,
+
+      firstName: body.firstName,
+
+      dateOfBirth:
+        body.dateOfBirth || "2000-01-01",
+
+      refCode: body.refCode || "",
+
+      layer: 1,
+
+      langCountry: "en-my",
+
+      ts,
+      nonce,
+    };
+
+    // IMPORTANT:
+    // Provider docs inconsistent:
+    // docs say mobileNo
+    // payload example says mobileno
+    // using mobileno based on example
+
+    const h = generateSignature(requestData);
+
+    const response = await fetch(
+      "https://callback-api.butterusd001.xyz/api/match-prediction/register/new8scoreai",
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          currency: "MYR",
-
-          username: body.username,
-          password: body.password,
-          confirmPassword: body.confirmPassword,
-
-          countryCode: body.countryCode || 60,
-          mobileno: body.mobileno,
-          mobileTac: body.mobileTac,
-
-          firstName: body.firstName,
-
-          dateOfBirth:
-            body.dateOfBirth || "2000-01-01",
-
-          refCode: body.refCode || "",
-
-          layer: 1,
-          langCountry: "en-my",
+          data: {
+            ...requestData,
+            h,
+          },
         }),
       }
     );
 
-    const data = await res.json();
+    const text = await response.text();
 
-    console.log("REGISTER RESPONSE:", data);
+    console.log("REGISTER STATUS:", response.status);
+    console.log("REGISTER RAW RESPONSE:", text);
 
-    if (!res.ok) {
+    let data;
+
+    try {
+      data = JSON.parse(text);
+    } catch (err) {
       return NextResponse.json(
         {
           success: false,
           message:
-            data?.message || "Registration failed",
-          data,
+            "Provider returned invalid JSON",
+          raw: text,
+        },
+        { status: 500 }
+      );
+    }
+
+    if (!data?.status) {
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            data?.msg ||
+            "Registration failed",
+          providerResponse: data,
         },
         { status: 400 }
       );
