@@ -2,8 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 
 function normalize(value: any) {
-  if (value === null || value === undefined) return "";
-  return String(value).trim();
+  if (value === null || value === undefined) {
+    return "";
+  }
+
+  return String(value);
 }
 
 function phpHttpBuildQuery(obj: Record<string, any>) {
@@ -110,18 +113,20 @@ export async function POST(req: NextRequest) {
 
     const requestData = {
       currency: "MYR",
-      username: body.username,
-      password: body.password,
-      confirmPassword: body.confirmPassword,
-      countryCode: body.countryCode || 60,
-      mobileno: body.mobileno,
-      firstName: body.firstName,
-      dateOfBirth: body.dateOfBirth || "2000-01-01",
-      refCode: body.refCode || "",
-      layer: 1,
+      username: String(body.username),
+      password: String(body.password),
+      confirmPassword: String(body.confirmPassword),
+      countryCode: "60",
+      mobileno: String(body.mobileno),
+      firstName: String(body.firstName),
+      dateOfBirth: String(
+        body.dateOfBirth || "2000-01-01"
+      ),
+      refCode: String(body.refCode || ""),
+      layer: "1",
       langCountry: "en-my",
-      ts,
-      nonce,
+      ts: String(ts),
+      nonce: String(nonce),
     };
 
 
