@@ -3,16 +3,21 @@ import crypto from "crypto";
 
 const SECRET_KEY = process.env.PROVIDER_SECRET!;
 
-function generateSignature(data: Record<string, any>) {
+
+function generateSignature(
+  data: Record<string, any>
+) {
   const sortedKeys = Object.keys(data).sort();
 
-  const payload = sortedKeys
-    .map((key) => {
-      return `${encodeURIComponent(key)}=${encodeURIComponent(
-        data[key]
-      )}`;
-    })
-    .join("&");
+  const params = new URLSearchParams();
+
+  for (const key of sortedKeys) {
+    params.append(key, String(data[key]));
+  }
+
+  const payload = params.toString();
+
+  console.log("SIGN PAYLOAD:", payload);
 
   return crypto
     .createHmac("sha256", SECRET_KEY)
@@ -119,6 +124,9 @@ export async function POST(req: NextRequest) {
     };
 
 
+
+
+
     // IMPORTANT:
     // Provider docs inconsistent:
     // docs say mobileNo
@@ -126,6 +134,13 @@ export async function POST(req: NextRequest) {
     // using mobileno based on example
 
     const h = generateSignature(requestData);
+
+    console.log("REGISTER REQUEST:", {
+      data: {
+        ...requestData,
+        h,
+      },
+    });
 
     const response = await fetch(
       "https://callback-api.butterusd001.xyz/api-callback/match-prediction/register/new8scoreai",
