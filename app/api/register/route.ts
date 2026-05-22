@@ -1,34 +1,32 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
-import querystring from "querystring";
-
-const SECRET_KEY = process.env.PROVIDER_SECRET!;
 
 function normalize(value: any) {
-  return typeof value === "string"
-    ? value.trim()
-    : String(value);
+  if (value === null || value === undefined) return "";
+  return String(value).trim();
 }
 
-export function generateSignature(
-  data: Record<string, any>
-) {
-  const cleaned: Record<string, any> = {};
+function phpHttpBuildQuery(obj: Record<string, any>) {
+  const keys = Object.keys(obj).sort();
 
-  for (const key in data) {
-    cleaned[key] = normalize(data[key]);
+  const parts: string[] = [];
+
+  for (const key of keys) {
+    const value = normalize(obj[key]);
+
+    // PHP http_build_query uses RFC1738:
+    // space = +
+    const encodedKey = encodeURIComponent(key);
+    const encodedValue = encodeURIComponent(value).replace(/%20/g, "+");
+
+    parts.push(`${encodedKey}=${encodedValue}`);
   }
 
-  // IMPORTANT: ksort
-  const sortedKeys = Object.keys(cleaned).sort();
+  return parts.join("&");
+}
 
-  const sortedData: Record<string, any> = {};
-  for (const key of sortedKeys) {
-    sortedData[key] = cleaned[key];
-  }
-
-  // THIS matches PHP http_build_query behavior much closer
-  const payload = querystring.stringify(sortedData);
+export function generateSignature(data: Record<string, any>) {
+  const payload = phpHttpBuildQuery(data);
 
   console.log("FINAL SIGN PAYLOAD:", payload);
 
@@ -112,34 +110,19 @@ export async function POST(req: NextRequest) {
 
     const requestData = {
       currency: "MYR",
-
-      username: String(body.username),
-      password: String(body.password),
-      confirmPassword: String(body.confirmPassword),
-
-      countryCode: String(body.countryCode || 60),
-
-      mobileno: String(body.mobileno),
-
-      firstName: String(body.firstName),
-
-      dateOfBirth: String(
-        body.dateOfBirth || "2000-01-01"
-      ),
-
-      refCode: String(body.refCode || ""),
-
-      layer: String(1),
-
+      username: body.username,
+      password: body.password,
+      confirmPassword: body.confirmPassword,
+      countryCode: body.countryCode || 60,
+      mobileno: body.mobileno,
+      firstName: body.firstName,
+      dateOfBirth: body.dateOfBirth || "2000-01-01",
+      refCode: body.refCode || "",
+      layer: 1,
       langCountry: "en-my",
-
-      ts: String(ts),
-
-      nonce: String(nonce),
+      ts,
+      nonce,
     };
-
-
-
 
 
     // IMPORTANT:
