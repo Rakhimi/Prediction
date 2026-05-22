@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 
+const SECRET_KEY = process.env.PROVIDER_SECRET!;
+
 function normalize(value: any) {
   if (value === null || value === undefined) {
     return "";
@@ -28,13 +30,40 @@ function phpHttpBuildQuery(obj: Record<string, any>) {
   return parts.join("&");
 }
 
-export function generateSignature(data: Record<string, any>) {
-  const payload = phpHttpBuildQuery(data);
+export function generateSignature(
+  data: Record<string, any>
+) {
+  const cleaned: Record<string, string> = {};
+
+  // trim + REMOVE empty fields
+  for (const key in data) {
+    const value =
+      typeof data[key] === "string"
+        ? data[key].trim()
+        : String(data[key]);
+
+    // IMPORTANT:
+    // skip empty string values
+    if (value === "") continue;
+
+    cleaned[key] = value;
+  }
+
+  // ksort
+  const sortedKeys = Object.keys(cleaned).sort();
+
+  const params = new URLSearchParams();
+
+  for (const key of sortedKeys) {
+    params.append(key, cleaned[key]);
+  }
+
+  const payload = params.toString();
 
   console.log("FINAL SIGN PAYLOAD:", payload);
 
   return crypto
-    .createHmac("sha256", process.env.PROVIDER_SECRET!)
+    .createHmac("sha256", SECRET_KEY)
     .update(payload)
     .digest("hex");
 }
