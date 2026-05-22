@@ -3,6 +3,13 @@ import crypto from "crypto";
 
 const SECRET_KEY = process.env.PROVIDER_SECRET!;
 
+function phpUrlEncode(str: string) {
+  return encodeURIComponent(str)
+    .replace(/%20/g, "+")
+    .replace(/[!'()*]/g, (c) =>
+      "%" + c.charCodeAt(0).toString(16).toUpperCase()
+    );
+}
 
 function normalize(value: any) {
   return typeof value === "string"
@@ -15,34 +22,30 @@ export function generateSignature(
 ) {
   const cleaned: Record<string, string> = {};
 
-  // 1. trim ALL values first (IMPORTANT)
   for (const key in data) {
     cleaned[key] = normalize(data[key]);
   }
 
-  // 2. ksort (alphabetical)
   const sortedKeys = Object.keys(cleaned).sort();
 
-  // 3. build query like PHP http_build_query (RFC1738)
   const payload = sortedKeys
     .map((key) => {
       return (
-        encodeURIComponent(key) +
+        phpUrlEncode(key) +
         "=" +
-        encodeURIComponent(cleaned[key])
-          .replace(/%20/g, "+")
+        phpUrlEncode(cleaned[key])
       );
     })
     .join("&");
 
   console.log("FINAL SIGN PAYLOAD:", payload);
 
-  // 4. HMAC
   return crypto
     .createHmac("sha256", process.env.PROVIDER_SECRET!)
     .update(payload)
     .digest("hex");
 }
+
 
 export async function POST(req: NextRequest) {
   try {
