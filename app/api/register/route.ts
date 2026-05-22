@@ -1,15 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
+import querystring from "querystring";
 
 const SECRET_KEY = process.env.PROVIDER_SECRET!;
-
-function phpUrlEncode(str: string) {
-  return encodeURIComponent(str)
-    .replace(/%20/g, "+")
-    .replace(/[!'()*]/g, (c) =>
-      "%" + c.charCodeAt(0).toString(16).toUpperCase()
-    );
-}
 
 function normalize(value: any) {
   return typeof value === "string"
@@ -20,23 +13,22 @@ function normalize(value: any) {
 export function generateSignature(
   data: Record<string, any>
 ) {
-  const cleaned: Record<string, string> = {};
+  const cleaned: Record<string, any> = {};
 
   for (const key in data) {
     cleaned[key] = normalize(data[key]);
   }
 
+  // IMPORTANT: ksort
   const sortedKeys = Object.keys(cleaned).sort();
 
-  const payload = sortedKeys
-    .map((key) => {
-      return (
-        phpUrlEncode(key) +
-        "=" +
-        phpUrlEncode(cleaned[key])
-      );
-    })
-    .join("&");
+  const sortedData: Record<string, any> = {};
+  for (const key of sortedKeys) {
+    sortedData[key] = cleaned[key];
+  }
+
+  // THIS matches PHP http_build_query behavior much closer
+  const payload = querystring.stringify(sortedData);
 
   console.log("FINAL SIGN PAYLOAD:", payload);
 
@@ -45,6 +37,7 @@ export function generateSignature(
     .update(payload)
     .digest("hex");
 }
+
 
 
 export async function POST(req: NextRequest) {
