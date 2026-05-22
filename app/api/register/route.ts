@@ -124,7 +124,7 @@ export async function POST(req: NextRequest) {
     const h = generateSignature(requestData);
 
     const response = await fetch(
-      "https://callback-api.butterusd001.xyz/api/match-prediction/register/new8scoreai",
+      "https://callback-api.butterusd001.xyz/api-callback/match-prediction/register/new8scoreai",
       {
         method: "POST",
         headers: {
