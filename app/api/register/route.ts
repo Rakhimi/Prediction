@@ -89,31 +89,35 @@ export async function POST(req: NextRequest) {
       .randomBytes(16)
       .toString("hex");
 
+
     const requestData = {
       currency: "MYR",
 
-      username: body.username,
-      password: body.password,
-      confirmPassword: body.confirmPassword,
+      username: String(body.username),
+      password: String(body.password),
+      confirmPassword: String(body.confirmPassword),
 
-      countryCode: body.countryCode || 60,
+      countryCode: String(body.countryCode || 60),
 
-      mobileno: body.mobileno,
+      mobileNo: String(body.mobileno),
 
-      firstName: body.firstName,
+      firstName: String(body.firstName),
 
-      dateOfBirth:
-        body.dateOfBirth || "2000-01-01",
+      dateOfBirth: String(
+        body.dateOfBirth || "2000-01-01"
+      ),
 
-      refCode: body.refCode || "",
+      refCode: String(body.refCode || ""),
 
-      layer: 1,
+      layer: String(1),
 
       langCountry: "en-my",
 
-      ts,
-      nonce,
+      ts: String(ts),
+
+      nonce: String(nonce),
     };
+
 
     // IMPORTANT:
     // Provider docs inconsistent:
