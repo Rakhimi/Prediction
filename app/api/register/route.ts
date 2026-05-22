@@ -4,18 +4,26 @@ import crypto from "crypto";
 const SECRET_KEY = process.env.PROVIDER_SECRET!;
 
 
-function generateSignature(
-  data: Record<string, any>
-) {
-  const sortedKeys = Object.keys(data).sort();
+function generateSignature(data: Record<string, any>) {
+  const orderedData = {
+    currency: data.currency,
+    username: data.username,
+    password: data.password,
+    confirmPassword: data.confirmPassword,
+    countryCode: data.countryCode,
+    mobileNo: data.mobileNo,
+    firstName: data.firstName,
+    dateOfBirth: data.dateOfBirth,
+    refCode: data.refCode,
+    layer: data.layer,
+    langCountry: data.langCountry,
+    ts: data.ts,
+    nonce: data.nonce,
+  };
 
-  const params = new URLSearchParams();
-
-  for (const key of sortedKeys) {
-    params.append(key, String(data[key]));
-  }
-
-  const payload = params.toString();
+  const payload = new URLSearchParams(
+    orderedData
+  ).toString();
 
   console.log("SIGN PAYLOAD:", payload);
 
