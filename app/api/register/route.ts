@@ -4,31 +4,42 @@ import crypto from "crypto";
 const SECRET_KEY = process.env.PROVIDER_SECRET!;
 
 
-function generateSignature(data: Record<string, any>) {
-  const orderedData = {
-    currency: data.currency,
-    username: data.username,
-    password: data.password,
-    confirmPassword: data.confirmPassword,
-    countryCode: data.countryCode,
-    mobileNo: data.mobileNo,
-    firstName: data.firstName,
-    dateOfBirth: data.dateOfBirth,
-    refCode: data.refCode,
-    layer: data.layer,
-    langCountry: data.langCountry,
-    ts: data.ts,
-    nonce: data.nonce,
-  };
+function normalize(value: any) {
+  return typeof value === "string"
+    ? value.trim()
+    : String(value);
+}
 
-  const payload = new URLSearchParams(
-    orderedData
-  ).toString();
+export function generateSignature(
+  data: Record<string, any>
+) {
+  const cleaned: Record<string, string> = {};
 
-  console.log("SIGN PAYLOAD:", payload);
+  // 1. trim ALL values first (IMPORTANT)
+  for (const key in data) {
+    cleaned[key] = normalize(data[key]);
+  }
 
+  // 2. ksort (alphabetical)
+  const sortedKeys = Object.keys(cleaned).sort();
+
+  // 3. build query like PHP http_build_query (RFC1738)
+  const payload = sortedKeys
+    .map((key) => {
+      return (
+        encodeURIComponent(key) +
+        "=" +
+        encodeURIComponent(cleaned[key])
+          .replace(/%20/g, "+")
+      );
+    })
+    .join("&");
+
+  console.log("FINAL SIGN PAYLOAD:", payload);
+
+  // 4. HMAC
   return crypto
-    .createHmac("sha256", SECRET_KEY)
+    .createHmac("sha256", process.env.PROVIDER_SECRET!)
     .update(payload)
     .digest("hex");
 }
