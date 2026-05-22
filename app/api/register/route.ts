@@ -119,7 +119,7 @@ export async function POST(req: NextRequest) {
 
       countryCode: String(body.countryCode || 60),
 
-      mobileNo: String(body.mobileno),
+      mobileno: String(body.mobileno),
 
       firstName: String(body.firstName),
 
