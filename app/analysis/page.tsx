@@ -7,6 +7,8 @@ export default async function Page() {
   const member = await getCurrentMember();
   const isMember = !!member?.isMember;
 
+  console.log("member", member)
+
   const matches = await prisma.match.findMany({
     orderBy: {
       matchDate: "asc",

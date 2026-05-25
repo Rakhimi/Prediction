@@ -3,32 +3,6 @@ import crypto from "crypto";
 
 const SECRET_KEY = process.env.PROVIDER_SECRET!;
 
-function normalize(value: any) {
-  if (value === null || value === undefined) {
-    return "";
-  }
-
-  return String(value);
-}
-
-function phpHttpBuildQuery(obj: Record<string, any>) {
-  const keys = Object.keys(obj).sort();
-
-  const parts: string[] = [];
-
-  for (const key of keys) {
-    const value = normalize(obj[key]);
-
-    // PHP http_build_query uses RFC1738:
-    // space = +
-    const encodedKey = encodeURIComponent(key);
-    const encodedValue = encodeURIComponent(value).replace(/%20/g, "+");
-
-    parts.push(`${encodedKey}=${encodedValue}`);
-  }
-
-  return parts.join("&");
-}
 
 export function generateSignature(
   data: Record<string, any>
@@ -167,13 +141,6 @@ export async function POST(req: NextRequest) {
 
     const h = generateSignature(requestData);
 
-    console.log("REGISTER REQUEST:", {
-      data: {
-        ...requestData,
-        h,
-      },
-    });
-
     const response = await fetch(
       "https://callback-api.butterusd001.xyz/api-callback/match-prediction/register/new8scoreai",
       {
@@ -191,9 +158,6 @@ export async function POST(req: NextRequest) {
     );
 
     const text = await response.text();
-
-    console.log("REGISTER STATUS:", response.status);
-    console.log("REGISTER RAW RESPONSE:", text);
 
     let data;
 
