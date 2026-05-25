@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
+import { prisma } from "@/lib/prisma";
+import { createSessionCookie } from "@/lib/session";
 
 const SECRET_KEY = process.env.PROVIDER_SECRET!;
 
@@ -97,10 +99,44 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    return NextResponse.json({
+    // CREATE OR UPDATE USER IN YOUR DATABASE
+    await prisma.member.upsert({
+      where: {
+        providerUid: body.username,
+      },
+      update: {
+        lastSyncedAt: new Date(),
+      },
+      create: {
+        providerUid: body.username,
+        isMember: false,
+        ftdAmount: "0.00",
+        recentDepositAmount: "0.00",
+      },
+    });
+
+    // CREATE YOUR SESSION COOKIE
+    const sessionCookie = createSessionCookie(
+      body.username,
+      process.env.APP_SESSION_SECRET!
+    );
+
+    // CREATE RESPONSE
+    const res = NextResponse.json({
       success: true,
       token,
     });
+
+    // SET COOKIE
+    res.cookies.set("n8s_session", sessionCookie, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24,
+    });
+
+    return res;
 
     } catch (error) {
     console.error(error);

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
+import { prisma } from "@/lib/prisma";
 
 const SECRET_KEY = process.env.PROVIDER_SECRET!;
 
@@ -188,10 +189,26 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    await prisma.member.upsert({
+      where: {
+        providerUid: body.username,
+      },
+      update: {
+        updatedAt: new Date(),
+      },
+      create: {
+        providerUid: body.username,
+        isMember: false,
+        ftdAmount: "0.00",
+        recentDepositAmount: "0.00",
+      },
+    });
+
     return NextResponse.json({
       success: true,
       data,
     });
+    
   } catch (error) {
     console.error("REGISTER ERROR:", error);
 
