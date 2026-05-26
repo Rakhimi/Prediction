@@ -3,6 +3,13 @@
 import { useState, useMemo } from "react";
 import MatchAccordion from "@/components/MatchAccordion";
 import { Lock } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function MatchPageClient({
   matches,
@@ -15,6 +22,7 @@ export default function MatchPageClient({
   const [search, setSearch] = useState("");
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
+  const [league, setLeague] = useState("all");
 
   const now = new Date();
 
@@ -39,17 +47,26 @@ export default function MatchPageClient({
       })
       .filter((match) => {
         const text = `${match.homeTeam} ${match.awayTeam} ${match.league}`.toLowerCase();
+
         return text.includes(search.toLowerCase());
+      })
+      .filter((match) => {
+        if (league === "all") return true;
+
+        return match.league === league;
       })
       .filter((match) => {
         const matchDate = new Date(match.matchDate);
 
-        if (fromDate && matchDate < new Date(fromDate)) return false;
-        if (toDate && matchDate > new Date(toDate)) return false;
+        if (fromDate && matchDate < new Date(fromDate))
+          return false;
+
+        if (toDate && matchDate > new Date(toDate))
+          return false;
 
         return true;
       });
-  }, [matches, tab, search, fromDate, toDate]);
+  }, [matches, tab, search, fromDate, toDate, league]);
 
   return (
     <div className="space-y-6">
@@ -86,6 +103,66 @@ export default function MatchPageClient({
           onChange={(e) => setSearch(e.target.value)}
           className="flex-1 p-3 rounded-xl bg-black/40 border border-white/10 focus:outline-none focus:ring-2 focus:ring-teal-500"
         />
+        <Select
+          value={league}
+          onValueChange={setLeague}
+        >
+          <SelectTrigger
+            className="
+              w-full md:w-[240px]
+              bg-black/40
+              border border-white/10
+              text-white
+              rounded-xl
+              h-12
+              focus:ring-2
+              focus:ring-teal-500
+              focus:border-teal-500
+            "
+          >
+            <SelectValue placeholder="Select League" />
+          </SelectTrigger>
+
+          <SelectContent
+            className="
+              bg-[#111]
+              border border-white/10
+              text-white
+            "
+          >
+            <SelectItem value="all">
+              All Leagues
+            </SelectItem>
+
+            <SelectItem value="Premier League">
+              Premier League
+            </SelectItem>
+
+            <SelectItem value="Primera Division">
+              La Liga
+            </SelectItem>
+
+            <SelectItem value="Serie A">
+              Serie A
+            </SelectItem>
+
+            <SelectItem value="Bundesliga">
+              Bundesliga
+            </SelectItem>
+
+            <SelectItem value="Ligue 1">
+              Ligue 1
+            </SelectItem>
+
+            <SelectItem value="UEFA Champions League">
+              Champions League
+            </SelectItem>
+
+            <SelectItem value="FIFA World Cup">
+              World Cup
+            </SelectItem>
+          </SelectContent>
+        </Select>
 
         {/* FROM DATE */}
         <input

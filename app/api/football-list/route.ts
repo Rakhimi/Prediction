@@ -1,18 +1,18 @@
 import { NextResponse } from "next/server";
 import { getFootballMatches } from "@/lib/football";
 
-export async function GET(req: Request) {
-  const CRON_SECRET = process.env.CRON_SECRET;
-
-  if (req.headers.get("x-cron-secret") !== CRON_SECRET) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
+export async function GET() {
   try {
-    const matches = await getFootballMatches();
+    const matches =
+      await getFootballMatches();
+
     return NextResponse.json(matches);
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ error: "Failed" }, { status: 500 });
+
+    return NextResponse.json(
+      { error: "Failed" },
+      { status: 500 }
+    );
   }
 }

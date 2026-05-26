@@ -47,8 +47,152 @@ const getConfidence = (match: Match) => {
   );
 };
 
+const TEAM_LOGO_MAP: Record<string, string> = {
+  // PREMIER LEAGUE
+  "Arsenal FC": "arsenal",
+  "Aston Villa FC": "astonvilla",
+  "AFC Bournemouth": "bournemouth",
+  "Brentford FC": "brentford",
+  "Brighton & Hove Albion FC": "brighton",
+  "Burnley FC": "burnley",
+  "Chelsea FC": "chelsea",
+  "Crystal Palace FC": "crystalpalace",
+  "Everton FC": "everton",
+  "Fulham FC": "fulham",
+  "Liverpool FC": "liverpool",
+  "Luton Town FC": "luton",
+  "Manchester City FC": "manchestercity",
+  "Manchester United FC": "manchesterunited",
+  "Newcastle United FC": "newcastle",
+  "Nottingham Forest FC": "nottinghamforest",
+  "Sheffield United FC": "sheffieldunited",
+  "Tottenham Hotspur FC": "tottenham",
+  "West Ham United FC": "westham",
+  "Wolverhampton Wanderers FC": "wolves",
+
+  // LA LIGA
+  "Real Madrid CF": "realmadrid",
+  "FC Barcelona": "barcelona",
+  "Atlético de Madrid": "atleticomadrid",
+  "Girona FC": "girona",
+  "Athletic Club": "athleticbilbao",
+  "Real Sociedad de Fútbol": "realsociedad",
+  "Real Betis Balompié": "realbetis",
+  "Valencia CF": "valencia",
+  "Sevilla FC": "sevilla",
+  "Villarreal CF": "villarreal",
+  "CA Osasuna": "osasuna",
+  "RCD Mallorca": "mallorca",
+  "Getafe CF": "getafe",
+  "RC Celta de Vigo": "celta",
+  "UD Las Palmas": "laspalmas",
+  "Deportivo Alavés": "alaves",
+  "Rayo Vallecano de Madrid": "rayovallecano",
+  "Granada CF": "granada",
+  "Cádiz CF": "cadiz",
+  "UD Almería": "almeria",
+
+  // SERIE A
+  "Juventus FC": "juventus",
+  "FC Internazionale Milano": "intermilan",
+  "AC Milan": "acmilan",
+  "SSC Napoli": "napoli",
+  "AS Roma": "roma",
+  "SS Lazio": "lazio",
+  "Atalanta BC": "atalanta",
+  "ACF Fiorentina": "fiorentina",
+  "Bologna FC 1909": "bologna",
+  "Torino FC": "torino",
+  "Genoa CFC": "genoa",
+  "US Lecce": "lecce",
+  "Udinese Calcio": "udinese",
+  "US Sassuolo Calcio": "sassuolo",
+  "Cagliari Calcio": "cagliari",
+  "Hellas Verona FC": "verona",
+  "Empoli FC": "empoli",
+  "Frosinone Calcio": "frosinone",
+  "US Salernitana 1919": "salernitana",
+  "AC Monza": "monza",
+
+  // BUNDESLIGA
+  "FC Bayern München": "bayernmunich",
+  "Borussia Dortmund": "dortmund",
+  "Bayer 04 Leverkusen": "leverkusen",
+  "RB Leipzig": "leipzig",
+  "VfB Stuttgart": "stuttgart",
+  "Eintracht Frankfurt": "frankfurt",
+  "VfL Wolfsburg": "wolfsburg",
+  "SC Freiburg": "freiburg",
+  "TSG Hoffenheim": "hoffenheim",
+  "Borussia Mönchengladbach": "gladbach",
+  "1. FC Union Berlin": "unionberlin",
+  "1. FC Heidenheim 1846": "heidenheim",
+  "SV Werder Bremen": "werderbremen",
+  "FC Augsburg": "augsburg",
+  "VfL Bochum 1848": "bochum",
+  "1. FSV Mainz 05": "mainz",
+  "1. FC Köln": "koln",
+  "SV Darmstadt 98": "darmstadt",
+
+  // LIGUE 1
+  "Paris Saint-Germain FC": "psg",
+  "Olympique de Marseille": "marseille",
+  "AS Monaco FC": "monaco",
+  "LOSC Lille": "lille",
+  "Olympique Lyonnais": "lyon",
+  "OGC Nice": "nice",
+  "RC Lens": "lens",
+  "Stade Rennais FC 1901": "rennes",
+  "Stade de Reims": "reims",
+  "Montpellier HSC": "montpellier",
+  "FC Nantes": "nantes",
+  "RC Strasbourg Alsace": "strasbourg",
+  "FC Metz": "metz",
+  "Toulouse FC": "toulouse",
+  "Le Havre AC": "lehavre",
+  "Clermont Foot 63": "clermont",
+  "FC Lorient": "lorient",
+  "Stade Brestois 29": "brest",
+
+  // WORLD CUP NATIONAL TEAMS
+  "Argentina": "argentina",
+  "Brazil": "brazil",
+  "France": "france",
+  "England": "england",
+  "Germany": "germany",
+  "Spain": "spain",
+  "Portugal": "portugal",
+  "Netherlands": "netherlands",
+  "Belgium": "belgium",
+  "Italy": "italy",
+  "Croatia": "croatia",
+  "Uruguay": "uruguay",
+  "Mexico": "mexico",
+  "USA": "usa",
+  "Japan": "japan",
+  "South Korea": "southkorea",
+  "Australia": "australia",
+  "Morocco": "morocco",
+  "Senegal": "senegal",
+  "Switzerland": "switzerland",
+  "Denmark": "denmark",
+  "Poland": "poland",
+  "Serbia": "serbia",
+  "Turkey": "turkey",
+};
+
 const getTeamLogo = (teamName: string) => {
-  const normalized = teamName.toLowerCase().replace(/[^a-z0-9]/g, "");
+  const mapped =
+    TEAM_LOGO_MAP[teamName];
+
+  if (mapped) {
+    return `/club_logo/${mapped}.png`;
+  }
+
+  const normalized = teamName
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, "");
+
   return `/club_logo/${normalized}.png`;
 };
 
