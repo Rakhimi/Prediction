@@ -135,7 +135,7 @@ const TEAM_LOGO_MAP: Record<string, string> = {
   "SV Darmstadt 98": "darmstadt",
 
   // LIGUE 1
-  "Paris Saint-Germain FC": "psg",
+  "Paris Saint-Germain FC": "parissaintgermain",
   "Olympique de Marseille": "marseille",
   "AS Monaco FC": "monaco",
   "LOSC Lille": "lille",
@@ -270,7 +270,7 @@ export default function MatchAccordion({ matches }: { matches: Match[] }) {
                       <img
                         src={getTeamLogo(match.homeTeam)}
                         alt={match.homeTeam}
-                        className="w-10 h-10 object-contain"
+                        className="w-14 h-14 object-contain"
                       />
                     </div>
 
@@ -281,7 +281,7 @@ export default function MatchAccordion({ matches }: { matches: Match[] }) {
                       <img
                         src={getTeamLogo(match.awayTeam)}
                         alt={match.awayTeam}
-                        className="w-10 h-10 object-contain"
+                        className="w-14 h-14 object-contain"
                       />
 
                       <div className="flex flex-col items-start gap-2">

@@ -107,19 +107,16 @@ export default function MatchPageClient({
           value={league}
           onValueChange={setLeague}
         >
-          <SelectTrigger
-            className="
-              w-full md:w-[240px]
-              bg-black/40
-              border border-white/10
-              text-white
-              rounded-xl
-              h-12
-              focus:ring-2
-              focus:ring-teal-500
-              focus:border-teal-500
-            "
-          >
+          <SelectTrigger className="
+            w-full md:w-[240px]
+            bg-black/40
+            border border-white/10
+            text-white
+            rounded-lg
+            h-24
+            flex items-center
+            px-4
+          ">
             <SelectValue placeholder="Select League" />
           </SelectTrigger>
 
