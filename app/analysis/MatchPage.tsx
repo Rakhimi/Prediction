@@ -118,7 +118,7 @@ export default function MatchPageClient({
 
       {/* MATCH LIST */}
       <div className="relative">
-        {isMember ? (
+        {!isMember ? (
           <MatchAccordion matches={filteredMatches} />
         ) : (
           <div className="relative rounded-2xl border border-white/10 overflow-hidden">
