@@ -132,7 +132,7 @@ const TEAM_LOGO_MAP: Record<string, string> = {
   "Eintracht Frankfurt": "eintrachtfrankfurt",
   "VfL Wolfsburg": "wolfsburg",
   "SC Freiburg": "freiburg",
-  "TSG Hoffenheim": "hoffenheim",
+  "TSG 1899 Hoffenheim": "hoffenheim",
   "Borussia Mönchengladbach": "gladbach",
   "1. FC Union Berlin": "unionberlin",
   "1. FC Heidenheim 1846": "fcheidenheim",
