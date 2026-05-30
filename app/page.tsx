@@ -4,6 +4,7 @@ import { Tv, TrendingUp, UserPlus, Wallet, Trophy, Target, Activity, ChartColumn
 import AccuracyTrendChart from "@/components/AccuracyTrendChart";
 import PredictionDistribution from "@/components/PredictionDistribution";
 import WeeklyActivityChart from "@/components/WeeklyActivityChart";
+import ChooseCard from "@/components/ChooseCard";
 
 //LnkZgFmzrmLQUZGf
 
@@ -125,7 +126,7 @@ export default function Home() {
                 <UserPlus className="w-6 h-6 text-teal-500" />
               </div>
               <div className="text-white text-sm leading-tight">
-                Create mescoreAI<br />Account
+                Create New8scoreai<br />Account
               </div>
             </div>
 
@@ -138,7 +139,7 @@ export default function Home() {
                 <Wallet className="w-6 h-6 text-teal-500" />
               </div>
               <div className="text-white text-sm leading-tight">
-                Deposit a minimum of<br />RM50/SGD50 in me88
+                Deposit a minimum of<br />RM50 in New8
               </div>
             </div>
 
@@ -155,10 +156,10 @@ export default function Home() {
           </div>
 
           {/* CTA Button */}
-          <Button 
-            className="mt-4 bg-teal-500 hover:bg-teal-600 text-black font-bold px-10 py-6 text-lg rounded-xl shadow-[0_0_15px_rgba(20,184,166,0.3)] transition-all hover:scale-105 cursor-pointer"
+          <Button
+            className="mt-4 bg-teal-500 hover:bg-teal-600 text-black font-bold px-10 py-6 text-lg rounded-xl shadow-[0_0_15px_rgba(20,184,166,0.3)] transition-all hover:scale-105 cursor-pointer animate-blink"
           >
-            Join me88 Now
+            Join New8 Now
           </Button>
           
         </div>
@@ -236,6 +237,7 @@ export default function Home() {
         <PredictionDistribution/>
         </div>
         <WeeklyActivityChart/>
+        <ChooseCard/>
       </section>
       </div>
     </div>

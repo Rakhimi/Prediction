@@ -57,9 +57,6 @@ export async function POST(req: NextRequest) {
 
     const text = await response.text();
 
-    console.log("STATUS:", response.status);
-    console.log("RAW RESPONSE:", text);
-
     let data;
 
     try {
@@ -117,7 +114,10 @@ export async function POST(req: NextRequest) {
 
     // CREATE YOUR SESSION COOKIE
     const sessionCookie = createSessionCookie(
-      body.username,
+      {
+        uid: body.username,
+        providerToken: token,
+      },
       process.env.APP_SESSION_SECRET!
     );
 

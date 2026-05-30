@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { X } from "lucide-react";
 import { useAuthModal } from "@/stores/useAuthModal";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 type Props = {
   isOpen: boolean;
@@ -34,21 +35,16 @@ const LoginModal: React.FC<Props> = ({ isOpen, onClose }) => {
 
       const token = response.data.token;
 
-      console.log("response",response)
+      console.log("response", response);
 
-      // Store token locally
-      localStorage.setItem(
-        "match_prediction_token",
-        token
-      );
+      localStorage.setItem("match_prediction_token", token);
 
-      alert("Login successful");
+      toast.success("Login successful");
 
       onClose();
     } catch (error: any) {
-      alert(
-        error?.response?.data?.message ||
-          "Login failed"
+      toast.error(
+        error?.response?.data?.message || "Login failed"
       );
     } finally {
       setLoading(false);
@@ -119,7 +115,7 @@ const LoginModal: React.FC<Props> = ({ isOpen, onClose }) => {
         <button
           onClick={handleSubmit}
           disabled={loading}
-          className="w-full py-3 rounded-lg bg-cyan-400 text-black font-semibold hover:bg-cyan-300 transition mb-4 disabled:opacity-50"
+          className="w-full py-3 rounded-lg bg-cyan-400 text-black font-semibold hover:bg-cyan-300 transition mb-4 disabled:opacity-50 cursor-pointer"
         >
           {loading ? "Loading..." : "Submit"}
         </button>

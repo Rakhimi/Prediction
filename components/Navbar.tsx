@@ -95,11 +95,6 @@ export default function Navbar({ member }: NavbarProps) {
 
           {/* Right controls */}
           <div className="flex items-center gap-4">
-            {/* Language */}
-            <button className="cursor-pointer flex items-center gap-1 text-gray-400 hover:text-white transition text-sm">
-              <Globe className="w-4 h-4" />
-              EN
-            </button>
 
             {/* Avatar Dropdown */}
             <div className="relative" ref={dropdownRef}>

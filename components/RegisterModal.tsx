@@ -5,6 +5,7 @@ import { X } from "lucide-react";
 import { Button } from "./ui/button";
 import { useAuthModal } from "@/stores/useAuthModal";
 import { Input } from "./ui/input";
+import toast from "react-hot-toast";
 
 type Props = {
   isOpen: boolean;
@@ -15,8 +16,8 @@ const RegisterModal: React.FC<Props> = ({
   isOpen,
   onClose,
 }) => {
-  const [showPassword, setShowPassword] =
-    useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const [currencyOpen, setCurrencyOpen] =
     useState(false);
@@ -142,17 +143,15 @@ const RegisterModal: React.FC<Props> = ({
 
       const text = await res.text();
 
-      console.log("BODY:", text);
-
       const data = JSON.parse(text);
 
       if (!res.ok || data.status === false) {
-        throw new Error(data.msg || "Failed to send TAC");
+        toast.error(data.msg || "Failed to send TAC");
       }
 
       setCountdown(120);
 
-      alert("OTP/TAC sent successfully");
+      toast.success("OTP/TAC sent successfully");
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -223,12 +222,10 @@ const RegisterModal: React.FC<Props> = ({
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(
-          data.message || "Register failed"
-        );
+        toast.error(data.message || "Register failed");
       }
 
-      alert("Account created successfully!");
+      toast.success("Account created successfully!");
 
       resetForm();
 
@@ -244,7 +241,7 @@ const RegisterModal: React.FC<Props> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
-      <div className="w-full max-w-md bg-[#1e1f23] rounded-xl p-6 relative text-white shadow-xl">
+      <div className="w-full max-w-md max-h-[90vh] overflow-y-auto bg-[#1e1f23] rounded-xl p-6 relative text-white shadow-xl">
 
         {/* HEADER */}
         <div className="flex items-center justify-between mb-6">
@@ -356,19 +353,15 @@ const RegisterModal: React.FC<Props> = ({
           <div className="relative">
             <Input
               name="password"
-              type={
-                showPassword ? "text" : "password"
-              }
+              type={showPassword ? "text" : "password"}
               value={form.password}
               onChange={handleChange}
             />
 
             <button
               type="button"
-              onClick={() =>
-                setShowPassword(!showPassword)
-              }
-              className="absolute right-3 top-2 text-gray-400"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 cursor-pointer"
             >
               👁️
             </button>
@@ -381,14 +374,24 @@ const RegisterModal: React.FC<Props> = ({
             Confirm Password
           </label>
 
-          <Input
-            name="confirmPassword"
-            type={
-              showPassword ? "text" : "password"
-            }
-            value={form.confirmPassword}
-            onChange={handleChange}
-          />
+          <div className="relative">
+            <Input
+              name="confirmPassword"
+              type={showConfirmPassword ? "text" : "password"}
+              value={form.confirmPassword}
+              onChange={handleChange}
+            />
+
+            <button
+              type="button"
+              onClick={() =>
+                setShowConfirmPassword(!showConfirmPassword)
+              }
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 cursor-pointer"
+            >
+              👁️
+            </button>
+          </div>
         </div>
 
         {/* MOBILE */}
@@ -398,7 +401,7 @@ const RegisterModal: React.FC<Props> = ({
           </label>
 
           <div className="flex gap-2">
-            <div className="flex items-center gap-2 border border-gray-600 rounded-lg px-3 py-2">
+            <div className="flex items-center gap-2 border border-gray-600 rounded-lg px-3 py-1">
               <span>🇲🇾</span>
               <span>+60</span>
             </div>
@@ -417,7 +420,7 @@ const RegisterModal: React.FC<Props> = ({
                   sendingTac || countdown > 0
                 }
                 onClick={handleSendTac}
-                className="min-w-[90px]"
+                className="min-w-[90px] cursor-pointer"
               >
                 {sendingTac
                   ? "Sending..."
@@ -467,7 +470,7 @@ const RegisterModal: React.FC<Props> = ({
         <Button
           onClick={handleSubmit}
           disabled={loading}
-          className="w-full py-3 rounded-lg bg-cyan-400 text-black font-semibold"
+          className="w-full py-3 rounded-lg bg-cyan-400 text-black font-semibold cursor-pointer"
         >
           {loading
             ? "Registering..."

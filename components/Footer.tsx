@@ -79,6 +79,38 @@ export default function Footer() {
         {/* DIVIDER */}
         <div className="border-t border-orange-500/10 my-10" />
 
+        {/* PROMO SECTION */}
+        <div className="max-w-4xl mx-auto mb-10">
+
+          {/* LOGO */}
+          <div className="flex justify-center mb-6">
+            <img
+              src="/logo.png"
+              alt="new8scoreai"
+              className="h-14 w-auto"
+            />
+          </div>
+
+          {/* CONTENT CARD */}
+          <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-8">
+            <h3 className="text-xl font-bold text-teal-400 mb-4">
+              Experience Free Livestream Football on New8scoreai
+            </h3>
+
+            <p className="text-gray-300 text-sm leading-6">
+              Football is watched by billions of fans worldwide, but many supporters
+              still pay subscription fees to access live matches. New8scoreai provides
+              football enthusiasts with a platform to follow live football action and
+              stay updated with major tournaments and leagues. Enjoy match insights,
+              real-time updates, and AI-powered football analysis all in one place,
+              designed to enhance your football viewing experience.
+            </p>
+          </div>
+
+        </div>
+
+        <div className="border-t border-orange-500/10 my-10" />
+
         {/* BOTTOM */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-gray-500 text-center md:text-right">

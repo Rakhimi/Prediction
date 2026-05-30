@@ -149,3 +149,24 @@
   html {
   }
 }
+
+@layer utilities {
+  @keyframes glow-blink {
+    0%, 100% {
+      background-color: rgb(20, 184, 166); /* teal-500 */
+      box-shadow: 0 0 10px rgba(20, 184, 166, 0.25);
+    }
+
+    50% {
+      background-color: rgb(45, 212, 191); /* brighter teal */
+      box-shadow:
+        0 0 18px rgba(45, 212, 191, 0.8),
+        0 0 35px rgba(20, 184, 166, 0.4);
+      transform: scale(1.03);
+    }
+  }
+
+  .animate-blink {
+    animation: glow-blink 0.4s infinite ease-in-out;
+  }
+}

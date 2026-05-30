@@ -2,16 +2,21 @@ import crypto from "crypto";
 
 type SessionPayload = {
   uid: string;
+  providerToken: string;
   exp: number;
 };
 
 export function createSessionCookie(
-  uid: string,
+  session: {
+    uid: string;
+    providerToken: string;
+  },
   secret: string,
   ttlSeconds = 60 * 60 * 24
 ) {
   const payload: SessionPayload = {
-    uid,
+    uid: session.uid,
+    providerToken: session.providerToken,
     exp: Math.floor(Date.now() / 1000) + ttlSeconds,
   };
 
