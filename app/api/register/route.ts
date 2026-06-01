@@ -35,8 +35,6 @@ export function generateSignature(
 
   const payload = params.toString();
 
-  console.log("FINAL SIGN PAYLOAD:", payload);
-
   return crypto
     .createHmac("sha256", SECRET_KEY)
     .update(payload)

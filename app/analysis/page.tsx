@@ -5,7 +5,9 @@ import { getCurrentMember } from "@/lib/auth";
 export default async function Page() {
 
   const member = await getCurrentMember();
-  const isMember = !!member?.isMember;
+
+  const isActiveMember =
+    member?.accessUntil && new Date(member.accessUntil) > new Date();
 
   const matches = await prisma.match.findMany({
     orderBy: {
@@ -27,7 +29,7 @@ export default async function Page() {
           </p>
         </div>
 
-        <MatchPageClient matches={matches} isMember={isMember} />
+        <MatchPageClient matches={matches} isMember={isActiveMember} />
       </div>
     </div>
   );

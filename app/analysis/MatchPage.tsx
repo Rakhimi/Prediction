@@ -16,7 +16,7 @@ export default function MatchPageClient({
   isMember,
 }: {
   matches: any[];
-  isMember: boolean;
+  isMember: boolean | null | undefined
 }) {
   const [tab, setTab] = useState<"upcoming" | "today" | "completed">("upcoming");
   const [search, setSearch] = useState("");
@@ -183,7 +183,7 @@ export default function MatchPageClient({
 
       {/* MATCH LIST */}
       <div className="relative">
-        {!isMember ? (
+        {isMember ? (
           <MatchAccordion matches={filteredMatches} />
         ) : (
           <div className="relative rounded-2xl border border-white/10 overflow-hidden">
