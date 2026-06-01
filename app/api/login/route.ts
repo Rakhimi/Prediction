@@ -57,6 +57,8 @@ export async function POST(req: NextRequest) {
 
     const text = await response.text();
 
+    console.log("response", response)
+
     let data;
 
     try {

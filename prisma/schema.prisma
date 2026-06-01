@@ -15,6 +15,7 @@ datasource db {
 model Member {
   id                    Int      @id @default(autoincrement())
   providerUid           String   @unique
+  accessUntil           DateTime?
   isMember              Boolean  @default(false)
   ftdAmount             String   @default("0.00")
   recentDepositAmount   String   @default("0.00")

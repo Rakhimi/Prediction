@@ -31,14 +31,6 @@ export async function GET(req: Request) {
   const nonce = url.searchParams.get("nonce");
   const h = url.searchParams.get("h");
 
-  console.log("INCOMING QUERY:", {
-    uid,
-    username,
-    ts,
-    nonce,
-    h,
-  });
-
   if (!uid || !ts || !nonce || !h) {
     return errorResponse("Invalid Params");
   }
@@ -73,23 +65,8 @@ export async function GET(req: Request) {
   const requestData = { uid, ts: requestTs, nonce: requestNonce };
   const requestH = hmacSha256Hex(requestData, providerSecret);
 
-  console.log("PROVIDER API URL:", providerApiUrl);
-
-  console.log("REQUEST DATA:", {
-    uid,
-    requestTs,
-    requestNonce,
-    requestH,
-  });
-
   let upstream;
 
-  console.log("BODY SENT:", JSON.stringify({
-    data: {
-      ...requestData,
-      h: requestH
-    }
-  }));
   try {
     upstream = await fetch(providerApiUrl, {
       method: "POST",
@@ -108,10 +85,8 @@ export async function GET(req: Request) {
     return errorResponse("Fetch Failed");
   }
 
-  console.log("UPSTREAM STATUS:", upstream.status);
 
   const rawText = await upstream.text();
-  console.log("UPSTREAM RAW RESPONSE:", rawText);
 
   let upstreamJson = null;
   try {
@@ -156,6 +131,9 @@ export async function GET(req: Request) {
       ftdAmount: String(data.ftdAmount ?? "0.00"),
       recentDepositAmount: String(data.recentDepositAmount ?? "0.00"),
       lastSyncedAt: new Date(),
+      accessUntil: new Date(
+        Date.now() + 24 * 60 * 60 * 1000
+      ),
     },
   });
 
@@ -164,7 +142,13 @@ export async function GET(req: Request) {
     return errorResponse("Provider Secret Key Not Found");
   }
 
-  const sessionCookie = createSessionCookie(String(uid), sessionSecret);
+  const sessionCookie = createSessionCookie(
+    { 
+      uid: String(uid), 
+      providerToken: "" // Pass your token here if available, or keep it empty
+    }, 
+    sessionSecret
+  );
 
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 

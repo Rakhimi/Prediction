@@ -201,6 +201,9 @@ export async function POST(req: NextRequest) {
         isMember: false,
         ftdAmount: "0.00",
         recentDepositAmount: "0.00",
+        accessUntil: new Date(
+          Date.now() + 24 * 60 * 60 * 1000
+        ),
       },
     });
 
