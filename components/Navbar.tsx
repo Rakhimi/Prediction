@@ -88,6 +88,21 @@ export default function Navbar({ member }: NavbarProps) {
               );
             })}
           </div>
+          {member && (
+            <div className="pt-3 border-t border-white/10 space-y-2">
+              <a
+                href="/api/deposit"
+                className="
+                  w-full flex items-center gap-2 px-3 py-2 rounded-lg
+                  hover:bg-teal-500/10 text-sm
+                  transition
+                "
+              >
+                <Wallet className="w-4 h-4" />
+                Deposit
+              </a>
+            </div>
+          )}
 
           {/* Right controls */}
           <div className="flex items-center gap-4">
@@ -108,22 +123,6 @@ export default function Navbar({ member }: NavbarProps) {
                   }`}
                 />
               </button>
-              {member && (
-                <div className="pt-3 border-t border-white/10 space-y-2">
-                  <a
-                    href="/api/deposit"
-                    className="
-                      w-full flex items-center gap-2 px-3 py-2 rounded-lg
-                      hover:bg-teal-500/10 text-sm text-teal-400
-                      transition
-                    "
-                  >
-                    <Wallet className="w-4 h-4" />
-                    Deposit
-                  </a>
-                </div>
-              )}
-
               {open && (
                 <div className="absolute right-0 top-14 w-72 rounded-2xl border border-teal-500/20 bg-[#111] shadow-2xl p-4 space-y-4">
                   {member ? (
