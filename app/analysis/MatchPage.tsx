@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import MatchAccordion from "@/components/MatchAccordion";
-import { Lock } from "lucide-react";
+import { Lock, Wallet } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -196,19 +196,37 @@ export default function MatchPageClient({
             {/* lock overlay */}
             <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/70 z-10 px-6 text-center">
               <Lock className="w-10 h-10 text-teal-500 mb-4" />
+
               <h2 className="text-2xl font-bold mb-2">
                 Premium Members Only
               </h2>
+
               <p className="text-gray-300 mb-6 max-w-md">
-                Unlock full match predictions, AI analysis and winning insights.
+                Deposit a minimum of RM50 to unlock 1 month of access to AI match predictions,
+                detailed analysis and winning insights.
               </p>
 
-              <a
-                href="https://new8myr.com"
-                className="px-6 py-3 rounded-xl bg-teal-500 text-black font-bold hover:bg-teal-400 transition"
-              >
-                Join Now
-              </a>
+              {!isMember ? (
+                <a
+                  href="https://new8myr.com"
+                  className="px-6 py-3 rounded-xl bg-teal-500 text-black font-bold hover:bg-teal-400 transition"
+                >
+                  Join Now
+                </a>
+              ) : (
+                <a
+                  href="/api/deposit"
+                  className="
+                    px-6 py-3 rounded-xl
+                    bg-teal-500 text-black font-bold
+                    hover:bg-teal-400 transition
+                    flex items-center gap-2
+                  "
+                >
+                  <Wallet className="w-4 h-4" />
+                  Deposit RM50+
+                </a>
+              )}
             </div>
           </div>
         )}
