@@ -89,13 +89,12 @@ export default function Navbar({ member }: NavbarProps) {
             })}
           </div>
           {member && (
-            <div className="pt-3 border-t border-white/10 space-y-2">
+            <div>
               <a
                 href="/api/deposit"
                 className="
-                  w-full flex items-center gap-2 px-3 py-2 rounded-lg
-                  hover:bg-teal-500/10 text-sm
-                  transition
+                  w-full flex items-center px-2 py-2 rounded-lg
+                  hover:bg-teal-500/10 text-gray-400 transition
                 "
               >
                 <Wallet className="w-4 h-4" />
