@@ -35,13 +35,13 @@ const LoginModal: React.FC<Props> = ({ isOpen, onClose }) => {
 
       const token = response.data.token;
 
-      console.log("response", response);
-
       localStorage.setItem("match_prediction_token", token);
 
       toast.success("Login successful");
 
       onClose();
+
+      window.location.reload();
     } catch (error: any) {
       toast.error(
         error?.response?.data?.message || "Login failed"

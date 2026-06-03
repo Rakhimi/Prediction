@@ -63,7 +63,7 @@ export default function Navbar({ member }: NavbarProps) {
         {/* Right side */}
         <div className="flex items-center gap-8">
           {/* Nav */}
-          <div className="hidden md:flex items-center gap-2">
+          <div className="hidden md:flex items-center gap-4">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = pathname === item.href;
@@ -87,21 +87,21 @@ export default function Navbar({ member }: NavbarProps) {
                 </Link>
               );
             })}
-          </div>
-          {member && (
-            <div>
+
+            {member && (
               <a
                 href="/api/deposit"
                 className="
-                  w-full flex items-center px-2 py-2 rounded-lg
-                  hover:bg-teal-500/10 text-gray-400 transition
+                  flex items-center gap-2 px-4 py-2 rounded-lg font-semibold
+                  text-gray-400 hover:text-white hover:bg-white/5
+                  transition-all duration-300
                 "
               >
                 <Wallet className="w-4 h-4" />
                 Deposit
               </a>
-            </div>
-          )}
+            )}
+          </div>
 
           {/* Right controls */}
           <div className="flex items-center gap-4">

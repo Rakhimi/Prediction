@@ -22,11 +22,11 @@ const data = [
 
 export default function AccuracyTrendChart() {
   return (
-    <div className="bg-[#111] p-6 rounded-2xl border border-white/5 w-full max-w-2xl">
+    <div className="bg-[#111] p-8 rounded-2xl border border-white/5 w-full h-full">
       {/* Header Section */}
       <div className="flex justify-between items-start mb-8">
         <div>
-          <h3 className="text-white text-lg font-bold">Accuracy Trend</h3>
+          <h3 className="text-white text-2xl font-bold">Accuracy Trend</h3>
           <p className="text-gray-500 text-sm">Monthly prediction accuracy</p>
         </div>
         <div className="p-2 bg-teal-500/10 rounded-lg border border-teal-500/20">

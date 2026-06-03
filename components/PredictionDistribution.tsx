@@ -17,7 +17,7 @@ const stats = [
 
 export default function PredictionDistribution() {
   return (
-    <div className="bg-[#111] p-8 rounded-2xl border border-teal-500/10 w-full max-w-2xl text-white">
+    <div className="bg-[#111] p-8 rounded-2xl border border-teal-500/10 w-full h-full text-white">
       {/* Header */}
       <div className="flex justify-between items-start mb-8">
         <div>

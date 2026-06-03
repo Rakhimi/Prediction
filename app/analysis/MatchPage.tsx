@@ -69,116 +69,120 @@ export default function MatchPageClient({
   }, [matches, tab, search, fromDate, toDate, league]);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6 px-4 sm:px-0">
 
-      {/* TABS */}
-      <div className="flex gap-4">
+      {/* TABS - Mobile optimized */}
+      <div className="flex gap-2 sm:gap-4">
         {["upcoming", "today", "completed"].map((t) => (
           <button
             key={t}
             onClick={() => setTab(t as any)}
-            className={`flex-1 py-3 rounded-xl border transition-all cursor-pointer ${
+            className={`flex-1 py-2 sm:py-3 rounded-lg sm:rounded-xl border transition-all cursor-pointer text-xs sm:text-sm md:text-base ${
               tab === t
                 ? "bg-teal-500 text-black font-semibold"
                 : "bg-black/30 border-white/10 hover:bg-teal-500/20"
             }`}
           >
             {t === "upcoming"
-              ? "Upcoming Matches"
+              ? "Upcoming"
               : t === "today"
-              ? "Today's Matches"
-              : "Completed Matches"}
+              ? "Today"
+              : "Completed"}
           </button>
         ))}
       </div>
 
-      {/* SEARCH + FILTER */}
-      <div className="flex flex-col md:flex-row gap-4">
+      {/* SEARCH + FILTER - Mobile responsive grid */}
+      <div className="flex flex-col gap-3 sm:gap-4">
         
-        {/* SEARCH */}
+        {/* Search - Full width on mobile */}
         <input
           type="text"
           placeholder="Search by team or league..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="flex-1 p-3 rounded-xl bg-black/40 border border-white/10 focus:outline-none focus:ring-2 focus:ring-teal-500"
+          className="w-full p-2.5 sm:p-3 rounded-lg sm:rounded-xl bg-black/40 border border-white/10 focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm sm:text-base"
         />
-        <Select
-          value={league}
-          onValueChange={setLeague}
-        >
-          <SelectTrigger size="default" className="w-full md:w-[240px]">
-            <SelectValue placeholder="Select League" />
-          </SelectTrigger>
-
-          <SelectContent
-            className="
-              bg-[#111]
-              border border-white/10
-              text-white
-            "
+        
+        {/* Filters grid - 2 columns on mobile, row on desktop */}
+        <div className="grid grid-cols-2 md:flex md:flex-row gap-3 sm:gap-4">
+          <Select
+            value={league}
+            onValueChange={setLeague}
           >
-            <SelectItem value="all">
-              All Leagues
-            </SelectItem>
+            <SelectTrigger size="default" className="w-full md:w-[240px]">
+              <SelectValue placeholder="Select League" />
+            </SelectTrigger>
 
-            <SelectItem value="Premier League">
-              Premier League
-            </SelectItem>
+            <SelectContent
+              className="
+                bg-[#111]
+                border border-white/10
+                text-white
+              "
+            >
+              <SelectItem value="all">
+                All Leagues
+              </SelectItem>
 
-            <SelectItem value="Primera Division">
-              La Liga
-            </SelectItem>
+              <SelectItem value="Premier League">
+                Premier League
+              </SelectItem>
 
-            <SelectItem value="Serie A">
-              Serie A
-            </SelectItem>
+              <SelectItem value="Primera Division">
+                La Liga
+              </SelectItem>
 
-            <SelectItem value="Bundesliga">
-              Bundesliga
-            </SelectItem>
+              <SelectItem value="Serie A">
+                Serie A
+              </SelectItem>
 
-            <SelectItem value="Ligue 1">
-              Ligue 1
-            </SelectItem>
+              <SelectItem value="Bundesliga">
+                Bundesliga
+              </SelectItem>
 
-            <SelectItem value="UEFA Champions League">
-              Champions League
-            </SelectItem>
+              <SelectItem value="Ligue 1">
+                Ligue 1
+              </SelectItem>
 
-            <SelectItem value="FIFA World Cup">
-              World Cup
-            </SelectItem>
-          </SelectContent>
-        </Select>
+              <SelectItem value="UEFA Champions League">
+                Champions League
+              </SelectItem>
 
-        {/* FROM DATE */}
-        <input
-          type="date"
-          value={fromDate}
-          onChange={(e) => setFromDate(e.target.value)}
-          className="p-3 rounded-xl bg-black/40 border border-white/10 cursor-pointer"
-        />
+              <SelectItem value="FIFA World Cup">
+                World Cup
+              </SelectItem>
+            </SelectContent>
+          </Select>
 
-        {/* TO DATE */}
-        <input
-          type="date"
-          value={toDate}
-          onChange={(e) => setToDate(e.target.value)}
-          className="p-3 rounded-xl bg-black/40 border border-white/10 cursor-pointer"
-        />
+          {/* FROM DATE */}
+          <input
+            type="date"
+            value={fromDate}
+            onChange={(e) => setFromDate(e.target.value)}
+            className="p-2.5 sm:p-3 rounded-lg sm:rounded-xl bg-black/40 border border-white/10 cursor-pointer text-sm sm:text-base"
+          />
 
-        {/* RESET */}
-        <button
-          onClick={() => {
-            setSearch("");
-            setFromDate("");
-            setToDate("");
-          }}
-          className="px-4 py-2 rounded-xl border border-white/10 hover:bg-teal-500/20 transition cursor-pointer"
-        >
-          Reset
-        </button>
+          {/* TO DATE */}
+          <input
+            type="date"
+            value={toDate}
+            onChange={(e) => setToDate(e.target.value)}
+            className="p-2.5 sm:p-3 rounded-lg sm:rounded-xl bg-black/40 border border-white/10 cursor-pointer text-sm sm:text-base"
+          />
+
+          {/* RESET - Full width on mobile when in column layout */}
+          <button
+            onClick={() => {
+              setSearch("");
+              setFromDate("");
+              setToDate("");
+            }}
+            className="px-3 sm:px-4 py-2 rounded-lg sm:rounded-xl border border-white/10 hover:bg-teal-500/20 transition cursor-pointer text-sm sm:text-base md:col-span-2"
+          >
+            Reset
+          </button>
+        </div>
       </div>
 
       {/* MATCH LIST */}
@@ -186,54 +190,51 @@ export default function MatchPageClient({
         {isMember ? (
           <MatchAccordion matches={filteredMatches} />
         ) : (
-          <div className="relative rounded-2xl border border-white/10 overflow-hidden">
+          <div className="relative rounded-xl sm:rounded-2xl border border-white/10 overflow-hidden">
 
             {/* blurred preview */}
             <div className="blur-sm pointer-events-none opacity-60">
               <MatchAccordion matches={filteredMatches.slice(0, 3)} />
             </div>
 
-            {/* lock overlay */}
-            <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/70 z-10 px-6 text-center">
-              <Lock className="w-10 h-10 text-teal-500 mb-4" />
+            {/* lock overlay - Mobile optimized */}
+            <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/70 z-10 px-4 sm:px-6 text-center overflow-y-auto py-8 sm:py-10">
+              <div className="max-w-md w-full">
+                <Lock className="w-8 h-8 sm:w-10 sm:h-10 text-teal-500 mb-3 sm:mb-4 mx-auto" />
 
-              <h2 className="text-2xl font-bold mb-2">
-                Premium Members Only
-              </h2>
+                <h2 className="text-xl sm:text-2xl font-bold mb-2">
+                  Premium Members Only
+                </h2>
 
-              <p className="text-gray-300 mb-6 max-w-md">
-                Deposit a minimum of RM50 to unlock 1 month of access to AI match predictions,
-                detailed analysis and winning insights.
-              </p>
+                <p className="text-gray-300 mb-4 sm:mb-6 text-sm sm:text-base">
+                  Deposit a minimum of RM50 to unlock 1 month of access to AI match predictions,
+                  detailed analysis and winning insights.
+                </p>
 
-              {!isMember ? (
-                <a
-                  href="https://new8myr.com"
-                  className="px-6 py-3 rounded-xl bg-teal-500 text-black font-bold hover:bg-teal-400 transition"
-                >
-                  Join Now
-                </a>
-              ) : (
-                <a
-                  href="/api/deposit"
-                  className="
-                    px-6 py-3 rounded-xl
-                    bg-teal-500 text-black font-bold
-                    hover:bg-teal-400 transition
-                    flex items-center gap-2
-                  "
-                >
-                  <Wallet className="w-4 h-4" />
-                  Deposit RM50+
-                </a>
-              )}
+                {!isMember ? (
+                  <a
+                    href="https://new8myr.com"
+                    className="px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg sm:rounded-xl bg-teal-500 text-black font-bold hover:bg-teal-400 transition inline-block text-sm sm:text-base"
+                  >
+                    Join Now
+                  </a>
+                ) : (
+                  <a
+                    href="/api/deposit"
+                    className="px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg sm:rounded-xl bg-teal-500 text-black font-bold hover:bg-teal-400 transition inline-flex items-center gap-2 text-sm sm:text-base"
+                  >
+                    <Wallet className="w-3 h-3 sm:w-4 sm:h-4" />
+                    Deposit RM50+
+                  </a>
+                )}
+              </div>
             </div>
           </div>
         )}
       </div>
 
       {filteredMatches.length === 0 && (
-        <p className="text-gray-400 text-center">No matches found</p>
+        <p className="text-gray-400 text-center py-8 text-sm sm:text-base">No matches found</p>
       )}
     </div>
   );
