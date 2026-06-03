@@ -10,13 +10,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useAuthModal } from "@/stores/useAuthModal";
 
 export default function MatchPageClient({
   matches,
+  isLoggedIn,
   isMember,
 }: {
   matches: any[];
-  isMember: boolean | null | undefined
+  isLoggedIn: boolean | null | undefined;
+  isMember: boolean | null | undefined;
 }) {
   const [tab, setTab] = useState<"upcoming" | "today" | "completed">("upcoming");
   const [search, setSearch] = useState("");
@@ -25,6 +28,8 @@ export default function MatchPageClient({
   const [league, setLeague] = useState("all");
 
   const now = new Date();
+
+  const openRegister = useAuthModal((s) => s.openRegister);
 
   const filteredMatches = useMemo(() => {
     return matches
@@ -68,19 +73,24 @@ export default function MatchPageClient({
       });
   }, [matches, tab, search, fromDate, toDate, league]);
 
-  return (
-    <div className="space-y-4 sm:space-y-6 px-4 sm:px-0">
+  // Determine how many matches to show in preview (at least 3, but not more than available)
+  const previewMatches = filteredMatches.length > 0 
+    ? filteredMatches.slice(0, Math.min(5, filteredMatches.length))
+    : [];
 
-      {/* TABS - Mobile optimized */}
-      <div className="flex gap-2 sm:gap-4">
+  return (
+    <div className="space-y-4 sm:space-y-6 px-3 sm:px-0">
+
+      {/* TABS - Full width on mobile */}
+      <div className="flex gap-2 sm:gap-4 w-full">
         {["upcoming", "today", "completed"].map((t) => (
           <button
             key={t}
             onClick={() => setTab(t as any)}
-            className={`flex-1 py-2 sm:py-3 rounded-lg sm:rounded-xl border transition-all cursor-pointer text-xs sm:text-sm md:text-base ${
+            className={`flex-1 py-2.5 sm:py-3 rounded-lg sm:rounded-xl border transition-all cursor-pointer text-sm sm:text-base md:text-base font-medium ${
               tab === t
                 ? "bg-teal-500 text-black font-semibold"
-                : "bg-black/30 border-white/10 hover:bg-teal-500/20"
+                : "bg-black/30 border-white/10 hover:bg-teal-500/20 text-white"
             }`}
           >
             {t === "upcoming"
@@ -92,25 +102,25 @@ export default function MatchPageClient({
         ))}
       </div>
 
-      {/* SEARCH + FILTER - Mobile responsive grid */}
+      {/* SEARCH + FILTER - Mobile optimized */}
       <div className="flex flex-col gap-3 sm:gap-4">
         
-        {/* Search - Full width on mobile */}
+        {/* Search - Full width */}
         <input
           type="text"
           placeholder="Search by team or league..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full p-2.5 sm:p-3 rounded-lg sm:rounded-xl bg-black/40 border border-white/10 focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm sm:text-base"
+          className="w-full p-3 rounded-lg bg-black/40 border border-white/10 focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm text-white placeholder:text-gray-400"
         />
         
-        {/* Filters grid - 2 columns on mobile, row on desktop */}
-        <div className="grid grid-cols-2 md:flex md:flex-row gap-3 sm:gap-4">
+        {/* Filters - Stack vertically on mobile */}
+        <div className="flex flex-col gap-3">
           <Select
             value={league}
             onValueChange={setLeague}
           >
-            <SelectTrigger size="default" className="w-full md:w-[240px]">
+            <SelectTrigger size="default" className="w-full">
               <SelectValue placeholder="Select League" />
             </SelectTrigger>
 
@@ -155,32 +165,35 @@ export default function MatchPageClient({
             </SelectContent>
           </Select>
 
-          {/* FROM DATE */}
-          <input
-            type="date"
-            value={fromDate}
-            onChange={(e) => setFromDate(e.target.value)}
-            className="p-2.5 sm:p-3 rounded-lg sm:rounded-xl bg-black/40 border border-white/10 cursor-pointer text-sm sm:text-base"
-          />
+          <div className="flex gap-3">
+            {/* FROM DATE */}
+            <input
+              type="date"
+              value={fromDate}
+              onChange={(e) => setFromDate(e.target.value)}
+              className="flex-1 p-3 rounded-lg bg-black/40 border border-white/10 cursor-pointer text-sm text-white"
+            />
 
-          {/* TO DATE */}
-          <input
-            type="date"
-            value={toDate}
-            onChange={(e) => setToDate(e.target.value)}
-            className="p-2.5 sm:p-3 rounded-lg sm:rounded-xl bg-black/40 border border-white/10 cursor-pointer text-sm sm:text-base"
-          />
+            {/* TO DATE */}
+            <input
+              type="date"
+              value={toDate}
+              onChange={(e) => setToDate(e.target.value)}
+              className="flex-1 p-3 rounded-lg bg-black/40 border border-white/10 cursor-pointer text-sm text-white"
+            />
+          </div>
 
-          {/* RESET - Full width on mobile when in column layout */}
+          {/* RESET - Full width */}
           <button
             onClick={() => {
               setSearch("");
               setFromDate("");
               setToDate("");
+              setLeague("all");
             }}
-            className="px-3 sm:px-4 py-2 rounded-lg sm:rounded-xl border border-white/10 hover:bg-teal-500/20 transition cursor-pointer text-sm sm:text-base md:col-span-2"
+            className="w-full px-4 py-2.5 rounded-lg border border-white/10 hover:bg-teal-500/20 transition cursor-pointer text-sm text-white font-medium"
           >
-            Reset
+            Reset All Filters
           </button>
         </div>
       </div>
@@ -188,42 +201,81 @@ export default function MatchPageClient({
       {/* MATCH LIST */}
       <div className="relative">
         {isMember ? (
-          <MatchAccordion matches={filteredMatches} />
-        ) : (
-          <div className="relative rounded-xl sm:rounded-2xl border border-white/10 overflow-hidden">
-
-            {/* blurred preview */}
-            <div className="blur-sm pointer-events-none opacity-60">
-              <MatchAccordion matches={filteredMatches.slice(0, 3)} />
+          filteredMatches.length > 0 ? (
+            <MatchAccordion matches={filteredMatches} />
+          ) : (
+            <div className="text-gray-400 text-center py-12 text-base sm:text-lg bg-black/30 rounded-xl">
+              No matches found
             </div>
+          )
+        ) : (
+          <div className="relative rounded-xl sm:rounded-2xl border border-white/10 overflow-hidden min-h-[550px]">
+            {/* blurred preview - Only show if there are matches */}
+            {previewMatches.length > 0 ? (
+              <div className="blur-md pointer-events-none opacity-40">
+                <MatchAccordion matches={previewMatches} />
+              </div>
+            ) : (
+              // Show placeholder when no matches to preview
+              <div className="bg-black/20 p-8 min-h-[550px] flex items-center justify-center">
+                <div className="text-center">
+                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-white/5 flex items-center justify-center">
+                    <search className="w-8 h-8 text-gray-500" />
+                  </div>
+                  <p className="text-gray-500">No matches found</p>
+                  <p className="text-gray-600 text-sm mt-1">Try adjusting your filters</p>
+                </div>
+              </div>
+            )}
 
-            {/* lock overlay - Mobile optimized */}
-            <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/70 z-10 px-4 sm:px-6 text-center overflow-y-auto py-8 sm:py-10">
-              <div className="max-w-md w-full">
-                <Lock className="w-8 h-8 sm:w-10 sm:h-10 text-teal-500 mb-3 sm:mb-4 mx-auto" />
+            {/* lock overlay - Always full size, no scroll */}
+            <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/85 z-10 p-6 sm:p-8">
+              <div className="max-w-md w-full text-center">
+                <div className="bg-teal-500/10 rounded-full w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center mx-auto mb-5 border-2 border-teal-500/30">
+                  <Lock className="w-10 h-10 sm:w-12 sm:h-12 text-teal-500" />
+                </div>
 
-                <h2 className="text-xl sm:text-2xl font-bold mb-2">
+                <h2 className="text-2xl sm:text-3xl font-bold mb-3 text-white">
                   Premium Members Only
                 </h2>
 
-                <p className="text-gray-300 mb-4 sm:mb-6 text-sm sm:text-base">
-                  Deposit a minimum of RM50 to unlock 1 month of access to AI match predictions,
-                  detailed analysis and winning insights.
+                <p className="text-gray-300 mb-6 text-base sm:text-lg leading-relaxed">
+                  Deposit a minimum of <span className="text-teal-400 font-bold">RM50</span> to unlock 1 month of access to:
                 </p>
 
-                {!isMember ? (
-                  <a
-                    href="https://new8myr.com"
-                    className="px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg sm:rounded-xl bg-teal-500 text-black font-bold hover:bg-teal-400 transition inline-block text-sm sm:text-base"
+                <div className="space-y-2 mb-8 text-left">
+                  <div className="flex items-center gap-2 text-gray-300 text-sm sm:text-base">
+                    <div className="w-1.5 h-1.5 bg-teal-500 rounded-full"></div>
+                    <span>AI match predictions</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-gray-300 text-sm sm:text-base">
+                    <div className="w-1.5 h-1.5 bg-teal-500 rounded-full"></div>
+                    <span>Detailed analysis & insights</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-gray-300 text-sm sm:text-base">
+                    <div className="w-1.5 h-1.5 bg-teal-500 rounded-full"></div>
+                    <span>Winning strategies</span>
+                  </div>
+                </div>
+
+                {!isLoggedIn ? (
+                  <button
+                    onClick={openRegister}
+                    className="
+                      w-full px-6 py-3.5 rounded-xl
+                      bg-teal-500 text-black font-bold
+                      hover:bg-teal-400 transition
+                      cursor-pointer
+                    "
                   >
-                    Join Now
-                  </a>
+                    Join New8 Now
+                  </button>
                 ) : (
                   <a
                     href="/api/deposit"
-                    className="px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg sm:rounded-xl bg-teal-500 text-black font-bold hover:bg-teal-400 transition inline-flex items-center gap-2 text-sm sm:text-base"
+                    className="w-full px-6 py-3.5 rounded-xl bg-teal-500 text-black font-bold inline-flex items-center justify-center gap-2"
                   >
-                    <Wallet className="w-3 h-3 sm:w-4 sm:h-4" />
+                    <Wallet className="w-5 h-5" />
                     Deposit RM50+
                   </a>
                 )}
@@ -232,10 +284,6 @@ export default function MatchPageClient({
           </div>
         )}
       </div>
-
-      {filteredMatches.length === 0 && (
-        <p className="text-gray-400 text-center py-8 text-sm sm:text-base">No matches found</p>
-      )}
     </div>
   );
 }

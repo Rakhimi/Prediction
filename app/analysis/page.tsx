@@ -6,8 +6,11 @@ export default async function Page() {
 
   const member = await getCurrentMember();
 
+  const isLoggedIn = !!member;
+
   const isActiveMember =
-    member?.accessUntil && new Date(member.accessUntil) > new Date();
+    !!member?.accessUntil &&
+    new Date(member.accessUntil) > new Date();
 
   const matches = await prisma.match.findMany({
     orderBy: {
@@ -29,7 +32,11 @@ export default async function Page() {
           </p>
         </div>
 
-        <MatchPageClient matches={matches} isMember={isActiveMember} />
+        <MatchPageClient
+          matches={matches}
+          isLoggedIn={isLoggedIn}
+          isMember={isActiveMember}
+        />
       </div>
     </div>
   );
