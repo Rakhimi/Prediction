@@ -1,3 +1,5 @@
+'use client'
+
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Tv, TrendingUp, UserPlus, Wallet, Trophy, Target, Activity, ChartColumn, Award } from "lucide-react";
@@ -5,10 +7,18 @@ import AccuracyTrendChart from "@/components/AccuracyTrendChart";
 import PredictionDistribution from "@/components/PredictionDistribution";
 import WeeklyActivityChart from "@/components/WeeklyActivityChart";
 import ChooseCard from "@/components/ChooseCard";
+import { useAuthModal } from "@/stores/useAuthModal";
+import { useRouter } from "next/navigation";
 
 //LnkZgFmzrmLQUZGf
 
 export default function Home() {
+
+
+  const openRegister = useAuthModal((s) => s.openRegister);
+  const router = useRouter();
+
+
   return (
     <div className="min-h-screen flex flex-col">
       {/* Banner Section (2/3 height) */}
@@ -60,6 +70,7 @@ export default function Home() {
 
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto px-4 sm:px-0">
             <Button
+              onClick={() => router.push("/analysis")}
               className="
                 inline-flex items-center justify-center gap-2
                 font-semibold
@@ -168,6 +179,7 @@ export default function Home() {
 
             {/* CTA Button */}
             <Button
+              onClick={openRegister}
               className="mt-2 sm:mt-4 bg-teal-500 hover:bg-teal-600 text-black font-bold px-6 sm:px-10 py-4 sm:py-6 text-base sm:text-lg rounded-xl shadow-[0_0_15px_rgba(20,184,166,0.3)] transition-all hover:scale-105 cursor-pointer animate-blink w-full sm:w-auto"
             >
               Join New8 Now
