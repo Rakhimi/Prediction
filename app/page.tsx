@@ -91,28 +91,6 @@ export default function Home() {
               View Predictions
               <TrendingUp className="ml-1 sm:ml-2 w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5" />
             </Button>
-
-            <Button
-              className="
-                inline-flex items-center justify-center gap-2
-                font-semibold
-                bg-gradient-to-r
-                from-[hsl(var(--primary-light))]
-                to-[hsl(var(--primary-dark))]
-                text-white
-                h-10 sm:h-11 rounded-lg
-                text-xs sm:text-sm md:text-base lg:text-lg
-                px-4 sm:px-5 md:px-6 lg:px-8
-                transition-all duration-300
-                hover:scale-105
-                hover:shadow-[0_0_15px_rgba(20,184,166,0.3)]
-                cursor-pointer
-                w-full sm:w-auto
-              "
-            >
-              Live Streaming
-              <Tv className="ml-1 sm:ml-2 w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5" />
-            </Button>
           </div>
         </div>
       </div>

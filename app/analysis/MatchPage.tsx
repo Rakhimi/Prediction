@@ -11,6 +11,15 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useAuthModal } from "@/stores/useAuthModal";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
+import { Label } from "@/components/ui/label";
+import { Calendar } from "@/components/ui/calendar"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 
 export default function MatchPageClient({
   matches,
@@ -23,8 +32,14 @@ export default function MatchPageClient({
 }) {
   const [tab, setTab] = useState<"upcoming" | "today" | "completed">("upcoming");
   const [search, setSearch] = useState("");
-  const [fromDate, setFromDate] = useState("");
-  const [toDate, setToDate] = useState("");
+  const today = new Date();
+
+  const next7Days = new Date();
+  next7Days.setDate(today.getDate() + 7);
+
+  const [fromDate, setFromDate] = useState<Date | undefined>(today);
+  const [toDate, setToDate] = useState<Date | undefined>(next7Days);
+
   const [league, setLeague] = useState("all");
 
   const now = new Date();
@@ -63,14 +78,21 @@ export default function MatchPageClient({
       .filter((match) => {
         const matchDate = new Date(match.matchDate);
 
-        if (fromDate && matchDate < new Date(fromDate))
+        if (fromDate && matchDate < fromDate) {
           return false;
+        }
 
-        if (toDate && matchDate > new Date(toDate))
-          return false;
+        if (toDate) {
+          const endDate = new Date(toDate);
+          endDate.setHours(23, 59, 59, 999);
+
+          if (matchDate > endDate) {
+            return false;
+          }
+        }
 
         return true;
-      });
+      })
   }, [matches, tab, search, fromDate, toDate, league]);
 
   // Determine how many matches to show in preview (at least 3, but not more than available)
@@ -103,98 +125,173 @@ export default function MatchPageClient({
       </div>
 
       {/* SEARCH + FILTER - Mobile optimized */}
-      <div className="flex flex-col gap-3 sm:gap-4">
-        
-        {/* Search - Full width */}
-        <input
-          type="text"
-          placeholder="Search by team or league..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="w-full p-3 rounded-lg bg-black/40 border border-white/10 focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm text-white placeholder:text-gray-400"
-        />
-        
-        {/* Filters - Stack vertically on mobile */}
-        <div className="flex flex-col gap-3">
-          <Select
-            value={league}
-            onValueChange={setLeague}
-          >
-            <SelectTrigger size="default" className="w-full">
-              <SelectValue placeholder="Select League" />
-            </SelectTrigger>
-
-            <SelectContent
+      <div className="rounded-2xl border border-white/10 bg-[#0a0a0a] p-5 space-y-5">
+        {/* Row 1 */}
+        <div className="flex gap-3">
+          <div className="flex-1">
+            <input
+              type="text"
+              placeholder="Search by team or league..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
               className="
-                bg-[#111]
+                w-full
+                h-12
+                px-4
+                rounded-xl
+                bg-black/40
                 border border-white/10
                 text-white
+                placeholder:text-zinc-500
+                focus:ring-2
+                focus:ring-teal-500
+                focus:outline-none
               "
-            >
-              <SelectItem value="all">
-                All Leagues
-              </SelectItem>
-
-              <SelectItem value="Premier League">
-                Premier League
-              </SelectItem>
-
-              <SelectItem value="Primera Division">
-                La Liga
-              </SelectItem>
-
-              <SelectItem value="Serie A">
-                Serie A
-              </SelectItem>
-
-              <SelectItem value="Bundesliga">
-                Bundesliga
-              </SelectItem>
-
-              <SelectItem value="Ligue 1">
-                Ligue 1
-              </SelectItem>
-
-              <SelectItem value="UEFA Champions League">
-                Champions League
-              </SelectItem>
-
-              <SelectItem value="FIFA World Cup">
-                World Cup
-              </SelectItem>
-            </SelectContent>
-          </Select>
-
-          <div className="flex gap-3">
-            {/* FROM DATE */}
-            <input
-              type="date"
-              value={fromDate}
-              onChange={(e) => setFromDate(e.target.value)}
-              className="flex-1 p-3 rounded-lg bg-black/40 border border-white/10 cursor-pointer text-sm text-white"
-            />
-
-            {/* TO DATE */}
-            <input
-              type="date"
-              value={toDate}
-              onChange={(e) => setToDate(e.target.value)}
-              className="flex-1 p-3 rounded-lg bg-black/40 border border-white/10 cursor-pointer text-sm text-white"
             />
           </div>
 
-          {/* RESET - Full width */}
           <button
             onClick={() => {
+              const today = new Date();
+
+              const next7Days = new Date();
+              next7Days.setDate(today.getDate() + 7);
+
               setSearch("");
-              setFromDate("");
-              setToDate("");
               setLeague("all");
+              setFromDate(today);
+              setToDate(next7Days);
             }}
-            className="w-full px-4 py-2.5 rounded-lg border border-white/10 hover:bg-teal-500/20 transition cursor-pointer text-sm text-white font-medium"
+            className="
+              h-12
+              px-6
+              rounded-xl
+              border
+              border-white/10
+              bg-black/40
+              hover:bg-white/5
+              text-white
+              font-medium
+              transition
+              whitespace-nowrap
+            "
           >
-            Reset All Filters
+            Reset
           </button>
+        </div>
+
+        {/* Row 2 */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          
+          {/* League */}
+          <div className="space-y-2">
+            <Label className="text-zinc-300">
+              League
+            </Label>
+
+            <Select value={league} onValueChange={setLeague}>
+              <SelectTrigger className="h-12">
+                <SelectValue placeholder="All Leagues" />
+              </SelectTrigger>
+
+              <SelectContent className="bg-[#111] border-white/10 text-white">
+                <SelectItem value="all">All Leagues</SelectItem>
+                <SelectItem value="Premier League">Premier League</SelectItem>
+                <SelectItem value="Primera Division">La Liga</SelectItem>
+                <SelectItem value="Serie A">Serie A</SelectItem>
+                <SelectItem value="Bundesliga">Bundesliga</SelectItem>
+                <SelectItem value="Ligue 1">Ligue 1</SelectItem>
+                <SelectItem value="UEFA Champions League">
+                  Champions League
+                </SelectItem>
+                <SelectItem value="FIFA World Cup">
+                  World Cup
+                </SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* From Date */}
+          <div className="space-y-2">
+            <Label className="text-zinc-300">
+              From Date
+            </Label>
+
+            <Popover>
+              <PopoverTrigger asChild>
+                <button
+                  className="
+                    w-full
+                    h-12
+                    px-4
+                    rounded-xl
+                    bg-black/40
+                    border border-white/10
+                    text-white
+                    flex items-center justify-between
+                  "
+                >
+                  {fromDate
+                    ? format(fromDate, "MMMM do, yyyy")
+                    : "Select Date"}
+
+                  <CalendarIcon className="h-4 w-4 opacity-60" />
+                </button>
+              </PopoverTrigger>
+
+              <PopoverContent
+                align="start"
+                className="w-auto p-0 bg-[#111] border-white/10"
+              >
+                <Calendar
+                  mode="single"
+                  selected={fromDate}
+                  onSelect={setFromDate}
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
+
+          {/* To Date */}
+          <div className="space-y-2">
+            <Label className="text-zinc-300">
+              To Date
+            </Label>
+
+            <Popover>
+              <PopoverTrigger asChild>
+                <button
+                  className="
+                    w-full
+                    h-12
+                    px-4
+                    rounded-xl
+                    bg-black/40
+                    border border-white/10
+                    text-white
+                    flex items-center justify-between
+                  "
+                >
+                  {toDate
+                    ? format(toDate, "MMMM do, yyyy")
+                    : "Select Date"}
+
+                  <CalendarIcon className="h-4 w-4 opacity-60" />
+                </button>
+              </PopoverTrigger>
+
+              <PopoverContent
+                align="start"
+                className="w-auto p-0 bg-[#111] border-white/10"
+              >
+                <Calendar
+                  mode="single"
+                  selected={toDate}
+                  onSelect={setToDate}
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
         </div>
       </div>
 
