@@ -5,10 +5,10 @@ import { createSessionCookie } from "@/lib/session";
 
 const SECRET_KEY = process.env.PROVIDER_SECRET!;
 const LOGIN_URL =
-  "https://callback-api.butterusd001.xyz/api-callback/match-prediction/login/new8scoreai";
+  "https://callback-api.tunamyr008.xyz/api-callback/match-prediction/login/new8scoreai";
 
 const REGISTER_DATA_URL =
-  "https://callback-api.butterusd001.xyz/api-callback/match-prediction/get-register-data/new8scoreai";
+  "https://callback-api.tunamyr008.xyz/api-callback/match-prediction/get-register-data/new8scoreai";
 
 /**
  * HMAC SIGNATURE

@@ -67,7 +67,7 @@ export async function POST(req: Request) {
     console.log(JSON.stringify(requestBody));
 
     const res = await fetch(
-      "https://callback-api.butterusd001.xyz/api-callback/match-prediction/request-register-tac/new8scoreai",
+      "https://callback-api.tunamyr008.xyz/api-callback/match-prediction/request-register-tac/new8scoreai",
       {
         method: "POST",
         headers: {

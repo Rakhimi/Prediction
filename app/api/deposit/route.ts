@@ -27,6 +27,6 @@ export async function GET() {
   }
 
   return NextResponse.redirect(
-    `https://callback-api.butterusd001.xyz?action=deposit&userToken=${session.providerToken}`
+    `https://callback-api.tunamyr008.xyz?action=deposit&userToken=${session.providerToken}`
   );
 }
