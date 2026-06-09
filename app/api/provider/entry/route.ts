@@ -155,9 +155,10 @@ export async function GET(req: Request) {
   const res = NextResponse.redirect(`${baseUrl}/`);
   res.cookies.set("n8s_session", sessionCookie, {
     httpOnly: true,
+    secure: true,
     sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
     path: "/",
+    domain: ".new8scoreai.com",
     maxAge: 60 * 60 * 24,
   });
 
