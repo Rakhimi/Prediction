@@ -199,7 +199,7 @@ export default function Navbar({ member }: NavbarProps) {
 
                         <button
                           onClick={logout}
-                          className="w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-red-500/10 text-sm text-red-400"
+                          className="cursor-pointer w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-red-500/10 text-sm text-red-400"
                         >
                           <LogOut className="w-4 h-4" />
                           Logout

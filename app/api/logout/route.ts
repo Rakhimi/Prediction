@@ -5,8 +5,9 @@ export async function GET() {
 
   res.cookies.set("n8s_session", "", {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: true,
     sameSite: "lax",
+    domain: ".new8scoreai.com",
     path: "/",
     expires: new Date(0),
   });
