@@ -174,9 +174,10 @@ export async function POST(req: NextRequest) {
 
     res.cookies.set("n8s_session", sessionCookie, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: true,
       sameSite: "lax",
       path: "/",
+      domain: ".new8scoreai.com",
       maxAge: 60 * 60 * 24,
     });
 
