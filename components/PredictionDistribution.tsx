@@ -24,7 +24,7 @@ export default function PredictionDistribution() {
           <h2 className="text-2xl font-bold font-cuprum tracking-tight">
             Prediction Distribution
           </h2>
-          <p className="text-gray-500 text-sm">
+          <p className="text-gray-500 text-sm font-semibold">
             Outcome breakdown & statistics
           </p>
         </div>

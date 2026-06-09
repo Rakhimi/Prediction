@@ -112,7 +112,7 @@ export default function Home() {
             </div>
 
             {/* Steps Container - Mobile optimized */}
-            <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-8 w-full">
+            <div className="font-semibold flex flex-col md:flex-row items-center justify-center gap-6 md:gap-8 w-full">
               
               {/* Step 1 */}
               <div className="flex items-center gap-3 w-full md:w-auto justify-center">

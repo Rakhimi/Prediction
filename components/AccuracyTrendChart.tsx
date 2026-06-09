@@ -27,7 +27,7 @@ export default function AccuracyTrendChart() {
       <div className="flex justify-between items-start mb-8">
         <div>
           <h3 className="text-white text-2xl font-bold">Accuracy Trend</h3>
-          <p className="text-gray-500 text-sm">Monthly prediction accuracy</p>
+          <p className="text-gray-500 text-sm font-semibold">Monthly prediction accuracy</p>
         </div>
         <div className="p-2 bg-teal-500/10 rounded-lg border border-teal-500/20">
           <TrendingUp className="w-5 h-5 text-teal-500" />

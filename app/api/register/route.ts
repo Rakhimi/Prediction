@@ -120,6 +120,7 @@ export async function POST(req: NextRequest) {
       confirmPassword: String(body.confirmPassword),
       countryCode: "60",
       mobileno: String(body.mobileno),
+      mobileTac: String(body.mobileTac || ""),
       firstName: String(body.firstName),
       dateOfBirth: String(
         body.dateOfBirth || "2000-01-01"
