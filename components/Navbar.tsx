@@ -14,6 +14,7 @@ import { usePathname } from "next/navigation";
 import { useAuthModal } from "@/stores/useAuthModal";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
+import { cookies } from "next/headers";
 
 const navItems = [
   { label: "Home", icon: Home, href: "/" },
@@ -29,7 +30,16 @@ type NavbarProps = {
   } | null;
 };
 
-export default function Navbar({ member }: NavbarProps) {
+export default async function Navbar() {
+  
+  const cookieStore = await cookies();
+
+  const session = cookieStore.get("n8s_session");
+
+  const member = session ? JSON.parse(session.value) : null;
+
+  console.log("member", member)
+
   const pathname = usePathname();
 
   const openLogin = useAuthModal((s) => s.openLogin);
@@ -55,7 +65,7 @@ export default function Navbar({ member }: NavbarProps) {
   }, []);
 
   const logout = async () => {
-    await fetch("/api/logout");
+    await fetch("/api/logout", { cache: "no-store" });
 
     router.refresh();
     router.replace("/");

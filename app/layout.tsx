@@ -23,13 +23,12 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const member = await getCurrentMember();
 
   return (
     <html lang="en" className={`${cuprum.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col font-cuprum bg-black text-white">
         <Toaster/>
-        <Navbar member={member} />
+        <Navbar/>
         {children}
         <Footer />
         <AuthModalWrapper />
