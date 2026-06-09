@@ -55,11 +55,8 @@ export default function Navbar({ member }: NavbarProps) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const logout = async () => {
-    await axios.get("/api/logout");
-
-    console.log("logout clicked")
-    await new Promise((r) => setTimeout(r, 50));
+  const logout = () => {
+    window.location.href = "/api/logout";
 
     router.refresh();
     router.replace("/");
