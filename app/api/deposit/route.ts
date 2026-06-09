@@ -1,13 +1,19 @@
 import { cookies } from "next/headers";
 import { parseSessionCookie } from "@/lib/session";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET() {
+
+export async function GET(req: NextRequest) {
+  console.log("URL:", req.url);
+  console.log("HEADERS:", Object.fromEntries(req.headers.entries()));
+
   const cookieStore = await cookies();
+  console.log("COOKIES:", cookieStore.getAll());
 
   const cookie = cookieStore.get("n8s_session")?.value;
 
   if (!cookie) {
+    console.log("❌ NO COOKIE RECEIVED");
     return NextResponse.json(
       { message: "Unauthorized" },
       { status: 401 }
