@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
 
 export async function GET() {
-  const res = NextResponse.json({ success: true });
+  const res = NextResponse.redirect(
+    new URL("/", "https://new8scoreai.com")
+  );
 
   res.cookies.set("n8s_session", "", {
     path: "/",

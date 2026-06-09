@@ -13,8 +13,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuthModal } from "@/stores/useAuthModal";
 import { Button } from "./ui/button";
-import { useRouter } from "next/navigation";
-import axios from "axios";
 
 const navItems = [
   { label: "Home", icon: Home, href: "/" },
@@ -37,7 +35,6 @@ export default function Navbar({ member }: NavbarProps) {
   const openRegister = useAuthModal((s) => s.openRegister);
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const router = useRouter();
 
   const firstLetter = member?.providerUid?.charAt(0)?.toUpperCase() || "G";
 
@@ -57,9 +54,6 @@ export default function Navbar({ member }: NavbarProps) {
 
   const logout = () => {
     window.location.href = "/api/logout";
-
-    router.refresh();
-    router.replace("/");
   };
 
   return (
