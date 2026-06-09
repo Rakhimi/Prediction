@@ -58,6 +58,7 @@ export default function Navbar({ member }: NavbarProps) {
   const logout = async () => {
     await axios.get("/api/logout");
 
+    console.log("logout clicked")
     await new Promise((r) => setTimeout(r, 50));
 
     router.refresh();
