@@ -14,6 +14,7 @@ import { usePathname } from "next/navigation";
 import { useAuthModal } from "@/stores/useAuthModal";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 const navItems = [
   { label: "Home", icon: Home, href: "/" },
@@ -55,7 +56,9 @@ export default function Navbar({ member }: NavbarProps) {
   }, []);
 
   const logout = async () => {
-    await fetch("/api/logout");
+    await axios.get("/api/logout");
+
+    await new Promise((r) => setTimeout(r, 50));
 
     router.refresh();
     router.replace("/");
