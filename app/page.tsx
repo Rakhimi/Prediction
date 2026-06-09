@@ -106,63 +106,69 @@ export default function Home() {
               <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-teal-600 uppercase tracking-tight">
                 Subscribe now to Unlock All Predictions
               </h2>
+
               <a href="#" className="text-teal-500 text-xs sm:text-sm underline hover:text-teal-600 transition-colors">
                 More details
               </a>
             </div>
 
-            {/* Steps Container - Mobile optimized */}
-            <div className="font-semibold flex flex-col md:flex-row items-center justify-center gap-6 md:gap-8 w-full">
-              
+            {/* Steps Container */}
+            <div className="font-semibold flex flex-col md:flex-row items-start md:items-center justify-center gap-6 md:gap-8 w-full">
+
               {/* Step 1 */}
-              <div className="flex items-center gap-3 w-full md:w-auto justify-center">
+              <div className="flex items-center gap-3 w-fit justify-start md:justify-center">
                 <span className="text-teal-500 font-bold text-xs sm:text-sm">STEP 1</span>
+
                 <span className="text-teal-500 font-bold text-xs sm:text-sm md:inline hidden">&gt;</span>
+
                 <div className="p-2 sm:p-3 rounded-full border-2 border-teal-500/50 bg-teal-500/10 shadow-[0_0_15px_rgba(20,184,166,0.3)]">
                   <UserPlus className="w-5 h-5 sm:w-6 sm:h-6 text-teal-500" />
                 </div>
-                <div className="text-white text-xs sm:text-sm leading-tight">
+
+                <div className="text-white text-xs sm:text-sm leading-tight text-left">
                   Create New8scoreai<br />Account
                 </div>
               </div>
 
-              <span className="hidden md:block text-teal-500 font-bold">&gt;</span>
-              <div className="hidden md:block text-teal-500/30 text-xs">▼</div>
-
               {/* Step 2 */}
-              <div className="flex items-center gap-3 w-full md:w-auto justify-center">
+              <div className="flex items-center gap-3 w-fit justify-start md:justify-center">
                 <span className="text-teal-500 font-bold text-xs sm:text-sm">STEP 2</span>
+
                 <span className="text-teal-500 font-bold text-xs sm:text-sm md:inline hidden">&gt;</span>
+
                 <div className="p-2 sm:p-3 rounded-full border-2 border-teal-500/50 bg-teal-500/10 shadow-[0_0_15px_rgba(20,184,166,0.3)]">
                   <Wallet className="w-5 h-5 sm:w-6 sm:h-6 text-teal-500" />
                 </div>
-                <div className="text-white text-xs sm:text-sm leading-tight">
+
+                <div className="text-white text-xs sm:text-sm leading-tight text-left">
                   Deposit a minimum of<br />RM50 in New8
                 </div>
               </div>
 
-              <span className="hidden md:block text-teal-500 font-bold">&gt;</span>
-              <div className="hidden md:block text-teal-500/30 text-xs">▼</div>
-
               {/* Step 3 */}
-              <div className="flex items-center gap-3 w-full md:w-auto justify-center">
+              <div className="flex items-center gap-3 w-fit justify-start md:justify-center">
                 <span className="text-teal-500 font-bold text-xs sm:text-sm">STEP 3</span>
+
                 <span className="text-teal-500 font-bold text-xs sm:text-sm md:inline hidden">&gt;</span>
+
                 <div className="p-2 sm:p-3 rounded-full border-2 border-teal-500/50 bg-teal-500/10 shadow-[0_0_15px_rgba(20,184,166,0.3)]">
                   <Trophy className="w-5 h-5 sm:w-6 sm:h-6 text-teal-500" />
                 </div>
-                <div className="text-white text-xs sm:text-sm">Start Winning</div>
+
+                <div className="text-white text-xs sm:text-sm text-left">
+                  Start Winning
+                </div>
               </div>
             </div>
 
-            {/* CTA Button */}
+            {/* CTA */}
             <Button
               onClick={openRegister}
               className="mt-2 sm:mt-4 bg-teal-500 hover:bg-teal-600 text-black font-bold px-6 sm:px-10 py-4 sm:py-6 text-base sm:text-lg rounded-xl shadow-[0_0_15px_rgba(20,184,166,0.3)] transition-all hover:scale-105 cursor-pointer animate-blink w-full sm:w-auto"
             >
               Join New8 Now
             </Button>
-            
+
           </div>
         </section>
 
