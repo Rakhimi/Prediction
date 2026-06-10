@@ -87,11 +87,13 @@ export async function POST(req: NextRequest) {
 
     const token = loginResponse.output?.data?.token;
 
-    if (!token) {
+    const providerUid = loginResponse.output?.data?.uid;
+
+    if (!token || !providerUid) {
       return NextResponse.json(
         {
           success: false,
-          message: "Token missing from provider",
+          message: "Token or UID missing from provider",
         },
         { status: 400 }
       );
@@ -106,7 +108,7 @@ export async function POST(req: NextRequest) {
     const regNonce = crypto.randomBytes(8).toString("hex");
 
     const registerRequestData = {
-      uid: body.username,
+      uid: providerUid,
       ts: regTs,
       nonce: regNonce,
     };
@@ -136,7 +138,7 @@ export async function POST(req: NextRequest) {
 
     await prisma.member.upsert({
       where: {
-        providerUid: body.username,
+        providerUid: String(providerUid),
       },
       update: {
         isMember: !!profile?.isMember,
@@ -146,7 +148,7 @@ export async function POST(req: NextRequest) {
         accessUntil,
       },
       create: {
-        providerUid: body.username,
+        providerUid: String(providerUid),
         isMember: !!profile?.isMember,
         ftdAmount: String(profile?.ftdAmount ?? "0.00"),
         recentDepositAmount: String(profile?.recentDepositAmount ?? "0.00"),
