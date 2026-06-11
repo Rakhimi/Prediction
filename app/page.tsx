@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Tv, TrendingUp, UserPlus, Wallet, Trophy, Target, Activity, ChartColumn, Award } from "lucide-react";
+import { TrendingUp, UserPlus, Wallet, Trophy, Target, Activity, ChartColumn, Award } from "lucide-react";
 import AccuracyTrendChart from "@/components/AccuracyTrendChart";
 import PredictionDistribution from "@/components/PredictionDistribution";
 import WeeklyActivityChart from "@/components/WeeklyActivityChart";
@@ -24,7 +24,7 @@ export default function Home() {
       {/* Banner Section (2/3 height) */}
       <div className="relative h-[60vh] sm:h-[66vh] w-full">
         <Image
-          src="/images/tortoise.png"
+          src="/images/tortoise.jpeg"
           alt="Banner"
           fill
           priority

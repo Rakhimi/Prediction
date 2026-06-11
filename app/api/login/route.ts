@@ -166,7 +166,7 @@ export async function POST(req: NextRequest) {
      */
     const sessionCookie = createSessionCookie(
       {
-        uid: body.username,
+        uid: String(providerUid),
         providerToken: token,
       },
       process.env.APP_SESSION_SECRET!
