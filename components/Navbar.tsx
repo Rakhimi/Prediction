@@ -29,6 +29,9 @@ type NavbarProps = {
 };
 
 export default function Navbar({ member }: NavbarProps) {
+
+  console.log("member", member)
+
   const pathname = usePathname();
 
   const openLogin = useAuthModal((s) => s.openLogin);

@@ -128,6 +128,8 @@ export async function POST(req: NextRequest) {
 
     const profile = registerResponse?.output?.data;
 
+    console.log("profile", profile)
+
     const deposit = Number(profile?.recentDepositAmount ?? 0);
 
     let accessUntil: Date | null = null;
