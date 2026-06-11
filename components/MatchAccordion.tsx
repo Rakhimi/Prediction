@@ -269,7 +269,7 @@ export default function MatchAccordion({ matches }: { matches: Match[] }) {
   };
 
   return (
-    <div className="max-w-6xl mx-auto mt-6 sm:mt-10 px-3 sm:px-4">
+    <div className="max-w-6xl mx-auto mt-6 sm:mt-10 px-1 sm:px-4">
       <Accordion type="single" collapsible className="w-full space-y-4 sm:space-y-6">
         {matches.map((match) => {
           const prediction = getPrediction(match);
@@ -279,7 +279,7 @@ export default function MatchAccordion({ matches }: { matches: Match[] }) {
             <AccordionItem
               key={match.matchId}
               value={match.matchId.toString()}
-              className="pl-2 border border-orange-500/20 rounded-xl sm:rounded-2xl overflow-hidden bg-gradient-to-r from-black via-[#1a1410] to-black"
+              className="pl-4 border border-orange-500/20 rounded-xl sm:rounded-2xl overflow-hidden bg-gradient-to-r from-black via-[#1a1410] to-black"
             >
               <AccordionTrigger className="p-4 sm:p-6 cursor-pointer hover:no-underline">
                 
@@ -355,7 +355,7 @@ export default function MatchAccordion({ matches }: { matches: Match[] }) {
                       </p>
                     </div>
 
-                    <p className="text-gray-300 text-xs sm:text-sm leading-relaxed line-clamp-3 sm:line-clamp-none">
+                    <p className="text-gray-300 text-xs sm:text-sm leading-relaxed">
                       {match.analysis}
                     </p>
                   </div>
