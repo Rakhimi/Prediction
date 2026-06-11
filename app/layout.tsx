@@ -6,6 +6,7 @@ import { getCurrentMember } from "@/lib/auth";
 import AuthModalWrapper from "@/components/AuthModalWrapper";
 import Footer from "@/components/Footer";
 import { Toaster } from "react-hot-toast";
+import TelegramFloatButton from "@/components/TelegramFloatButton";
 
 const cuprum = Cuprum({
   subsets: ["latin"],
@@ -35,6 +36,7 @@ export default async function RootLayout({
         <Toaster/>
         <Navbar member={member} />
         {children}
+        <TelegramFloatButton/>
         <Footer />
         <AuthModalWrapper />
       </body>
