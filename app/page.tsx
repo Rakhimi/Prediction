@@ -24,7 +24,7 @@ export default function Home() {
       {/* Banner Section (2/3 height) */}
       <div className="relative h-[60vh] sm:h-[66vh] w-full">
         <Image
-          src="/images/tortoise.jpeg"
+          src="/images/tortoise.png"
           alt="Banner"
           fill
           priority

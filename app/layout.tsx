@@ -27,6 +27,8 @@ export default async function RootLayout({
 }) {
   const member = await getCurrentMember();
 
+  console.log("memberlayout", member);
+
   return (
     <html lang="en" className={`${cuprum.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col font-cuprum bg-black text-white">
