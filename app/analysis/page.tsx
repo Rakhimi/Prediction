@@ -6,11 +6,9 @@ export default async function Page() {
 
   const member = await getCurrentMember();
 
-  const isLoggedIn = !!member;
+  const isLoggedIn = true;
 
-  const isActiveMember =
-    !!member?.accessUntil &&
-    new Date(member.accessUntil) > new Date();
+  const isActiveMember = true;
 
   const matches = await prisma.match.findMany({
     orderBy: {

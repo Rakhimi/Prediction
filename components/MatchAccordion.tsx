@@ -237,11 +237,12 @@ const getTeamLogo = (teamName: string) => {
 };
 
 export default function MatchAccordion({ matches }: { matches: Match[] }) {
+  
   const renderForm = (form: string | null) => {
     if (!form) return null;
 
     return form.split(",").map((item, i) => {
-      let color =
+      const color =
         item === "W"
           ? "bg-green-500"
           : item === "D"
@@ -251,7 +252,15 @@ export default function MatchAccordion({ matches }: { matches: Match[] }) {
       return (
         <div
           key={i}
-          className={`${color} text-white w-6 h-6 sm:w-7 md:w-8 flex items-center justify-center rounded-full text-xs sm:text-sm`}
+          className={`
+            ${color}
+            text-white
+            w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6
+            flex items-center justify-center
+            rounded-full
+            text-[9px] sm:text-xs
+            leading-none
+          `}
         >
           {item}
         </div>
@@ -275,7 +284,7 @@ export default function MatchAccordion({ matches }: { matches: Match[] }) {
               <AccordionTrigger className="p-4 sm:p-6 cursor-pointer hover:no-underline">
                 
                 {/* HEADER */}
-                <div className="w-full space-y-4 sm:space-y-6 text-left">
+                <div className="w-full space-y-4 sm:space-y-6 text-center sm:text-left">
                   
                   {/* TOP ROW - Mobile optimized */}
                   <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-3 text-xs sm:text-sm text-gray-400">
@@ -299,7 +308,7 @@ export default function MatchAccordion({ matches }: { matches: Match[] }) {
                   {/* TEAMS - Mobile optimized */}
                   <div className="flex items-center justify-between gap-2 sm:gap-4">
                     {/* HOME */}
-                    <div className="flex items-center justify-end gap-1 sm:gap-2 md:gap-3 w-2/5 sm:w-1/3">
+                    <div className="flex items-center justify-end gap-1 sm:gap-2 md:gap-3 flex-1">
                       <div className="flex flex-col items-end gap-1 sm:gap-2">
                         <p className="font-semibold text-sm sm:text-base md:text-lg line-clamp-2 text-right">
                           {match.homeTeam}
@@ -319,7 +328,7 @@ export default function MatchAccordion({ matches }: { matches: Match[] }) {
                     <div className="text-gray-500 font-bold text-base sm:text-xl">VS</div>
 
                     {/* AWAY */}
-                    <div className="flex items-center justify-start gap-1 sm:gap-2 md:gap-3 w-2/5 sm:w-1/3">
+                    <div className="flex items-center justify-start gap-1 sm:gap-2 md:gap-3 flex-1">
                       <img
                         src={getTeamLogo(match.awayTeam)}
                         alt={match.awayTeam}
