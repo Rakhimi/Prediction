@@ -40,7 +40,7 @@ export default function ChooseCard() {
         {features.map((feature, index) => (
           <div 
             key={index} 
-            className="bg-[#111111] border border-[#222222] rounded-2xl p-6 flex flex-col gap-4"
+            className="bg-[#111111] border border-[#222222] rounded-2xl p-2 sm:p-6 flex flex-col gap-3 sm:gap-4"
           >
             {/* Icon Container */}
             <div className="w-10 h-10 rounded-xl bg-teal-500/10 flex items-center justify-center">
