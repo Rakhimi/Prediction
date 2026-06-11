@@ -255,7 +255,7 @@ export default function MatchAccordion({ matches }: { matches: Match[] }) {
           className={`
             ${color}
             text-white
-            w-2 h-2 sm:w-3 sm:h-3 md:w-5 md:h-5
+            w-3 h-3 sm:w-4 sm:h-4 md:w-6 md:h-6
             flex items-center justify-center
             rounded-full
             text-[9px] sm:text-xs
@@ -281,7 +281,7 @@ export default function MatchAccordion({ matches }: { matches: Match[] }) {
               value={match.matchId.toString()}
               className="border border-orange-500/20 rounded-xl sm:rounded-2xl overflow-hidden bg-gradient-to-r from-black via-[#1a1410] to-black"
             >
-              <AccordionTrigger className="p-4 sm:p-6 cursor-pointer hover:no-underline">
+              <AccordionTrigger className="p-4 sm:p-6 cursor-pointer hover:no-underline [&[data-state]]:justify-start">
                 
                 {/* HEADER */}
                 <div className="w-full space-y-4 sm:space-y-6 text-center sm:text-left">
