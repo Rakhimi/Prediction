@@ -5,7 +5,7 @@ import Image from "next/image";
 export default function TelegramFloatButton() {
   const telegramUrl = "https://t.me/new8scoreai";
 
-  return (
+ return (
     <a
       href={telegramUrl}
       target="_blank"
@@ -13,22 +13,17 @@ export default function TelegramFloatButton() {
       className="
         fixed bottom-6 right-6
         z-[9999]
-        flex items-center justify-center
-        h-14 w-14
-        rounded-full
-        bg-[#229ED9]
-        shadow-lg
-        transition-all duration-200
-        hover:scale-110 hover:shadow-xl
+        transition-transform duration-200
+        hover:scale-110
       "
       aria-label="Contact us on Telegram"
     >
       <Image
         src="/images/tortoise.png"
         alt="Telegram Support"
-        width={28}
-        height={28}
-        className="object-contain"
+        width={100}
+        height={100}
+        className="object-contain drop-shadow-lg"
       />
     </a>
   );
