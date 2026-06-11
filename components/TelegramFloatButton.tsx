@@ -24,7 +24,7 @@ export default function TelegramFloatButton() {
       aria-label="Contact us on Telegram"
     >
       <Image
-        src="/tortoise.png"
+        src="/images/tortoise.png"
         alt="Telegram Support"
         width={28}
         height={28}
