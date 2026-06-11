@@ -174,7 +174,7 @@ export default function Home() {
 
         {/* Stats Section - Mobile optimized grid */}
         <section className="bg-black py-8 sm:py-12 px-4">
-          <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+          <div className="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
             
             {[
               { label: "Accuracy Rate", value: "87%", trend: "↑ 3% this month", icon: Target },
