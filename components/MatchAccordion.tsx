@@ -171,14 +171,14 @@ const TEAM_LOGO_MAP: Record<string, string> = {
   "Algeria": "algeria",
   "Austria": "austria",
   "Brazil": "brazil",
-  "Bosnia and Herzegovina": "bosniaandherzegovina",
+  "Bosnia-Herzegovina": "bosniaandherzegovina",
   "France": "france",
-  "Cabo Verde": "caboverde",
+  "Cape Verde Islands": "caboverde",
   "Canada": "canada",
   "Colombia": "colombia",
   "Congo Dr": "congodr",
-  "Cote D Ivoire": "cotedivoire",
-  "Curaco": "curaco",
+  "Ivory Coast": "cotedivoire",
+  "Curaçao": "curacao",
   "Czech Republic": "czechia",
   "Ecuador": "ecuador",
   "Egypt": "egypt",
@@ -208,7 +208,7 @@ const TEAM_LOGO_MAP: Record<string, string> = {
   "Croatia": "croatia",
   "Uruguay": "uruguay",
   "Mexico": "mexico",
-  "USA": "usa",
+  "United States": "usa",
   "Japan": "japan",
   "South Korea": "southkorea",
   "Australia": "australia",
@@ -237,7 +237,7 @@ const getTeamLogo = (teamName: string) => {
 };
 
 export default function MatchAccordion({ matches }: { matches: Match[] }) {
-  
+
   const renderForm = (form: string | null) => {
     if (!form) return null;
 
@@ -255,7 +255,7 @@ export default function MatchAccordion({ matches }: { matches: Match[] }) {
           className={`
             ${color}
             text-white
-            w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6
+            w-2 h-2 sm:w-3 sm:h-3 md:w-5 md:h-5
             flex items-center justify-center
             rounded-full
             text-[9px] sm:text-xs
