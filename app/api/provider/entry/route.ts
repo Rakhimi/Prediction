@@ -50,6 +50,8 @@ export async function GET(req: Request) {
     providerSecret
   );
 
+  console.log("incomingValid", incomingValid)
+
   if (!incomingValid) {
     return errorResponse("Invalid Sign");
   }
