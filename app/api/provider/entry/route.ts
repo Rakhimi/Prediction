@@ -130,6 +130,7 @@ export async function GET(req: Request) {
     where: { providerUid: String(uid) },
     update: {
       isMember: !!data.isMember,
+      username: data?.username,
       ftdAmount: String(data.ftdAmount ?? "0.00"),
       recentDepositAmount: String(data.recentDepositAmount ?? "0.00"),
       lastSyncedAt: new Date(),
@@ -137,6 +138,7 @@ export async function GET(req: Request) {
     create: {
       providerUid: String(uid),
       isMember: !!data.isMember,
+      username: data?.username,
       ftdAmount: String(data.ftdAmount ?? "0.00"),
       recentDepositAmount: String(data.recentDepositAmount ?? "0.00"),
       lastSyncedAt: new Date(),

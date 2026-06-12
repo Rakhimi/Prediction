@@ -24,6 +24,7 @@ const navItems = [
 type NavbarProps = {
   member?: {
     providerUid: string;
+    username: string | null;
     isMember: boolean;
     ftdAmount: string;
     recentDepositAmount: string;
@@ -40,7 +41,7 @@ export default function Navbar({ member }: NavbarProps) {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const firstLetter = member?.providerUid?.charAt(0)?.toUpperCase() || "G";
+  const firstLetter = member?.username?.charAt(0)?.toUpperCase() || "G";
 
 
   const trialEnd = member?.createdAt
@@ -185,7 +186,7 @@ export default function Navbar({ member }: NavbarProps) {
 
                         <div>
                           <p className="text-white font-semibold">
-                            User #{member.providerUid}
+                            User #{member?.username ?? member?.providerUid}
                           </p>
 
                           <p className="text-xs text-gray-400">

@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
-import { prisma } from "@/lib/prisma";
 
 const SECRET_KEY = process.env.PROVIDER_SECRET!;
 
@@ -187,24 +186,6 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-
-    await prisma.member.upsert({
-      where: {
-        providerUid: body.username,
-      },
-      update: {
-        updatedAt: new Date(),
-      },
-      create: {
-        providerUid: body.username,
-        isMember: false,
-        ftdAmount: "0.00",
-        recentDepositAmount: "0.00",
-        accessUntil: new Date(
-          Date.now() + 24 * 60 * 60 * 1000
-        ),
-      },
-    });
 
     return NextResponse.json({
       success: true,

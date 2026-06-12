@@ -146,6 +146,7 @@ export async function POST(req: NextRequest) {
 
       update: {
         isMember: !!profile?.isMember,
+        username: profile?.username,
         ftdAmount: String(profile?.ftdAmount ?? "0.00"),
         recentDepositAmount: String(profile?.recentDepositAmount ?? "0.00"),
         lastSyncedAt: new Date(),
@@ -157,6 +158,7 @@ export async function POST(req: NextRequest) {
       create: {
         providerUid: String(providerUid),
         isMember: !!profile?.isMember,
+        username: profile?.username,
         ftdAmount: String(profile?.ftdAmount ?? "0.00"),
         recentDepositAmount: String(profile?.recentDepositAmount ?? "0.00"),
         lastSyncedAt: new Date(),
