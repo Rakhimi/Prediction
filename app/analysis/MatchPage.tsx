@@ -34,10 +34,13 @@ export default function MatchPageClient({
   const [search, setSearch] = useState("");
   const today = new Date();
 
+  const last7Days = new Date();
+  last7Days.setDate(today.getDate() - 7);
+
   const next7Days = new Date();
   next7Days.setDate(today.getDate() + 7);
 
-  const [fromDate, setFromDate] = useState<Date | undefined>(today);
+  const [fromDate, setFromDate] = useState<Date | undefined>(last7Days);
   const [toDate, setToDate] = useState<Date | undefined>(next7Days);
 
   const [league, setLeague] = useState("all");
