@@ -33,6 +33,10 @@ export async function processMatch(match: any) {
       drawProb: result.probabilities?.draw ?? null,
       awayWinProb: result.probabilities?.awayWin ?? null,
 
+      correctScore: result.prediction?.correctScore ?? null,
+      ftHandicap: result.prediction?.ftHandicap ?? null,
+      bestBet: result.prediction?.bestBet ?? null,
+
       headToHead: result.headToHead ?? [],
 
       analysis: result.analysis ?? null,
@@ -62,6 +66,10 @@ export async function processMatch(match: any) {
       homeWinProb: result.probabilities?.homeWin ?? null,
       drawProb: result.probabilities?.draw ?? null,
       awayWinProb: result.probabilities?.awayWin ?? null,
+
+      correctScore: result.prediction?.correctScore ?? null,
+      ftHandicap: result.prediction?.ftHandicap ?? null,
+      bestBet: result.prediction?.bestBet ?? null,
 
       headToHead: result.headToHead ?? [],
 

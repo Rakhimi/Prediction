@@ -38,8 +38,8 @@ model Match {
   matchDate  DateTime
 
   // Form
-  homeTeamForm   String?   // "W,L,D,L,W"
-  awayTeamForm   String?   // "L,L,W,D,W"
+  homeTeamForm   String?
+  awayTeamForm   String?
 
   // Odds
   homeOdds   Float?
@@ -54,8 +54,13 @@ model Match {
   drawProb    Float?
   awayWinProb Float?
 
-  // Head-to-head summary
+  // Head-to-head
   headToHead  String[]
+
+  // AI Prediction (NEW)
+  correctScore String?
+  ftHandicap   String?
+  bestBet      String?
 
   // Analysis
   analysis   String?
@@ -63,5 +68,6 @@ model Match {
   analyzed   Boolean  @default(false)
 
   createdAt  DateTime @default(now())
+
   @@map("match")
 }

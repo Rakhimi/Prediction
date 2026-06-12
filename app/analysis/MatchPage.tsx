@@ -99,9 +99,6 @@ export default function MatchPageClient({
   }, [matches, tab, search, fromDate, toDate, league]);
 
   // Determine how many matches to show in preview (at least 3, but not more than available)
-  const previewMatches = filteredMatches.length > 0 
-    ? filteredMatches.slice(0, Math.min(5, filteredMatches.length))
-    : [];
 
   // If not member, show lock screen without scrolling through content
   if (!isMember) {

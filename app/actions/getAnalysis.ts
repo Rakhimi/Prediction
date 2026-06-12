@@ -36,12 +36,30 @@ Return ONLY valid JSON:
 
   "headToHead": ["2-1", "0-0", "3-2", "1-1", "4-0"],
 
+  "prediction": {
+    "correctScore": "2-1",
+    "ftHandicap": "Home -0.5",
+    "bestBet": "Home Win"
+  },
+
   "analysis": "betting-style paragraph (6-7 sentences max)"
 }
 
 Rules:
+- Predict the most likely final score
+- FT Handicap must be a realistic betting handicap
+- Use common handicap lines:
+  Home -0.25
+  Home -0.5
+  Home -0.75
+  Home -1
+  Away +0.25
+  Away +0.5
+  Away +0.75
+  Away +1
+
 - Probabilities must sum close to 100
-- Keep analysis concise like betting preview
+- Keep analysis concise
 - No markdown
 - No explanation
 - ONLY JSON
