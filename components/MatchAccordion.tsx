@@ -271,6 +271,8 @@ export default function MatchAccordion({ matches }: { matches: Match[] }) {
     });
   };
 
+  console.log("matches", matches)
+
   return (
     <div className="max-w-6xl mx-auto mt-6 sm:mt-10 px-1 sm:px-4">
       <Accordion type="single" collapsible className="w-full space-y-4 sm:space-y-6">
@@ -363,47 +365,7 @@ export default function MatchAccordion({ matches }: { matches: Match[] }) {
                     </p>
                   </div>
 
-                  {/* AI BETTING PREDICTIONS */}
-                  <div className="bg-purple-500/10 border border-purple-500/20 rounded-lg sm:rounded-xl p-3 sm:p-5 space-y-3 sm:space-y-4">
-
-                    <p className="text-xs sm:text-sm text-gray-400">
-                      AI Betting Predictions
-                    </p>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4">
-
-                      {/* Correct Score */}
-                      <div className="p-2 sm:p-3 rounded-lg bg-black/30 border border-white/10 text-center">
-                        <p className="text-[10px] sm:text-xs text-gray-400">
-                          Correct Score
-                        </p>
-                        <p className="font-bold text-sm sm:text-base text-purple-400">
-                          {match.correctScore ?? "-"}
-                        </p>
-                      </div>
-
-                      {/* FT Handicap */}
-                      <div className="p-2 sm:p-3 rounded-lg bg-black/30 border border-white/10 text-center">
-                        <p className="text-[10px] sm:text-xs text-gray-400">
-                          FT Handicap
-                        </p>
-                        <p className="font-bold text-sm sm:text-base text-orange-400">
-                          {match.ftHandicap ?? "-"}
-                        </p>
-                      </div>
-
-                      {/* Best Bet */}
-                      <div className="p-2 sm:p-3 rounded-lg bg-black/30 border border-white/10 text-center">
-                        <p className="text-[10px] sm:text-xs text-gray-400">
-                          Best Bet
-                        </p>
-                        <p className="font-bold text-sm sm:text-base text-green-400">
-                          {match.bestBet ?? "-"}
-                        </p>
-                      </div>
-
-                    </div>
-                  </div>
+                  
                   {/* ODDS (NOW IN HEADER) */}
                   <p className="font-semibold text-white text-sm sm:text-base">Betting Odds</p>
 
@@ -463,6 +425,48 @@ export default function MatchAccordion({ matches }: { matches: Match[] }) {
                       </p>
                     </div>
                   </div>
+                </div>
+              </div>
+
+              {/* AI BETTING PREDICTIONS */}
+              <div className="bg-purple-500/10 border border-purple-500/20 rounded-lg sm:rounded-xl p-3 sm:p-5 space-y-3 sm:space-y-4">
+
+                <p className="text-xs sm:text-sm text-gray-400">
+                  AI Betting Predictions
+                </p>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4">
+
+                  {/* Correct Score */}
+                  <div className="p-2 sm:p-3 rounded-lg bg-black/30 border border-white/10 text-center">
+                    <p className="text-[10px] sm:text-xs text-gray-400">
+                      Correct Score
+                    </p>
+                    <p className="font-bold text-sm sm:text-base text-purple-400">
+                      {match.correctScore ?? "-"}
+                    </p>
+                  </div>
+
+                  {/* FT Handicap */}
+                  <div className="p-2 sm:p-3 rounded-lg bg-black/30 border border-white/10 text-center">
+                    <p className="text-[10px] sm:text-xs text-gray-400">
+                      FT Handicap
+                    </p>
+                    <p className="font-bold text-sm sm:text-base text-orange-400">
+                      {match.ftHandicap ?? "-"}
+                    </p>
+                  </div>
+
+                  {/* Best Bet */}
+                  <div className="p-2 sm:p-3 rounded-lg bg-black/30 border border-white/10 text-center">
+                    <p className="text-[10px] sm:text-xs text-gray-400">
+                      Best Bet
+                    </p>
+                    <p className="font-bold text-sm sm:text-base text-green-400">
+                      {match.bestBet ?? "-"}
+                    </p>
+                  </div>
+
                 </div>
               </div>
 
