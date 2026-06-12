@@ -90,6 +90,8 @@ export async function GET(req: Request) {
 
   const rawText = await upstream.text();
 
+  console.log("rawText", rawText)
+
   let upstreamJson = null;
   try {
     upstreamJson = JSON.parse(rawText);
@@ -106,6 +108,8 @@ export async function GET(req: Request) {
     return errorResponse("Provider API Error");
   }
 
+  console.log("data", data)
+
   const responseFields = {
     isMember: !!data.isMember,
     ftdAmount: String(data.ftdAmount ?? "0.00"),
@@ -113,6 +117,8 @@ export async function GET(req: Request) {
     ts: data.ts,
     nonce: data.nonce,
   };
+
+  console.log("responseFields", responseFields)
 
   if (!data.h || !verifyHmacSha256Hex(responseFields, String(data.h), providerSecret)) {
     return errorResponse("Invalid Sign");
