@@ -51,6 +51,9 @@ export default function Navbar({ member }: NavbarProps) {
 
   const isTrialActive = trialEnd ? trialEnd > new Date() : false;
 
+  const deposit = Number(member?.recentDepositAmount ?? 0);
+  const isPaidUser = deposit >= 50;
+
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
       if (
@@ -194,17 +197,21 @@ export default function Navbar({ member }: NavbarProps) {
                             Premium Dashboard
                           </p>
 
-                          {isTrialActive && trialEnd && (
-                            <div className="mt-1">
-                              <p className="text-[11px] text-yellow-400 font-medium">
-                                1 Day Free Trial Active
-                              </p>
-
-                              <p className="text-[10px] text-gray-500">
-                                Expires: {trialEnd.toLocaleString()}
-                              </p>
-                            </div>
+                          <div className="mt-1">
+                          {/* ALWAYS show expiry */}
+                          {trialEnd && (
+                            <p className="text-[10px] text-gray-500">
+                              Expires: {trialEnd.toLocaleString()}
+                            </p>
                           )}
+
+                          {/* ONLY show trial label */}
+                          {!isPaidUser && isTrialActive && (
+                            <p className="text-[11px] text-yellow-400 font-medium">
+                              1 Day Free Trial Active
+                            </p>
+                          )}
+                        </div>
                         </div>
                       </div>
 
