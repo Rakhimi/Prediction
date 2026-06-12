@@ -72,6 +72,11 @@ export async function POST(req: NextRequest) {
       }),
     });
 
+    console.log(
+      "LOGIN RESPONSE:",
+      JSON.stringify(loginResponse, null, 2)
+    );
+
     if (!loginResponse?.status) {
       return NextResponse.json(
         {

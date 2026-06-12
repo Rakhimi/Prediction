@@ -5,6 +5,14 @@ import { X } from "lucide-react";
 import { useAuthModal } from "@/stores/useAuthModal";
 import axios from "axios";
 import toast from "react-hot-toast";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 
 type Props = {
   isOpen: boolean;
@@ -106,9 +114,24 @@ const LoginModal: React.FC<Props> = ({ isOpen, onClose }) => {
 
         {/* Forgot */}
         <div className="text-right mb-4 text-sm">
-          <button className="text-gray-400 hover:text-cyan-400">
-            Forgot Username or Password?
-          </button>
+          <Dialog>
+            <DialogTrigger>
+              <button className="cursor-pointer text-gray-400 hover:text-cyan-400">
+                Forgot Username or Password?
+              </button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Please reset at new8myr.com</DialogTitle>
+              </DialogHeader>
+              <a
+                href="https://new8myr.com/en-my"
+                className="mt-4 inline-flex w-full justify-center rounded-lg bg-cyan-500 px-4 py-2 text-black font-semibold hover:bg-cyan-400"
+              >
+                Go to Reset Page
+              </a>
+            </DialogContent>
+          </Dialog>
         </div>
 
         {/* Submit */}

@@ -29,6 +29,7 @@ type NavbarProps = {
     ftdAmount: string;
     recentDepositAmount: string;
     createdAt: Date;
+    accessUntil: Date | null;
   } | null;
 };
 
@@ -44,8 +45,8 @@ export default function Navbar({ member }: NavbarProps) {
   const firstLetter = member?.username?.charAt(0)?.toUpperCase() || "G";
 
 
-  const trialEnd = member?.createdAt
-    ? new Date(new Date(member.createdAt).getTime() + 24 * 60 * 60 * 1000)
+  const trialEnd = member?.accessUntil
+    ? new Date(member.accessUntil)
     : null;
 
   const isTrialActive = trialEnd ? trialEnd > new Date() : false;
