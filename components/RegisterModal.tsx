@@ -62,7 +62,7 @@ const RegisterModal: React.FC<Props> = ({
 
     mobileTac: "",
 
-    refCode: "",
+    refCode: "TUN1C034",
   });
 
   useEffect(() => {

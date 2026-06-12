@@ -128,34 +128,41 @@ export async function POST(req: NextRequest) {
 
     const profile = registerResponse?.output?.data;
 
-    console.log("profile", profile)
-
     const deposit = Number(profile?.recentDepositAmount ?? 0);
 
-    let accessUntil: Date | null = null;
+    const paidAccessUntil =
+      deposit >= 50
+        ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+        : null;
 
-    if (deposit >= 50) {
-      accessUntil = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
-    }
+    const freeTrialUntil = new Date(
+      Date.now() + 24 * 60 * 60 * 1000
+    );
 
     await prisma.member.upsert({
       where: {
         providerUid: String(providerUid),
       },
+
       update: {
         isMember: !!profile?.isMember,
         ftdAmount: String(profile?.ftdAmount ?? "0.00"),
         recentDepositAmount: String(profile?.recentDepositAmount ?? "0.00"),
         lastSyncedAt: new Date(),
-        accessUntil,
+
+        // Only grant 30 days if they deposited >= 50
+        accessUntil: paidAccessUntil,
       },
+
       create: {
         providerUid: String(providerUid),
         isMember: !!profile?.isMember,
         ftdAmount: String(profile?.ftdAmount ?? "0.00"),
         recentDepositAmount: String(profile?.recentDepositAmount ?? "0.00"),
         lastSyncedAt: new Date(),
-        accessUntil,
+
+        // 1 day free trial for brand new users
+        accessUntil: paidAccessUntil ?? freeTrialUntil,
       },
     });
 

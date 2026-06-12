@@ -313,7 +313,7 @@ export default function MatchAccordion({ matches }: { matches: Match[] }) {
                         <p className="font-semibold text-sm sm:text-base md:text-lg line-clamp-2 text-right">
                           {match.homeTeam}
                         </p>
-                        <div className="flex gap-0.5 sm:gap-1 flex-wrap justify-end">
+                        <div className="flex gap-0.5 sm:gap-1 flex-wrap justify-start">
                           {renderForm(match.homeTeamForm)}
                         </div>
                       </div>
