@@ -111,6 +111,7 @@ export async function GET(req: Request) {
   console.log("data", data)
 
   const responseFields = {
+    username: String(data.username),
     isMember: !!data.isMember,
     ftdAmount: String(data.ftdAmount ?? "0.00"),
     recentDepositAmount: String(data.recentDepositAmount ?? "0.00"),

@@ -72,8 +72,6 @@ export async function POST(req: NextRequest) {
       }),
     });
 
-    console.log("loginResponse", loginResponse)
-
     if (!loginResponse?.status) {
       return NextResponse.json(
         {
@@ -127,6 +125,8 @@ export async function POST(req: NextRequest) {
     });
 
     const profile = registerResponse?.output?.data;
+
+    console.log("profile", profile)
 
     const deposit = Number(profile?.recentDepositAmount ?? 0);
 
