@@ -81,7 +81,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          message: loginResponse?.msg || "Login failed",
+          message: "Invalid username or password",
           providerResponse: loginResponse,
         },
         { status: 400 }
@@ -130,8 +130,6 @@ export async function POST(req: NextRequest) {
     });
 
     const profile = registerResponse?.output?.data;
-
-    console.log("profile", profile)
 
     const deposit = Number(profile?.recentDepositAmount ?? 0);
 
