@@ -81,6 +81,7 @@ const LoginModal: React.FC<Props> = ({ isOpen, onClose }) => {
           <input
             type="text"
             placeholder="Enter Username"
+            required
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             className="w-full bg-transparent border border-gray-600 rounded-lg px-3 py-2 outline-none focus:border-cyan-400"
@@ -97,6 +98,7 @@ const LoginModal: React.FC<Props> = ({ isOpen, onClose }) => {
             <input
               type={showPassword ? "text" : "password"}
               placeholder="Enter Password"
+              required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full bg-transparent border border-gray-600 rounded-lg px-3 py-2 pr-10 outline-none focus:border-cyan-400"

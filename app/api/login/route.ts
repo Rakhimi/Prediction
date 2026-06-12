@@ -155,7 +155,9 @@ export async function POST(req: NextRequest) {
         lastSyncedAt: new Date(),
 
         // Only grant 30 days if they deposited >= 50
-        accessUntil: paidAccessUntil,
+        ...(paidAccessUntil && {
+          accessUntil: paidAccessUntil,
+        }),
       },
 
       create: {
