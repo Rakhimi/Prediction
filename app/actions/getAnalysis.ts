@@ -17,8 +17,8 @@ Away Team: ${awayTeam}
 Return ONLY valid JSON:
 
 {
-  "homeTeamForm": ["W","L","D","L","W"],
-  "awayTeamForm": ["L","L","W","D","W"],
+  "homeTeamForm": [string, string, string, string, string],
+  "awayTeamForm": [string, string, string, string, string],
 
   "odds": {
     "home": number,
@@ -34,12 +34,12 @@ Return ONLY valid JSON:
     "awayWin": number
   },
 
-  "headToHead": ["2-1", "0-0", "3-2", "1-1", "4-0"],
+  "headToHead": [string, string, string, string, string],
 
   "prediction": {
-    "correctScore": "2-1",
-    "ftHandicap": "Home -0.5",
-    "bestBet": "Home Win"
+    "correctScore": string,
+    "ftHandicap": string,
+    "bestBet": string
   },
 
   "analysis": "betting-style paragraph (6-7 sentences max)"

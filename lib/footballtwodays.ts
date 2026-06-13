@@ -2,7 +2,7 @@ export async function getFootballMatchesPast2Days() {
   const todayDate = new Date();
 
   const past2Days = new Date();
-  past2Days.setDate(todayDate.getDate() - 2);
+  past2Days.setDate(todayDate.getDate() - 3);
 
   const dateFrom = past2Days
     .toISOString()
