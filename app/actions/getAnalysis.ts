@@ -46,18 +46,50 @@ Return ONLY valid JSON:
 }
 
 Rules:
-- Predict the most likely final score
-- FT Handicap must be a realistic betting handicap
-- Use common handicap lines:
-  Home -0.25
-  Home -0.5
-  Home -0.75
-  Home -1
-  Away +0.25
-  Away +0.5
-  Away +0.75
-  Away +1
+- homeTeamForm and awayTeamForm must contain exactly 5 values.
+- Each value must be one of:
+  W = Win
+  D = Draw
+  L = Loss
 
+Example:
+["W","W","D","L","W"]
+
+- headToHead must contain exactly 5 score results.
+- Use realistic football scores.
+- Format:
+  "2-1"
+  "0-0"
+  "3-2"
+
+Example:
+["2-1","0-0","3-2","1-1","4-0"]
+
+- correctScore must be a realistic football score.
+Examples:
+"1-0"
+"2-1"
+"2-2"
+"3-1"
+
+- ftHandicap must be one of:
+Home -0.25
+Home -0.5
+Home -0.75
+Home -1
+Away +0.25
+Away +0.5
+Away +0.75
+Away +1
+
+- bestBet must be one of:
+Home Win
+Away Win
+Draw
+
+- Ensure bestBet aligns with probabilities and predicted score.
+- Ensure no contradictions between probabilities, handicap, score prediction, and bestBet.
+- Return ONLY valid JSON.
 - Probabilities must sum close to 100
 - Keep analysis concise
 - No markdown
