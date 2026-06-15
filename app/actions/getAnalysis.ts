@@ -93,28 +93,9 @@ IMPORTANT CONSISTENCY RULES:
    - correctScore must include at least 3 total goals
    - ftHandicap must be more aggressive (e.g. Home -1.25, -1.5, -2, -2.5)
 
-2. If Over 2.5 odds are HIGH:
-   - lower scoring match
-   - handicap must be small (-0.25 to -1)
-
-3. ftHandicap MUST be Asian Handicap ONLY:
-   Allowed values:
-   Home -0.25 to -3.0 (step 0.25)
-   Away +0.25 to +3.0 (step 0.25)
+3. ftHandicap and over/under use Asian Handicap ONLY:
 
 4. DO NOT use European handicap format like "-1 or +1 only"
-
-5. If match is high scoring:
-  - Over 2.5 low odds
-  - probability should favor Over 2.5 (>55%)
-  - correctScore must be 2-1, 3-1, 2-2, 3-2
-  - ftHandicap must be -1.0 or stronger
-
-6. If match is low scoring:
-  - Under 2.5 favored
-  - draw probability higher
-  - correctScore 0-0, 1-0, 1-1
-  - ftHandicap -0.25 to -0.75 only
 
 ALL FIELDS MUST BE INTERNALLY CONSISTENT.
 
