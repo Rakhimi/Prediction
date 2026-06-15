@@ -136,8 +136,6 @@ Every field must be derived from:
 - odds
 - goal expectation
 
-If uncertain, prefer conservative (low variance) predictions.
-
 `,
       },
     ],
