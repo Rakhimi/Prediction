@@ -50,8 +50,6 @@ export async function GET(req: Request) {
     providerSecret
   );
 
-  console.log("incomingValid", incomingValid)
-
   if (!incomingValid) {
     return errorResponse("Invalid Sign");
   }
@@ -90,8 +88,6 @@ export async function GET(req: Request) {
 
   const rawText = await upstream.text();
 
-  console.log("rawText", rawText)
-
   let upstreamJson = null;
   try {
     upstreamJson = JSON.parse(rawText);
@@ -108,8 +104,6 @@ export async function GET(req: Request) {
     return errorResponse("Provider API Error");
   }
 
-  console.log("data", data)
-
   const responseFields = {
     username: String(data.username),
     isMember: !!data.isMember,
@@ -119,11 +113,20 @@ export async function GET(req: Request) {
     nonce: data.nonce,
   };
 
-  console.log("responseFields", responseFields)
-
   if (!data.h || !verifyHmacSha256Hex(responseFields, String(data.h), providerSecret)) {
     return errorResponse("Invalid Sign");
   }
+
+  const deposit = Number(data.recentDepositAmount ?? 0);
+
+  const paidAccessUntil =
+    deposit >= 50
+      ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+      : null;
+
+  const freeTrialUntil = new Date(
+    Date.now() + 24 * 60 * 60 * 1000
+  );
 
   // Store or update in your DB
   await prisma.member.upsert({
@@ -134,6 +137,9 @@ export async function GET(req: Request) {
       ftdAmount: String(data.ftdAmount ?? "0.00"),
       recentDepositAmount: String(data.recentDepositAmount ?? "0.00"),
       lastSyncedAt: new Date(),
+      ...(paidAccessUntil && {
+        accessUntil: paidAccessUntil,
+      }),
     },
     create: {
       providerUid: String(uid),
@@ -142,9 +148,7 @@ export async function GET(req: Request) {
       ftdAmount: String(data.ftdAmount ?? "0.00"),
       recentDepositAmount: String(data.recentDepositAmount ?? "0.00"),
       lastSyncedAt: new Date(),
-      accessUntil: new Date(
-        Date.now() + 24 * 60 * 60 * 1000
-      ),
+      accessUntil: paidAccessUntil ?? freeTrialUntil,
     },
   });
 
