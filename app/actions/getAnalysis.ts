@@ -7,7 +7,7 @@ export async function analyzeMatch(homeTeam: string, awayTeam: string) {
       {
         role: "user",
         content: `
-You are a professional football betting analyst.
+You have 20 years of a professional football betting analyst, for those odds will based on asian odd, especially you are profressional for over/under, full time handicap.
 
 Analyze this match:
 
