@@ -3,26 +3,24 @@ import fs from "fs/promises";
 import path from "path";
 
 export async function GET() {
-  const yesterday = new Date();
-  yesterday.setDate(yesterday.getDate() - 1);
-
-  const start = new Date(yesterday);
-  start.setHours(0, 0, 0, 0);
-
-  const end = new Date(yesterday);
-  end.setHours(23, 59, 59, 999);
+  const today = new Date();
+  const days = Array.from({ length: 5 }, (_, i) => {
+    const d = new Date();
+    d.setDate(today.getDate() - (i + 1)); // yesterday → 5 days back
+    return d;
+  });
 
   const predictions = await prisma.match.findMany({
     where: {
       matchDate: {
-        gte: start,
-        lte: end,
+        gte: new Date(days[4].setHours(0, 0, 0, 0)),
+        lte: new Date(days[0].setHours(23, 59, 59, 999)),
       },
       bestBet: {
         not: null,
       },
     },
-    take: 10,
+    take: 50, // increase limit for 5 days
   });
 
   const validMatches = predictions.length;
@@ -46,8 +44,6 @@ export async function GET() {
     }
   }
 
-  const date = yesterday.toISOString().split("T")[0];
-
   const matchMap = new Map();
 
   for (const prediction of predictions) {
@@ -64,10 +60,6 @@ export async function GET() {
 
     matchMap.set(prediction.matchId, match);
   }
-
-  console.log("predictions", predictions)
-
-  console.log("matchMap", matchMap)
 
   let correct = 0;
 
@@ -112,6 +104,9 @@ export async function GET() {
     total: results.length,
     correct,
     accuracy,
+    timeframe: "last_5_days",
+    from: days[4].toISOString(),
+    to: days[0].toISOString(),
     matches: results,
     updatedAt: new Date().toISOString(),
   };
