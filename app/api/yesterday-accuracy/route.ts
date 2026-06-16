@@ -60,6 +60,10 @@ export async function GET() {
 
   const data = await res.json();
 
+  console.log("predictions", predictions)
+
+  console.log("data", data)
+
   let correct = 0;
 
   const results = predictions.map((prediction) => {
