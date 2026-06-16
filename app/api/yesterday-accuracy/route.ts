@@ -27,7 +27,7 @@ export async function GET() {
 
   const validMatches = predictions.length;
 
-  if (validMatches < 5) {
+  if (validMatches < 3) {
     try {
       const filePath = path.join(process.cwd(), "data", "accuracy.json");
       const cached = await fs.readFile(filePath, "utf8");
@@ -99,6 +99,11 @@ export async function GET() {
           ((correct / results.length) * 100).toFixed(1)
         )
       : 0;
+
+  console.log("API matches:", data.matches.length);
+  console.log("DB predictions:", predictions.length);
+  console.log("sample API match:", data.matches[0]);
+  console.log("sample prediction:", predictions[0]);
 
   const filePath = path.join(process.cwd(), "data", "accuracy.json");
 
