@@ -1,0 +1,123 @@
+import { prisma } from "@/lib/prisma";
+import fs from "fs/promises";
+import path from "path";
+
+export async function GET() {
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+
+  const start = new Date(yesterday);
+  start.setHours(0, 0, 0, 0);
+
+  const end = new Date(yesterday);
+  end.setHours(23, 59, 59, 999);
+
+  const predictions = await prisma.match.findMany({
+    where: {
+      matchDate: {
+        gte: start,
+        lte: end,
+      },
+      bestBet: {
+        not: null,
+      },
+    },
+    take: 10,
+  });
+
+  const validMatches = predictions.length;
+
+  if (validMatches < 5) {
+    try {
+      const filePath = path.join(process.cwd(), "data", "accuracy.json");
+      const cached = await fs.readFile(filePath, "utf8");
+
+      return Response.json(JSON.parse(cached));
+    } catch {
+      // fallback if file doesn't exist yet
+      return Response.json({
+        total: 0,
+        correct: 0,
+        accuracy: 0,
+        matches: [],
+        updatedAt: null,
+        note: "Not enough data and no cache available",
+      });
+    }
+  }
+
+  const date = yesterday.toISOString().split("T")[0];
+
+  const res = await fetch(
+    `https://api.football-data.org/v4/matches?dateFrom=${date}&dateTo=${date}`,
+    {
+      headers: {
+        "X-Auth-Token": process.env.FOOTBALL_DATA_KEY!,
+      },
+      cache: "no-store",
+    }
+  );
+
+  const data = await res.json();
+
+  let correct = 0;
+
+  const results = predictions.map((prediction) => {
+    const actualMatch = data.matches.find(
+      (m: any) => m.id === prediction.matchId
+    );
+
+    if (!actualMatch) return null;
+
+    let actualResult = "Draw";
+
+    if (actualMatch.score.winner === "HOME_TEAM") {
+      actualResult = "Home Win";
+    }
+
+    if (actualMatch.score.winner === "AWAY_TEAM") {
+      actualResult = "Away Win";
+    }
+
+    const isCorrect =
+      prediction.bestBet === actualResult;
+
+    if (isCorrect) correct++;
+
+    return {
+      homeTeam: prediction.homeTeam,
+      awayTeam: prediction.awayTeam,
+      predicted: prediction.bestBet,
+      actual: actualResult,
+      correct: isCorrect,
+    };
+  }).filter(Boolean);
+
+  const accuracy =
+    results.length > 0
+      ? Number(
+          ((correct / results.length) * 100).toFixed(1)
+        )
+      : 0;
+
+  const filePath = path.join(process.cwd(), "data", "accuracy.json");
+
+  const payload = {
+    total: results.length,
+    correct,
+    accuracy,
+    matches: results,
+    updatedAt: new Date().toISOString(),
+  };
+
+  await fs.mkdir(path.dirname(filePath), { recursive: true });
+
+  await fs.writeFile(filePath, JSON.stringify(payload, null, 2), "utf8");
+
+  return Response.json({
+    total: results.length,
+    correct,
+    accuracy,
+    matches: results,
+  });
+}
