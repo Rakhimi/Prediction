@@ -48,43 +48,45 @@ export async function GET() {
 
   const date = yesterday.toISOString().split("T")[0];
 
-  const res = await fetch(
-    `https://api.football-data.org/v4/matches?dateFrom=${date}&dateTo=${date}`,
-    {
-      headers: {
-        "X-Auth-Token": process.env.FOOTBALL_DATA_KEY!,
-      },
-      cache: "no-store",
-    }
-  );
+  const matchMap = new Map();
 
-  const data = await res.json();
+  for (const prediction of predictions) {
+    const res = await fetch(
+      `https://api.football-data.org/v4/matches/${prediction.matchId}`,
+      {
+        headers: {
+          "X-Auth-Token": process.env.FOOTBALL_DATA_KEY!,
+        },
+      }
+    );
+
+    const match = await res.json();
+
+    matchMap.set(prediction.matchId, match);
+  }
 
   console.log("predictions", predictions)
 
-  console.log("data", data)
+  console.log("matchMap", matchMap)
 
   let correct = 0;
 
   const results = predictions.map((prediction) => {
-    const actualMatch = data.matches.find(
-      (m: any) => m.id === prediction.matchId
-    );
+    const actualMatch = matchMap.get(prediction.matchId);
 
     if (!actualMatch) return null;
 
     let actualResult = "Draw";
 
-    if (actualMatch.score.winner === "HOME_TEAM") {
+    if (actualMatch.score?.winner === "HOME_TEAM") {
       actualResult = "Home Win";
     }
 
-    if (actualMatch.score.winner === "AWAY_TEAM") {
+    if (actualMatch.score?.winner === "AWAY_TEAM") {
       actualResult = "Away Win";
     }
 
-    const isCorrect =
-      prediction.bestBet === actualResult;
+    const isCorrect = prediction.bestBet === actualResult;
 
     if (isCorrect) correct++;
 
@@ -103,11 +105,6 @@ export async function GET() {
           ((correct / results.length) * 100).toFixed(1)
         )
       : 0;
-
-  console.log("API matches:", data.matches.length);
-  console.log("DB predictions:", predictions.length);
-  console.log("sample API match:", data.matches[0]);
-  console.log("sample prediction:", predictions[0]);
 
   const filePath = path.join(process.cwd(), "data", "accuracy.json");
 
