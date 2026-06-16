@@ -9,7 +9,6 @@ import WeeklyActivityChart from "@/components/WeeklyActivityChart";
 import ChooseCard from "@/components/ChooseCard";
 import { useAuthModal } from "@/stores/useAuthModal";
 import { useRouter } from "next/navigation";
-import { getAccuracy } from "./actions/getAccuracy";
 
 //LnkZgFmzrmLQUZGf
 
@@ -19,7 +18,8 @@ export default async function Home() {
   const openRegister = useAuthModal((s) => s.openRegister);
   const router = useRouter();
 
-  const accuracyData = await getAccuracy();
+  const res = await fetch("/api/accuracy");
+  const accuracyData = await res.json();
 
 
   return (
