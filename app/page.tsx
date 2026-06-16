@@ -9,17 +9,37 @@ import WeeklyActivityChart from "@/components/WeeklyActivityChart";
 import ChooseCard from "@/components/ChooseCard";
 import { useAuthModal } from "@/stores/useAuthModal";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 //LnkZgFmzrmLQUZGf
 
-export default async function Home() {
+type AccuracyMatch = {
+  homeTeam: string;
+  awayTeam: string;
+  predicted: string;
+  actual: string;
+  correct: boolean;
+};
 
+type AccuracyData = {
+  total: number;
+  correct: number;
+  accuracy: number;
+  matches: AccuracyMatch[];
+};
 
+export default function Home() {
+
+  const [data, setData] = useState<AccuracyData | null>(null);
   const openRegister = useAuthModal((s) => s.openRegister);
   const router = useRouter();
 
-  const res = await fetch("/api/accuracy");
-  const accuracyData = await res.json();
+  useEffect(() => {
+    axios.get("/api/accuracy").then(res => {
+      setData(res.data);
+    });
+  }, []);
 
 
   return (
@@ -242,6 +262,7 @@ export default async function Home() {
           </div>
         </section>
         {/* Yesterday Performance */}
+        {data && (
         <section className="bg-black py-8 sm:py-12 px-4 border-y border-teal-500/10">
           <div className="max-w-6xl mx-auto">
 
@@ -263,11 +284,11 @@ export default async function Home() {
               </p>
 
               <h3 className="text-5xl font-bold text-teal-400 mt-2">
-                {accuracyData.accuracy}%
+                {data.accuracy}%
               </h3>
 
               <p className="text-gray-300 mt-2">
-                {accuracyData.correct} Correct / {accuracyData.total} Matches
+                {data.correct} Correct / {data.total} Matches
               </p>
             </div>
 
@@ -281,7 +302,7 @@ export default async function Home() {
                 <div>Result</div>
               </div>
 
-              {accuracyData.matches.map((match: any, index: number) => (
+              {data.matches.map((match: any, index: number) => (
                 <div
                   key={index}
                   className="grid grid-cols-4 gap-2 px-4 py-4 border-b border-white/5 text-xs sm:text-sm items-center"
@@ -314,6 +335,7 @@ export default async function Home() {
             </div>
           </div>
         </section>
+        )}
         {/* Charts Section - Mobile responsive */}
         <section className="bg-black py-8 sm:py-12 px-4">
           <div className="flex flex-col lg:flex-row gap-4 sm:gap-6 mb-6 sm:mb-10">
