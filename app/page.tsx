@@ -268,28 +268,16 @@ export default function Home() {
 
             <div className="text-center mb-8">
               <h2 className="text-2xl sm:text-3xl font-bold text-white">
-                Yesterday Performance
+                Prediction Accuracy
               </h2>
-
-              <p className="text-gray-400 mt-2">
-                Based on the latest 10 completed matches
-              </p>
             </div>
 
             {/* Accuracy Card */}
             <div className="mb-8 bg-gradient-to-r from-teal-500/10 to-green-500/10 border border-teal-500/20 rounded-2xl p-6 text-center">
 
-              <p className="text-gray-400 text-sm">
-                Prediction Accuracy
-              </p>
-
               <h3 className="text-5xl font-bold text-teal-400 mt-2">
                 {data.accuracy}%
               </h3>
-
-              <p className="text-gray-300 mt-2">
-                {data.correct} Correct / {data.total} Matches
-              </p>
             </div>
 
             {/* Results Table */}
