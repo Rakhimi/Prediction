@@ -66,15 +66,16 @@ export async function GET() {
   const results = predictions.map((prediction) => {
     const actualMatch = matchMap.get(prediction.matchId);
 
-    if (!actualMatch) return null;
+    const home = actualMatch.score?.fullTime?.home;
+    const away = actualMatch.score?.fullTime?.away;
+
+    if (home == null || away == null) return null;
 
     let actualResult = "Draw";
 
-    if (actualMatch.score?.winner === "HOME_TEAM") {
+    if (home > away) {
       actualResult = "Home Win";
-    }
-
-    if (actualMatch.score?.winner === "AWAY_TEAM") {
+    } else if (away > home) {
       actualResult = "Away Win";
     }
 
