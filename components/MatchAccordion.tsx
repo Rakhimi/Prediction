@@ -293,6 +293,7 @@ export default function MatchAccordion({ matches }: { matches: Match[] }) {
     "conservative" | "balanced" | "aggressive"
   >("balanced");
 
+  console.log("matches", matches)
 
   const renderForm = (form: string | null) => {
     if (!form) return null;
@@ -400,7 +401,7 @@ export default function MatchAccordion({ matches }: { matches: Match[] }) {
                           {match.homeTeam}
                         </p>
                         <div className="flex gap-0.5 sm:gap-1 flex-wrap justify-start">
-                          {renderForm(selectedAnalysis?.homeTeamForm)}
+                          
                         </div>
                       </div>
 
@@ -426,7 +427,7 @@ export default function MatchAccordion({ matches }: { matches: Match[] }) {
                           {match.awayTeam}
                         </p>
                         <div className="flex gap-0.5 sm:gap-1">
-                          {renderForm(selectedAnalysis?.awayTeamForm)}
+                          
                         </div>
                       </div>
                     </div>
