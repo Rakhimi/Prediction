@@ -329,7 +329,7 @@ export default function Home() {
               <div className="text-center mt-4">
                 <button
                   onClick={() => setShowAllMatches(!showAllMatches)}
-                  className="cursor pointer text-teal-400 hover:text-teal-300 font-medium transition"
+                  className="cursor-pointer text-teal-400 hover:text-teal-300 font-medium transition"
                 >
                   {showAllMatches ? "Show Less" : `See More (${data.matches.length - 6} more)`}
                 </button>
