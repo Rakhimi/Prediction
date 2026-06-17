@@ -15,7 +15,7 @@ export async function GET(req: Request) {
     orderBy: {
       matchDate: "asc",
     },
-    take: 10, // avoid overload
+    take: 6,
   });
 
   for (const match of pending) {

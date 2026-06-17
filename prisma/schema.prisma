@@ -37,6 +37,23 @@ model Match {
   awayTeam   String
   matchDate  DateTime
 
+  analyzed   Boolean  @default(false)
+
+  createdAt  DateTime @default(now())
+
+  analyses   MatchAnalysis[]
+
+  @@map("match")
+}
+
+model MatchAnalysis {
+  id           Int      @id @default(autoincrement())
+
+  matchId       Int
+  match         Match    @relation(fields: [matchId], references: [id], onDelete: Cascade)
+
+  strategy  String
+
   // Form
   homeTeamForm   String?
   awayTeamForm   String?
@@ -65,9 +82,7 @@ model Match {
   // Analysis
   analysis   String?
 
-  analyzed   Boolean  @default(false)
+  createdAt     DateTime @default(now())
 
-  createdAt  DateTime @default(now())
-
-  @@map("match")
+  @@map("match_analysis")
 }

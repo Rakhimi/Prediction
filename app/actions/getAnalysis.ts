@@ -1,13 +1,25 @@
 import { openai } from "@/lib/openai";
 
-export async function analyzeMatch(homeTeam: string, awayTeam: string) {
+export async function analyzeMatch(
+  homeTeam: string,
+  awayTeam: string,
+  strategy: "conservative" | "balanced" | "aggressive"
+) {
   const completion = await openai.chat.completions.create({
     model: "gpt-4.1-mini",
     messages: [
       {
         role: "user",
         content: `
-You have 20 years of a professional football betting analyst, for those odds will based on asian odd, especially you are profressional for over/under, full time handicap.
+You are a professional football betting analyst with 20 years of experience.
+
+You must analyze this match using the following strategy:
+
+STRATEGY: ${strategy}
+
+- conservative = low risk, safer bets, lower odds, more draws
+- balanced = normal probability distribution
+- aggressive = high risk, high variance, more goals, risky handicaps
 
 Analyze this match:
 

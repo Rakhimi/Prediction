@@ -2,80 +2,92 @@ import { analyzeMatch } from "./getAnalysis";
 import { prisma } from "@/lib/prisma";
 
 export async function processMatch(match: any) {
-  const result = await analyzeMatch(
+
+  const conservative = await analyzeMatch(
     match.homeTeam.name,
-    match.awayTeam.name
+    match.awayTeam.name,
+    "conservative"
   );
 
-  if (!result) return;
+  const balanced = await analyzeMatch(
+    match.homeTeam.name,
+    match.awayTeam.name,
+    "balanced"
+  );
 
-  await prisma.match.upsert({
-    where: { matchId: match.id },
+  const aggressive = await analyzeMatch(
+    match.homeTeam.name,
+    match.awayTeam.name,
+    "aggressive"
+  );
 
-    update: {
-      league: match.league?.name ?? "unknown",
-
-      homeTeam: match.homeTeam.name,
-      awayTeam: match.awayTeam.name,
-      matchDate: new Date(match.utcDate),
-
-      homeTeamForm: result.homeTeamForm.join(","),
-      awayTeamForm: result.awayTeamForm.join(","),
-
-      homeOdds: result.odds?.home ?? null,
-      drawOdds: result.odds?.draw ?? null,
-      awayOdds: result.odds?.away ?? null,
-
-      over25Odds: result.odds?.over25 ?? null,
-      under25Odds: result.odds?.under25 ?? null,
-
-      homeWinProb: result.probabilities?.homeWin ?? null,
-      drawProb: result.probabilities?.draw ?? null,
-      awayWinProb: result.probabilities?.awayWin ?? null,
-
-      correctScore: result.prediction?.correctScore ?? null,
-      ftHandicap: result.prediction?.ftHandicap ?? null,
-      bestBet: result.prediction?.bestBet ?? null,
-
-      headToHead: result.headToHead ?? [],
-
-      analysis: result.analysis ?? null,
-
-      analyzed: true,
-    },
-
-    create: {
+  await prisma.match.update({
+    where: {
       matchId: match.id,
-
-      league: match.league?.name ?? "unknown",
-
-      homeTeam: match.homeTeam.name,
-      awayTeam: match.awayTeam.name,
-      matchDate: new Date(match.utcDate),
-
-      homeTeamForm: result.homeTeamForm.join(","),
-      awayTeamForm: result.awayTeamForm.join(","),
-
-      homeOdds: result.odds?.home ?? null,
-      drawOdds: result.odds?.draw ?? null,
-      awayOdds: result.odds?.away ?? null,
-
-      over25Odds: result.odds?.over25 ?? null,
-      under25Odds: result.odds?.under25 ?? null,
-
-      homeWinProb: result.probabilities?.homeWin ?? null,
-      drawProb: result.probabilities?.draw ?? null,
-      awayWinProb: result.probabilities?.awayWin ?? null,
-
-      correctScore: result.prediction?.correctScore ?? null,
-      ftHandicap: result.prediction?.ftHandicap ?? null,
-      bestBet: result.prediction?.bestBet ?? null,
-
-      headToHead: result.headToHead ?? [],
-
-      analysis: result.analysis ?? null,
-
-      analyzed: true,
     },
+    data: {
+      analyzed: true,
+
+      analyses: {
+        deleteMany: {},
+
+        create: [
+          {
+            strategy: "conservative",
+            bestBet: conservative.prediction.bestBet,
+            correctScore: conservative.prediction.correctScore,
+            ftHandicap: conservative.prediction.ftHandicap,
+            analysis: conservative.analysis,
+            homeTeamForm: conservative.homeTeamForm,
+            awayTeamForm: conservative.awayTeamForm,
+            homeOdds: conservative.homeOdds,
+            drawOdds: conservative.drawOdds,
+            awayOdds: conservative.awayOdds,
+            over25Odds: conservative.over25Odds,
+            under25Odds: conservative.under25Odds,
+            homeWinProb: conservative.homeWinProb,
+            drawProb: conservative.drawProb,
+            awayWinProb: conservative.awayWinProb,
+            headToHead: conservative.headToHead,
+          },
+          {
+            strategy: "balanced",
+            bestBet: balanced.prediction.bestBet,
+            correctScore: balanced.prediction.correctScore,
+            ftHandicap: balanced.prediction.ftHandicap,
+            analysis: balanced.analysis,
+            homeTeamForm: balanced.homeTeamForm,
+            awayTeamForm: balanced.awayTeamForm,
+            homeOdds: balanced.homeOdds,
+            drawOdds: balanced.drawOdds,
+            awayOdds: balanced.awayOdds,
+            over25Odds: balanced.over25Odds,
+            under25Odds: balanced.under25Odds,
+            homeWinProb: balanced.homeWinProb,
+            drawProb: balanced.drawProb,
+            awayWinProb: balanced.awayWinProb,
+            headToHead: balanced.headToHead,
+          },
+          {
+            strategy: "aggressive",
+            bestBet: aggressive.prediction.bestBet,
+            correctScore: aggressive.prediction.correctScore,
+            ftHandicap: aggressive.prediction.ftHandicap,
+            analysis: aggressive.analysis,
+            homeTeamForm: aggressive.homeTeamForm,
+            awayTeamForm: aggressive.awayTeamForm,
+            homeOdds: aggressive.homeOdds,
+            drawOdds: aggressive.drawOdds,
+            awayOdds: aggressive.awayOdds,
+            over25Odds: aggressive.over25Odds,
+            under25Odds: aggressive.under25Odds,
+            homeWinProb: aggressive.homeWinProb,
+            drawProb: aggressive.drawProb,
+            awayWinProb: aggressive.awayWinProb,
+            headToHead: aggressive.headToHead,
+          }
+        ]
+      }
+    }
   });
 }

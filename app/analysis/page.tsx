@@ -16,6 +16,9 @@ export default async function Page() {
     orderBy: {
       matchDate: "asc",
     },
+    include: {
+      analyses: true,
+    },
   });
 
   return (

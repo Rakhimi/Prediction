@@ -16,11 +16,30 @@ export async function GET() {
         gte: new Date(days[4].setHours(0, 0, 0, 0)),
         lte: new Date(days[0].setHours(23, 59, 59, 999)),
       },
-      bestBet: {
-        not: null,
+
+      analyses: {
+        some: {
+          strategy: "balanced",
+          bestBet: {
+            not: null,
+          },
+        },
       },
     },
-    take: 50, // increase limit for 5 days
+
+    include: {
+      analyses: {
+        where: {
+          strategy: "balanced",
+        },
+        select: {
+          bestBet: true,
+        },
+        take: 1,
+      },
+    },
+
+    take: 50,
   });
 
   const validMatches = predictions.length;
@@ -79,14 +98,19 @@ export async function GET() {
       actualResult = "Away Win";
     }
 
-    const isCorrect = prediction.bestBet === actualResult;
+    const balancedAnalysis = prediction.analyses[0];
+
+    if (!balancedAnalysis?.bestBet) return null;
+
+    const isCorrect =
+      balancedAnalysis.bestBet === actualResult;
 
     if (isCorrect) correct++;
 
     return {
       homeTeam: prediction.homeTeam,
       awayTeam: prediction.awayTeam,
-      predicted: prediction.bestBet,
+      predicted: balancedAnalysis.bestBet,
       actual: actualResult,
       correct: isCorrect,
     };

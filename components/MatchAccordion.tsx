@@ -7,46 +7,94 @@ import {
   AccordionContent,
 } from "@/components/ui/accordion";
 
+import { useState } from "react";
+
+type MatchAnalysis = {
+  id: number;
+  strategy: string;
+
+  homeTeamForm: string | null;
+  awayTeamForm: string | null;
+
+  homeOdds: number | null;
+  drawOdds: number | null;
+  awayOdds: number | null;
+
+  over25Odds: number | null;
+  under25Odds: number | null;
+
+  homeWinProb: number | null;
+  drawProb: number | null;
+  awayWinProb: number | null;
+
+  headToHead: string[];
+
+  correctScore: string | null;
+  ftHandicap: string | null;
+  bestBet: string | null;
+
+  analysis: string | null;
+};
+
 type Match = {
   matchId: number;
   league: string;
   homeTeam: string;
   awayTeam: string;
-  matchDate: Date; 
-  homeTeamForm: string | null;
-  awayTeamForm: string | null;
-  homeOdds: number | null; 
-  drawOdds: number | null;
-  awayOdds: number | null;
-  over25Odds: number | null;
-  under25Odds: number | null;
-  homeWinProb: number | null;
-  awayWinProb: number | null;
-  drawProb: number | null;
-  analysis: string | null;
-  correctScore: string | null;
-  ftHandicap: string | null;
-  bestBet: string | null;
-  headToHead: string[] 
+  matchDate: Date;
+
+  analyses: MatchAnalysis[];
 };
 
-const getPrediction = (match: Match) => {
-  if (!match.homeOdds || !match.drawOdds || !match.awayOdds)
+const getAnalysis = (
+  match: Match,
+  strategy: string
+) => {
+  return (
+    match.analyses.find(
+      (a) => a.strategy === strategy
+    ) ?? match.analyses[0]
+  );
+};
+
+const getPrediction = (
+  match: Match,
+  strategy: string
+) => {
+  const analysis = getAnalysis(match, strategy);
+
+  if (
+    !analysis?.homeOdds ||
+    !analysis?.drawOdds ||
+    !analysis?.awayOdds
+  ) {
     return "No prediction";
+  }
 
-  const min = Math.min(match.homeOdds, match.drawOdds, match.awayOdds);
+  const min = Math.min(
+    analysis.homeOdds,
+    analysis.drawOdds,
+    analysis.awayOdds
+  );
 
-  if (min === match.homeOdds) return "Home Win";
-  if (min === match.awayOdds) return "Away Win";
+  if (min === analysis.homeOdds) return "Home Win";
+  if (min === analysis.awayOdds) return "Away Win";
+
   return "Draw";
 };
 
-const getConfidence = (match: Match) => {
-  if (!match.homeWinProb) return 0;
+const getConfidence = (
+  match: Match,
+  strategy: string
+) => {
+  const analysis = getAnalysis(match, strategy);
+
+  if (!analysis) return 0;
+
   return Math.max(
-    match.homeWinProb ?? 0,
-    match.drawProb ?? 0,
-    match.awayWinProb ?? 0
+    analysis.homeWinProb ?? 0,
+    analysis.drawProb ?? 0,
+    analysis.awayWinProb ?? 0
   );
 };
 
@@ -241,6 +289,11 @@ const getTeamLogo = (teamName: string) => {
 
 export default function MatchAccordion({ matches }: { matches: Match[] }) {
 
+  const [selectedStrategy, setSelectedStrategy] = useState<
+    "conservative" | "balanced" | "aggressive"
+  >("balanced");
+
+
   const renderForm = (form: string | null) => {
     if (!form) return null;
 
@@ -271,14 +324,42 @@ export default function MatchAccordion({ matches }: { matches: Match[] }) {
     });
   };
 
-  console.log("matches", matches)
-
   return (
     <div className="max-w-6xl mx-auto mt-6 sm:mt-10 px-1 sm:px-4">
+      <div className="flex gap-1.5 sm:gap-4 w-full mb-4">
+        {["conservative", "balanced", "aggressive"].map((strategy) => (
+          <button
+            key={strategy}
+            onClick={() => setSelectedStrategy(strategy as any)}
+            className={`flex-1 py-2 sm:py-3 rounded-lg sm:rounded-xl border transition-all cursor-pointer text-xs sm:text-sm md:text-base font-medium ${
+              selectedStrategy === strategy
+                ? "bg-teal-500 text-black font-semibold"
+                : "bg-black/30 border-white/10 hover:bg-teal-500/20 text-white"
+            }`}
+          >
+            {strategy === "conservative"
+              ? "Conservative"
+              : strategy === "balanced"
+              ? "Balanced"
+              : "Aggressive"}
+          </button>
+        ))}
+      </div>
       <Accordion type="single" collapsible className="w-full space-y-4 sm:space-y-6">
         {matches.map((match) => {
-          const prediction = getPrediction(match);
-          const confidence = getConfidence(match);
+          const selectedAnalysis =
+          match.analyses.find(
+            (a) => a.strategy === selectedStrategy
+          ) ?? match.analyses[0];
+          const prediction = getPrediction(
+            match,
+            selectedStrategy
+          );
+
+          const confidence = getConfidence(
+            match,
+            selectedStrategy
+          );
 
           return (
             <AccordionItem
@@ -319,7 +400,7 @@ export default function MatchAccordion({ matches }: { matches: Match[] }) {
                           {match.homeTeam}
                         </p>
                         <div className="flex gap-0.5 sm:gap-1 flex-wrap justify-start">
-                          {renderForm(match.homeTeamForm)}
+                          {renderForm(selectedAnalysis?.homeTeamForm)}
                         </div>
                       </div>
 
@@ -345,7 +426,7 @@ export default function MatchAccordion({ matches }: { matches: Match[] }) {
                           {match.awayTeam}
                         </p>
                         <div className="flex gap-0.5 sm:gap-1">
-                          {renderForm(match.awayTeamForm)}
+                          {renderForm(selectedAnalysis?.awayTeamForm)}
                         </div>
                       </div>
                     </div>
@@ -361,7 +442,7 @@ export default function MatchAccordion({ matches }: { matches: Match[] }) {
                     </div>
 
                     <p className="text-gray-300 text-xs sm:text-sm leading-relaxed">
-                      {match.analysis}
+                      {selectedAnalysis?.analysis}
                     </p>
                   </div>
 
@@ -377,21 +458,21 @@ export default function MatchAccordion({ matches }: { matches: Match[] }) {
                       <div className="p-2 sm:p-3 md:p-5 rounded-lg sm:rounded-xl text-center bg-gradient-to-br from-orange-500/20 to-orange-700/10 border border-orange-500/30">
                         <p className="text-[10px] sm:text-xs text-gray-400">Home</p>
                         <p className="font-bold text-sm sm:text-base md:text-xl text-orange-400">
-                          {match.homeOdds?.toFixed(2) ?? "-"}
+                          {selectedAnalysis?.homeOdds?.toFixed(2) ?? "-"}
                         </p>
                       </div>
 
                       <div className="p-2 sm:p-3 md:p-5 rounded-lg sm:rounded-xl text-center bg-gradient-to-br from-yellow-500/20 to-yellow-700/10 border border-yellow-500/30">
                         <p className="text-[10px] sm:text-xs text-gray-400">Draw</p>
                         <p className="font-bold text-sm sm:text-base md:text-xl text-yellow-400">
-                          {match.drawOdds?.toFixed(2) ?? "-"}
+                          {selectedAnalysis?.drawOdds?.toFixed(2) ?? "-"}
                         </p>
                       </div>
 
                       <div className="p-2 sm:p-3 md:p-5 rounded-lg sm:rounded-xl text-center bg-gradient-to-br from-red-500/20 to-red-700/10 border border-red-500/30">
                         <p className="text-[10px] sm:text-xs text-gray-400">Away</p>
                         <p className="font-bold text-sm sm:text-base md:text-xl text-red-400">
-                          {match.awayOdds?.toFixed(2) ?? "-"}
+                          {selectedAnalysis.awayOdds?.toFixed(2) ?? "-"}
                         </p>
                       </div>
                     </div>
@@ -414,14 +495,14 @@ export default function MatchAccordion({ matches }: { matches: Match[] }) {
                     <div className="p-2 sm:p-3 md:p-5 rounded-lg sm:rounded-xl text-center bg-gradient-to-br from-green-500/20 to-green-700/10 border border-green-500/30">
                       <p className="text-[10px] sm:text-xs text-gray-400">Over 2.5</p>
                       <p className="font-bold text-sm sm:text-base md:text-xl text-green-400">
-                        {match.over25Odds?.toFixed(2) ?? "-"}
+                        {selectedAnalysis?.over25Odds?.toFixed(2) ?? "-"}
                       </p>
                     </div>
 
                     <div className="p-2 sm:p-3 md:p-5 rounded-lg sm:rounded-xl text-center bg-gradient-to-br from-blue-500/20 to-blue-700/10 border border-blue-500/30">
                       <p className="text-[10px] sm:text-xs text-gray-400">Under 2.5</p>
                       <p className="font-bold text-sm sm:text-base md:text-xl text-blue-400">
-                        {match.under25Odds?.toFixed(2) ?? "-"}
+                        {selectedAnalysis?.under25Odds?.toFixed(2) ?? "-"}
                       </p>
                     </div>
                   </div>
@@ -443,7 +524,7 @@ export default function MatchAccordion({ matches }: { matches: Match[] }) {
                       Correct Score
                     </p>
                     <p className="font-bold text-sm sm:text-base text-purple-400">
-                      {match.correctScore ?? "-"}
+                      {selectedAnalysis?.correctScore ?? "-"}
                     </p>
                   </div>
 
@@ -453,7 +534,7 @@ export default function MatchAccordion({ matches }: { matches: Match[] }) {
                       FT Handicap
                     </p>
                     <p className="font-bold text-sm sm:text-base text-orange-400">
-                      {match.ftHandicap ?? "-"}
+                      {selectedAnalysis?.ftHandicap ?? "-"}
                     </p>
                   </div>
 
@@ -463,7 +544,7 @@ export default function MatchAccordion({ matches }: { matches: Match[] }) {
                       Best Bet
                     </p>
                     <p className="font-bold text-sm sm:text-base text-green-400">
-                      {match.bestBet ?? "-"}
+                      {selectedAnalysis?.bestBet ?? "-"}
                     </p>
                   </div>
 
@@ -477,21 +558,21 @@ export default function MatchAccordion({ matches }: { matches: Match[] }) {
                   <div className="p-2 sm:p-3 md:p-4 rounded-lg border bg-black/30 text-center">
                     <p className="text-[10px] sm:text-xs text-gray-400">Home Win %</p>
                     <p className="font-bold text-xs sm:text-sm md:text-base text-green-400">
-                      {match.homeWinProb ?? "-"}%
+                      {selectedAnalysis?.homeWinProb ?? "-"}%
                     </p>
                   </div>
 
                   <div className="p-2 sm:p-3 md:p-4 rounded-lg border bg-black/30 text-center">
                     <p className="text-[10px] sm:text-xs text-gray-400">Draw %</p>
                     <p className="font-bold text-xs sm:text-sm md:text-base text-yellow-400">
-                      {match.drawProb ?? "-"}%
+                      {selectedAnalysis?.drawProb ?? "-"}%
                     </p>
                   </div>
 
                   <div className="p-2 sm:p-3 md:p-4 rounded-lg border bg-black/30 text-center">
                     <p className="text-[10px] sm:text-xs text-gray-400">Away Win %</p>
                     <p className="font-bold text-xs sm:text-sm md:text-base text-red-400">
-                      {match.awayWinProb ?? "-"}%
+                      {selectedAnalysis?.awayWinProb ?? "-"}%
                     </p>
                   </div>
                 </div>
@@ -523,7 +604,7 @@ export default function MatchAccordion({ matches }: { matches: Match[] }) {
 
                 {/* MATCH LIST */}
                 <div className="space-y-1.5 sm:space-y-2">
-                  {match.headToHead?.map((game, i) => (
+                  {selectedAnalysis.headToHead?.map((game, i) => (
                     <div
                       key={i}
                       className="flex justify-between items-center p-2 sm:p-3 rounded-lg bg-black/30 border border-white/5"
