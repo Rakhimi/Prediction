@@ -342,9 +342,12 @@ export default function MatchAccordion({ matches }: { matches: Match[] }) {
       <Accordion type="single" collapsible className="w-full space-y-4 sm:space-y-6">
         {matches.map((match) => {
           const selectedAnalysis =
-          match.analyses.find(
-            (a) => a.strategy === selectedStrategy
-          ) ?? match.analyses[0];
+          match.analyses?.find(a => a.strategy === selectedStrategy)
+          ?? match.analyses?.[0]
+          ?? null;
+          if (!selectedAnalysis) {
+            return <div>No analysis yet</div>;
+          }
           const prediction = getPrediction(
             match,
             selectedStrategy
