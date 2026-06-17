@@ -340,7 +340,9 @@ export default function MatchAccordion({ matches }: { matches: Match[] }) {
         ))}
       </div>
       <Accordion type="single" collapsible className="w-full space-y-4 sm:space-y-6">
-        {matches.map((match) => {
+        {matches
+        .filter(match => match.analyses && match.analyses.length > 0)
+        .map((match) => {
           const selectedAnalysis =
           match.analyses?.find(a => a.strategy === selectedStrategy)
           ?? match.analyses?.[0]
