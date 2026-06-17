@@ -109,6 +109,12 @@ IMPORTANT CONSISTENCY RULES:
 
 4. DO NOT use European handicap format like "-1 or +1 only"
 
+IMPORTANT:
+- All numbers must be numeric only (e.g. 55 not "Fifty-five")
+- Never write numbers in words
+- JSON must be machine parseable
+- No natural language numbers allowed
+
 ALL FIELDS MUST BE INTERNALLY CONSISTENT.
 
 You must treat:

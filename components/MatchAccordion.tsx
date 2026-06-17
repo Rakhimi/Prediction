@@ -321,23 +321,28 @@ export default function MatchAccordion({ matches }: { matches: Match[] }) {
   return (
     <div className="max-w-6xl mx-auto mt-6 sm:mt-10 px-1 sm:px-4">
       <div className="flex gap-1.5 sm:gap-4 w-full mb-4">
-        {["conservative", "balanced", "aggressive"].map((strategy) => (
-          <button
-            key={strategy}
-            onClick={() => setSelectedStrategy(strategy as any)}
-            className={`flex-1 py-2 sm:py-3 rounded-lg sm:rounded-xl border transition-all cursor-pointer text-xs sm:text-sm md:text-base font-medium ${
-              selectedStrategy === strategy
-                ? "bg-teal-500 text-black font-semibold"
-                : "bg-black/30 border-white/10 hover:bg-teal-500/20 text-white"
-            }`}
-          >
-            {strategy === "conservative"
-              ? "Conservative"
-              : strategy === "balanced"
-              ? "Balanced"
-              : "Aggressive"}
-          </button>
-        ))}
+        {["ChatGPT", "New8AI", "Gemini"].map((strategy) => {
+          // Map your strategy IDs to the correct display names
+          const labels: Record<string, string> = {
+            ChatGPT: "Conservative",
+            New8AI: "Balanced",
+            Gemini: "Aggressive",
+          };
+
+          return (
+            <button
+              key={strategy}
+              onClick={() => setSelectedStrategy(strategy as any)}
+              className={`flex-1 py-2 sm:py-3 rounded-lg sm:rounded-xl border transition-all cursor-pointer text-xs sm:text-sm md:text-base font-medium ${
+                selectedStrategy === strategy
+                  ? "bg-teal-500 text-black font-semibold"
+                  : "bg-black/30 border-white/10 hover:bg-teal-500/20 text-white"
+              }`}
+            >
+              {labels[strategy] || strategy}
+            </button>
+          );
+        })}
       </div>
       <Accordion type="single" collapsible className="w-full space-y-4 sm:space-y-6">
         {matches
