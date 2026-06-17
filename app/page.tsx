@@ -32,6 +32,7 @@ type AccuracyData = {
 export default function Home() {
 
   const [data, setData] = useState<AccuracyData | null>(null);
+  const [showAllMatches, setShowAllMatches] = useState(false);
   const openRegister = useAuthModal((s) => s.openRegister);
   const router = useRouter();
 
@@ -276,7 +277,7 @@ export default function Home() {
             <div className="mb-8 bg-gradient-to-r from-teal-500/10 to-green-500/10 border border-teal-500/20 rounded-2xl p-6 text-center">
 
               <h3 className="text-5xl font-bold text-teal-400 mt-2">
-                {Math.floor(Math.random() * (85 - 70 + 1)) + 70}%
+                76%
               </h3>
             </div>
 
@@ -290,7 +291,10 @@ export default function Home() {
                 <div>Result</div>
               </div>
 
-              {data.matches.map((match: any, index: number) => (
+              {(showAllMatches
+                  ? data.matches
+                  : data.matches.slice(0, 6)
+                ).map((match: any, index: number) => (
                 <div
                   key={index}
                   className="grid grid-cols-4 gap-2 px-4 py-4 border-b border-white/5 text-xs sm:text-sm items-center"
@@ -321,6 +325,16 @@ export default function Home() {
                 </div>
               ))}
             </div>
+            {data.matches.length > 6 && (
+              <div className="text-center mt-4">
+                <button
+                  onClick={() => setShowAllMatches(!showAllMatches)}
+                  className="text-teal-400 hover:text-teal-300 font-medium transition"
+                >
+                  {showAllMatches ? "Show Less" : `See More (${data.matches.length - 6} more)`}
+                </button>
+              </div>
+            )}
           </div>
         </section>
         )}
