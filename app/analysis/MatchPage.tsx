@@ -21,12 +21,49 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 
+type MatchAnalysis = {
+  id: number;
+  strategy: string;
+
+  homeTeamForm: string | null;
+  awayTeamForm: string | null;
+
+  homeOdds: number | null;
+  drawOdds: number | null;
+  awayOdds: number | null;
+
+  over25Odds: number | null;
+  under25Odds: number | null;
+
+  homeWinProb: number | null;
+  drawProb: number | null;
+  awayWinProb: number | null;
+
+  headToHead: string[];
+
+  correctScore: string | null;
+  ftHandicap: string | null;
+  bestBet: string | null;
+
+  analysis: string | null;
+};
+
+type Match = {
+  matchId: number;
+  league: string;
+  homeTeam: string;
+  awayTeam: string;
+  matchDate: Date;
+
+  analyses: MatchAnalysis[];
+};
+
 export default function MatchPageClient({
   matches,
   isLoggedIn,
   isMember,
 }: {
-  matches: any[];
+  matches: Match[];
   isLoggedIn: boolean | null | undefined;
   isMember: boolean | null | undefined;
 }) {
