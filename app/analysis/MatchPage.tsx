@@ -135,6 +135,8 @@ export default function MatchPageClient({
       })
   }, [matches, tab, search, fromDate, toDate, league]);
 
+  console.log("filteredMatches", filteredMatches)
+
   // Determine how many matches to show in preview (at least 3, but not more than available)
 
   // If not member, show lock screen without scrolling through content

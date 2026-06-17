@@ -21,6 +21,8 @@ export default async function Page() {
     },
   });
 
+  console.log("Matches", matches);
+
   return (
     <div className="w-full min-h-screen bg-gradient-to-r from-black via-[#1a1410] to-black text-white">
       {/* Responsive margins: small on mobile, larger on desktop */}

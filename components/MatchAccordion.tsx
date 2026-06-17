@@ -295,10 +295,14 @@ export default function MatchAccordion({ matches }: { matches: Match[] }) {
 
   console.log("matches", matches)
 
-  const renderForm = (form: string | null) => {
+  const renderForm = (form: string | null | undefined | string[]) => {
     if (!form) return null;
 
-    return form.split(",").map((item, i) => {
+    const values = Array.isArray(form)
+      ? form
+      : form.split(",");
+
+    return values.map((item, i) => {
       const color =
         item === "W"
           ? "bg-green-500"
@@ -307,18 +311,7 @@ export default function MatchAccordion({ matches }: { matches: Match[] }) {
           : "bg-red-500";
 
       return (
-        <div
-          key={i}
-          className={`
-            ${color}
-            text-white
-            w-3 h-3 sm:w-4 sm:h-4 md:w-6 md:h-6
-            flex items-center justify-center
-            rounded-full
-            text-[9px] sm:text-xs
-            leading-none
-          `}
-        >
+        <div key={i} className={`${color} text-white w-3 h-3 sm:w-4 sm:h-4 md:w-6 md:h-6 flex items-center justify-center rounded-full text-[9px] sm:text-xs leading-none`}>
           {item}
         </div>
       );
