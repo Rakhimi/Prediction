@@ -352,6 +352,9 @@ export default function MatchAccordion({ matches }: { matches: Match[] }) {
           if (!selectedAnalysis) {
             return <div>No analysis yet</div>;
           }
+          const formAnalysis =
+          match.analyses.find(a => a.strategy === "balanced")
+          ?? selectedAnalysis;
           const prediction = getPrediction(
             match,
             selectedStrategy
@@ -401,7 +404,7 @@ export default function MatchAccordion({ matches }: { matches: Match[] }) {
                           {match.homeTeam}
                         </p>
                         <div className="flex gap-0.5 sm:gap-1 flex-wrap justify-start">
-                          {renderForm(selectedAnalysis?.homeTeamForm)}
+                          {renderForm(formAnalysis?.homeTeamForm)}
                         </div>
                       </div>
 
@@ -427,7 +430,7 @@ export default function MatchAccordion({ matches }: { matches: Match[] }) {
                           {match.awayTeam}
                         </p>
                         <div className="flex gap-0.5 sm:gap-1">
-                          {renderForm(selectedAnalysis?.awayTeamForm)}
+                          {renderForm(formAnalysis?.awayTeamForm)}
                         </div>
                       </div>
                     </div>

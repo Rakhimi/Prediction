@@ -29,6 +29,195 @@ type AccuracyData = {
   matches: AccuracyMatch[];
 };
 
+const TEAM_LOGO_MAP: Record<string, string> = {
+  // PREMIER LEAGUE
+  "Arsenal FC": "arsenal",
+  "Aston Villa FC": "astonvilla",
+  "AFC Bournemouth": "bournemouth",
+  "Brentford FC": "brentford",
+  "Brighton & Hove Albion FC": "brighton",
+  "Burnley FC": "burnley",
+  "Chelsea FC": "chelsea",
+  "Crystal Palace FC": "crystalpalace",
+  "Everton FC": "everton",
+  "Fulham FC": "fulham",
+  "Liverpool FC": "liverpool",
+  "Luton Town FC": "luton",
+  "Manchester City FC": "manchestercity",
+  "Manchester United FC": "manchesterunited",
+  "Newcastle United FC": "newcastle",
+  "Nottingham Forest FC": "nottinghamforest",
+  "Sheffield United FC": "sheffieldunited",
+  "Tottenham Hotspur FC": "tottenham",
+  "West Ham United FC": "westham",
+  "Wolverhampton Wanderers FC": "wolves",
+  "Sunderland AFC": "sunderland",
+  "Leeds United FC": "leedsunited",
+
+  // LA LIGA
+  "Real Madrid CF": "realmadrid",
+  "FC Barcelona": "barcelona",
+  "Club Atlético de Madrid": "atleticomadrid",
+  "Girona FC": "girona",
+  "Athletic Club": "athleticclubbilbao",
+  "Real Sociedad de Fútbol": "realsociedad",
+  "Real Betis Balompié": "realbetis",
+  "Valencia CF": "valencia",
+  "Sevilla FC": "sevilla",
+  "Villarreal CF": "villareal",
+  "CA Osasuna": "osasuna",
+  "RCD Mallorca": "mallorca",
+  "Getafe CF": "getafe",
+  "RC Celta de Vigo": "celta",
+  "UD Las Palmas": "laspalmas",
+  "Deportivo Alavés": "deportivoalaves",
+  "Rayo Vallecano de Madrid": "rayovallecano",
+  "Granada CF": "granada",
+  "Cádiz CF": "cadiz",
+  "UD Almería": "almeria",
+  "Levante UD": "levante",
+  "Elche CF": "elche",
+  "RCD Espanyol de Barcelona": "espanyol",
+  "Real Oviedo": "realoviedo",
+
+  // SERIE A
+  "Juventus FC": "juventus",
+  "FC Internazionale Milano": "intermilan",
+  "AC Milan": "acmilan",
+  "SSC Napoli": "napoli",
+  "AS Roma": "roma",
+  "SS Lazio": "lazio",
+  "Atalanta BC": "atalanta",
+  "ACF Fiorentina": "fiorentina",
+  "Bologna FC 1909": "bologna",
+  "Torino FC": "torino",
+  "Genoa CFC": "genoa",
+  "US Lecce": "lecce",
+  "Udinese Calcio": "udinese",
+  "US Sassuolo Calcio": "sassuolo",
+  "Cagliari Calcio": "cagliari",
+  "Hellas Verona FC": "verona",
+  "Empoli FC": "empoli",
+  "Frosinone Calcio": "frosinone",
+  "US Salernitana 1919": "salernitana",
+  "AC Monza": "monza",
+  "US Cremonese": "cremonese",
+  "AC Pisa 1909": "pisa",
+  "Parma Calcio 1913": "parma",
+
+  // BUNDESLIGA
+  "FC Bayern München": "bayernmunchen",
+  "Borussia Dortmund": "borussiadortmund",
+  "Bayer 04 Leverkusen": "bayerleverkusen",
+  "RB Leipzig": "rbleipzig",
+  "VfB Stuttgart": "vfbstuttgart",
+  "Eintracht Frankfurt": "eintrachtfrankfurt",
+  "VfL Wolfsburg": "wolfsburg",
+  "SC Freiburg": "freiburg",
+  "TSG 1899 Hoffenheim": "hoffenheim",
+  "Borussia Mönchengladbach": "gladbach",
+  "1. FC Union Berlin": "unionberlin",
+  "1. FC Heidenheim 1846": "fcheidenheim",
+  "SV Werder Bremen": "werderbremen",
+  "FC Augsburg": "augsburg",
+  "VfL Bochum 1848": "bochum",
+  "1. FSV Mainz 05": "mainz05",
+  "1. FC Köln": "koln",
+  "SV Darmstadt 98": "darmstadt",
+  "FC St. Pauli 1910": "stpauli",
+
+  // LIGUE 1
+  "Paris Saint-Germain FC": "parissaintgermain",
+  "Olympique de Marseille": "marseille",
+  "AS Monaco FC": "monaco",
+  "Angers SCO": "angers",
+  "Lille OSC": "lille",
+  "Olympique Lyonnais": "lyon",
+  "OGC Nice": "nice",
+  "Racing Club de Lens": "rclens",
+  "Stade Rennais FC 1901": "rennes",
+  "Stade de Reims": "reims",
+  "Montpellier HSC": "montpellier",
+  "FC Nantes": "nantes",
+  "RC Strasbourg Alsace": "rcstrasbourgalsace",
+  "FC Metz": "fcmetz",
+  "Toulouse FC": "toulouse",
+  "Le Havre AC": "lehavre",
+  "Clermont Foot 63": "clermont",
+  "FC Lorient": "fclorient",
+  "Stade Brestois 29": "brest",
+  "AJ Auxerre": "auxerre",
+
+  // WORLD CUP NATIONAL TEAMS
+  "Argentina": "argentina",
+  "Algeria": "algeria",
+  "Austria": "austria",
+  "Brazil": "brazil",
+  "Bosnia-Herzegovina": "bosniaandherzegovina",
+  "France": "france",
+  "Cape Verde Islands": "caboverde",
+  "Canada": "canada",
+  "Colombia": "colombia",
+  "Congo Dr": "congodr",
+  "Ivory Coast": "cotedivoire",
+  "Curaçao": "curacao",
+  "Czech Republic": "czechia",
+  "Ecuador": "ecuador",
+  "Egypt": "egypt",
+  "Ghana": "ghana",
+  "Haiti": "haiti",
+  "Iran": "iran",
+  "Iraq": "iraq",
+  "Jordan": "jordan",
+  "New Zealand": "newzealand",
+  "Norway": "norway",
+  "Panama": "panama",
+  "Paraguay": "paraguay",
+  "Qatar": "qatar",
+  "Saudi Arabia": "saudiarabia",
+  "Scotland": "scotland",
+  "South Africa": "southafrica",
+  "Sweden": "sweden",
+  "Tunisia": "tunisia",
+  "Uzbekistan": "uzbekistan",
+  "England": "england",
+  "Germany": "germany",
+  "Spain": "spain",
+  "Portugal": "portugal",
+  "Netherlands": "netherlands",
+  "Belgium": "belgium",
+  "Italy": "italy",
+  "Croatia": "croatia",
+  "Uruguay": "uruguay",
+  "Mexico": "mexico",
+  "United States": "usa",
+  "Japan": "japan",
+  "South Korea": "southkorea",
+  "Australia": "australia",
+  "Morocco": "morocco",
+  "Senegal": "senegal",
+  "Switzerland": "switzerland",
+  "Denmark": "denmark",
+  "Poland": "poland",
+  "Serbia": "serbia",
+  "Turkey": "turkey",
+};
+
+const getTeamLogo = (teamName: string) => {
+  const mapped =
+    TEAM_LOGO_MAP[teamName];
+
+  if (mapped) {
+    return `/club_logo/${mapped}.png`;
+  }
+
+  const normalized = teamName
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, "");
+
+  return `/club_logo/${normalized}.png`;
+};
+
 export default function Home() {
 
   const [data, setData] = useState<AccuracyData | null>(null);
@@ -299,18 +488,33 @@ export default function Home() {
                   key={index}
                   className="grid grid-cols-4 gap-2 px-4 py-4 border-b border-white/5 text-xs sm:text-sm items-center"
                 >
-                  <div className="text-white">
-                    {match.homeTeam} vs {match.awayTeam}
-                  </div>
+                  <div className="flex items-center justify-between gap-3 text-white">
+                    <div className="flex items-center gap-2 flex-1">
+                      <img
+                        src={getTeamLogo(match.homeTeam)}
+                        alt={match.homeTeam}
+                        className="w-5 h-5 object-contain"
+                      />
+                      <span className="truncate">{match.homeTeam}</span>
+                    </div>
 
+                    <span className="text-gray-400 font-semibold">VS</span>
+
+                    <div className="flex items-center justify-end gap-2 flex-1">
+                      <span className="truncate">{match.awayTeam}</span>
+                      <img
+                        src={getTeamLogo(match.awayTeam)}
+                        alt={match.awayTeam}
+                        className="w-5 h-5 object-contain"
+                      />
+                    </div>
+                  </div>
                   <div className="text-orange-400">
                     {match.predicted}
                   </div>
-
                   <div className="text-cyan-400">
                     {match.actual}
                   </div>
-
                   <div>
                     {match.correct ? (
                       <span className="text-green-400 font-bold">
