@@ -473,7 +473,7 @@ export default function Home() {
             {/* Results Table */}
             <div className="overflow-hidden rounded-2xl border border-white/10 bg-[#111]">
 
-              <div className="grid grid-cols-4 gap-2 px-4 py-3 border-b border-white/10 text-xs sm:text-sm text-gray-400 font-semibold">
+              <div className="grid grid-cols-[2fr_1fr_1fr_1fr] gap-2 px-4 py-3 border-b border-white/10 text-xs sm:text-sm text-gray-400 font-semibold">
                 <div>Match</div>
                 <div>Prediction</div>
                 <div>Actual</div>
