@@ -486,7 +486,7 @@ export default function Home() {
                 ).map((match: any, index: number) => (
                 <div
                   key={index}
-                  className="grid grid-cols-4 gap-2 px-4 py-4 border-b border-white/5 text-xs sm:text-sm items-center"
+                  className="grid grid-cols-[2fr_1fr_1fr_1fr] gap-2 px-4 py-4 border-b border-white/5 text-xs sm:text-sm items-center"
                 >
                   <div className="mr-5 text-white">
                     {/* Mobile layout */}
