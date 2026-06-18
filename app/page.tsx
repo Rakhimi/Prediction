@@ -486,47 +486,69 @@ export default function Home() {
                 ).map((match: any, index: number) => (
                 <div
                   key={index}
-                  className="border-b border-white/5 px-4 py-4 text-xs sm:text-sm"
+                  className="grid grid-cols-4 gap-2 px-4 py-4 border-b border-white/5 text-xs sm:text-sm items-center"
                 >
-                  {/* Match */}
-                  <div className="mb-3 space-y-1 text-white">
-                    <div className="flex items-center gap-2">
-                      <img
-                        src={getTeamLogo(match.homeTeam)}
-                        className="w-5 h-5 object-contain"
-                      />
-                      <span>{match.homeTeam}</span>
-                    </div>
+                  <div className="mr-5 text-white">
+                    {/* Mobile layout */}
+                    <div className="flex flex-col gap-1 sm:hidden">
+                      <div className="flex items-center gap-2">
+                        <img
+                          src={getTeamLogo(match.homeTeam)}
+                          alt={match.homeTeam}
+                          className="w-5 h-5 object-contain shrink-0"
+                        />
+                        <span className="truncate">{match.homeTeam}</span>
+                      </div>
 
-                    <div className="text-gray-500 text-[10px] ml-7">VS</div>
-
-                    <div className="flex items-center gap-2">
-                      <img
-                        src={getTeamLogo(match.awayTeam)}
-                        className="w-5 h-5 object-contain"
-                      />
-                      <span>{match.awayTeam}</span>
-                    </div>
-                  </div>
-
-                  {/* Prediction / Actual / Result */}
-                  <div className="grid grid-cols-3 text-center">
-                    <div>
-                      <div className="text-gray-500 text-[10px]">Prediction</div>
-                      <div className="text-orange-400">{match.predicted}</div>
-                    </div>
-
-                    <div>
-                      <div className="text-gray-500 text-[10px]">Actual</div>
-                      <div className="text-cyan-400">{match.actual}</div>
-                    </div>
-
-                    <div>
-                      <div className="text-gray-500 text-[10px]">Result</div>
-                      <div className={match.correct ? "text-green-400" : "text-red-400"}>
-                        {match.correct ? "✅ Correct" : "❌ Wrong"}
+                      <div className="flex items-center gap-2">
+                        <img
+                          src={getTeamLogo(match.awayTeam)}
+                          alt={match.awayTeam}
+                          className="w-5 h-5 object-contain shrink-0"
+                        />
+                        <span className="truncate">{match.awayTeam}</span>
                       </div>
                     </div>
+
+                    {/* Desktop layout */}
+                    <div className="hidden sm:flex items-center justify-between gap-3">
+                      <div className="flex items-center gap-2 flex-1">
+                        <img
+                          src={getTeamLogo(match.homeTeam)}
+                          alt={match.homeTeam}
+                          className="w-5 h-5 object-contain"
+                        />
+                        <span className="truncate">{match.homeTeam}</span>
+                      </div>
+
+                      <span className="text-gray-400 font-semibold">VS</span>
+
+                      <div className="flex items-center justify-end gap-2 flex-1">
+                        <span className="truncate">{match.awayTeam}</span>
+                        <img
+                          src={getTeamLogo(match.awayTeam)}
+                          alt={match.awayTeam}
+                          className="w-5 h-5 object-contain"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="text-orange-400">
+                    {match.predicted}
+                  </div>
+                  <div className="text-cyan-400">
+                    {match.actual}
+                  </div>
+                  <div>
+                    {match.correct ? (
+                      <span className="text-green-400 font-bold">
+                        ✅ Correct
+                      </span>
+                    ) : (
+                      <span className="text-red-400 font-bold">
+                        ❌ Wrong
+                      </span>
+                    )}
                   </div>
                 </div>
               ))}
