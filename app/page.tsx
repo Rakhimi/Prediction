@@ -488,7 +488,7 @@ export default function Home() {
                   key={index}
                   className="grid grid-cols-4 gap-2 px-4 py-4 border-b border-white/5 text-xs sm:text-sm items-center"
                 >
-                  <div className="flex items-center justify-between gap-3 text-white">
+                  <div className="mr-5 flex items-center justify-between gap-3 text-white">
                     <div className="flex items-center gap-2 flex-1">
                       <img
                         src={getTeamLogo(match.homeTeam)}
