@@ -130,30 +130,27 @@ export async function GET() {
       } => result !== null
     );
 
-  const correctMatches = allResults.filter((m) => m.correct);
-  const wrongMatches = allResults.filter((m) => !m.correct);
+  const uniqueMap = new Map();
 
-  // newest first
-  correctMatches.sort(
-    (a, b) =>
-      new Date(b.matchDate).getTime() -
-      new Date(a.matchDate).getTime()
-  );
+  for (const item of allResults) {
+    const key = `${item.homeTeam}-${item.awayTeam}-${item.matchDate}`;
 
-  wrongMatches.sort(
-    (a, b) =>
-      new Date(b.matchDate).getTime() -
-      new Date(a.matchDate).getTime()
-  );
+    if (!uniqueMap.has(key)) {
+      uniqueMap.set(key, item);
+    }
+  }
 
-  // take up to 7 correct
+  const uniqueResults = Array.from(uniqueMap.values());
+
+  const correctMatches = uniqueResults.filter((m) => m.correct);
+  const wrongMatches = uniqueResults.filter((m) => !m.correct);
+
   const selectedCorrect = correctMatches.slice(0, 7);
 
-  // fill remaining slots with wrong matches
-  const remaining = 10 - selectedCorrect.length;
+  const remaining = Math.max(0, 10 - selectedCorrect.length);
   const selectedWrong = wrongMatches.slice(0, remaining);
 
-  const results = [...selectedCorrect, ...selectedWrong];
+  const results = [...selectedCorrect, ...selectedWrong].slice(0, 10);
 
   const accuracy =
     results.length > 0
