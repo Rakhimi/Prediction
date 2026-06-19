@@ -482,7 +482,7 @@ export default function Home() {
 
               {(showAllMatches
                   ? data.matches
-                  : data.matches.slice(0, 6)
+                  : data.matches.slice(0, 5)
                 ).map((match: any, index: number) => (
                 <div
                   key={index}

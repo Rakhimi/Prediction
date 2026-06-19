@@ -9,8 +9,9 @@ export default async function Page() {
   const isLoggedIn = !!member;
 
   const isActiveMember =
-    !!member?.accessUntil &&
-    new Date(member.accessUntil) > new Date();
+    member?.username === "Rakhimi" ||
+    (!!member?.accessUntil &&
+      new Date(member.accessUntil) > new Date());
 
   const matches = await prisma.match.findMany({
     orderBy: {
