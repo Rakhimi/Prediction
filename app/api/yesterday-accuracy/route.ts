@@ -16,7 +16,6 @@ export async function GET() {
         gte: new Date(days[4].setHours(0, 0, 0, 0)),
         lte: new Date(days[0].setHours(23, 59, 59, 999)),
       },
-
       analyses: {
         some: {
           strategy: "balanced",
@@ -37,6 +36,10 @@ export async function GET() {
         },
         take: 1,
       },
+    },
+
+    orderBy: {
+      matchDate: "desc", // newest first
     },
 
     take: 50,
