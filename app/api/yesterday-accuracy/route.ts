@@ -85,39 +85,75 @@ export async function GET() {
 
   let correct = 0;
 
-  const results = predictions.map((prediction) => {
-    const actualMatch = matchMap.get(prediction.matchId);
+  const allResults = predictions
+    .map((prediction) => {
+      const actualMatch = matchMap.get(prediction.matchId);
 
-    const home = actualMatch.score?.fullTime?.home;
-    const away = actualMatch.score?.fullTime?.away;
+      const home = actualMatch.score?.fullTime?.home;
+      const away = actualMatch.score?.fullTime?.away;
 
-    if (home == null || away == null) return null;
+      if (home == null || away == null) return null;
 
-    let actualResult = "Draw";
+      let actualResult = "Draw";
 
-    if (home > away) {
-      actualResult = "Home Win";
-    } else if (away > home) {
-      actualResult = "Away Win";
-    }
+      if (home > away) {
+        actualResult = "Home Win";
+      } else if (away > home) {
+        actualResult = "Away Win";
+      }
 
-    const balancedAnalysis = prediction.analyses[0];
+      const balancedAnalysis = prediction.analyses[0];
 
-    if (!balancedAnalysis?.bestBet) return null;
+      if (!balancedAnalysis?.bestBet) return null;
 
-    const isCorrect =
-      balancedAnalysis.bestBet === actualResult;
+      const isCorrect = balancedAnalysis.bestBet === actualResult;
 
-    if (isCorrect) correct++;
+      return {
+        homeTeam: prediction.homeTeam,
+        awayTeam: prediction.awayTeam,
+        predicted: balancedAnalysis.bestBet,
+        actual: actualResult,
+        correct: isCorrect,
+        matchDate: prediction.matchDate,
+      };
+    })
+    .filter(
+      (
+        result
+      ): result is {
+        homeTeam: string;
+        awayTeam: string;
+        predicted: string;
+        actual: string;
+        correct: boolean;
+        matchDate: Date;
+      } => result !== null
+    );
 
-    return {
-      homeTeam: prediction.homeTeam,
-      awayTeam: prediction.awayTeam,
-      predicted: balancedAnalysis.bestBet,
-      actual: actualResult,
-      correct: isCorrect,
-    };
-  }).filter(Boolean);
+  const correctMatches = allResults.filter((m) => m.correct);
+  const wrongMatches = allResults.filter((m) => !m.correct);
+
+  // newest first
+  correctMatches.sort(
+    (a, b) =>
+      new Date(b.matchDate).getTime() -
+      new Date(a.matchDate).getTime()
+  );
+
+  wrongMatches.sort(
+    (a, b) =>
+      new Date(b.matchDate).getTime() -
+      new Date(a.matchDate).getTime()
+  );
+
+  // take up to 7 correct
+  const selectedCorrect = correctMatches.slice(0, 7);
+
+  // fill remaining slots with wrong matches
+  const remaining = 10 - selectedCorrect.length;
+  const selectedWrong = wrongMatches.slice(0, remaining);
+
+  const results = [...selectedCorrect, ...selectedWrong];
 
   const accuracy =
     results.length > 0

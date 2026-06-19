@@ -335,9 +335,16 @@ export default function MatchAccordion({ matches }: { matches: Match[] }) {
               selectedStrategy === s.value
                 ? "bg-teal-500 text-black font-semibold"
                 : "bg-black/30 border-white/10 hover:bg-teal-500/20 text-white"
-            }`}
+            } ${s.value === "balanced" ? "flex items-center justify-center gap-2" : ""}`}
           >
             {s.label}
+            {s.value === "balanced" && (
+              <img 
+                src="/logo.png" 
+                alt="New8AI logo" 
+                className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 object-contain"
+              />
+            )}
           </button>
         ))}
       </div>
