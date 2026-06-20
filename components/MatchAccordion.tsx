@@ -345,6 +345,20 @@ export default function MatchAccordion({ matches }: { matches: Match[] }) {
                 className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 object-contain"
               />
             )}
+            {s.value === "conservative" && (
+              <img 
+                src="/chatgpt-logo.svg" 
+                alt="ChatGPT logo" 
+                className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 object-contain"
+              />
+            )}
+            {s.value === "aggressive" && (
+              <img 
+                src="/gemini-logo.svg" 
+                alt="Gemini logo" 
+                className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 object-contain"
+              />
+            )}
           </button>
         ))}
       </div>

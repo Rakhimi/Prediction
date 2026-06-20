@@ -466,7 +466,7 @@ export default function Home() {
             <div className="mb-8 mx-4 bg-gradient-to-r from-teal-500/10 to-green-500/10 border border-teal-500/20 rounded-2xl p-6 text-center">
 
               <h3 className="text-5xl font-bold text-teal-400 mt-2">
-                76%
+                70%
               </h3>
             </div>
 
