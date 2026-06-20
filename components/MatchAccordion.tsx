@@ -331,11 +331,11 @@ export default function MatchAccordion({ matches }: { matches: Match[] }) {
           <button
             key={s.value}
             onClick={() => setSelectedStrategy(s.value)}
-            className={`flex-1 py-2 sm:py-3 rounded-lg sm:rounded-xl border transition-all cursor-pointer text-xs sm:text-sm md:text-base font-medium ${
+            className={`flex-1 py-2 sm:py-3 rounded-lg sm:rounded-xl border transition-all cursor-pointer text-xs sm:text-sm md:text-base font-medium flex items-center justify-center gap-2 ${
               selectedStrategy === s.value
                 ? "bg-teal-500 text-black font-semibold"
                 : "bg-black/30 border-white/10 hover:bg-teal-500/20 text-white"
-            } ${s.value === "balanced" ? "flex items-center justify-center gap-2" : ""}`}
+            }`}
           >
             {s.label}
             {s.value === "balanced" && (
