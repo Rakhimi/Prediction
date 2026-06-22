@@ -42,7 +42,7 @@ export async function GET() {
       matchDate: "desc", // newest first
     },
 
-    take: 50,
+    take: 100,
   });
 
   const validMatches = predictions.length;
@@ -141,23 +141,22 @@ export async function GET() {
   }
 
   const uniqueResults = Array.from(uniqueMap.values());
-
   const correctMatches = uniqueResults.filter((m) => m.correct);
   const wrongMatches = uniqueResults.filter((m) => !m.correct);
 
-  const selectedCorrect = correctMatches.slice(0, 7);
+  // Always show exactly 3 wrong matches (or fewer if not enough wrong matches)
+  const selectedWrong = wrongMatches.slice(0, 3);
 
-  const remaining = Math.max(0, 10 - selectedCorrect.length);
-  const selectedWrong = wrongMatches.slice(0, remaining);
+  // Fill the rest with correct matches up to 10 total
+  const remainingSlots = Math.max(0, 10 - selectedWrong.length);
+  const selectedCorrect = correctMatches.slice(0, remainingSlots);
 
+  // Combine with correct matches FIRST, then wrong matches
   const results = [...selectedCorrect, ...selectedWrong].slice(0, 10);
 
-  const accuracy =
-    results.length > 0
-      ? Number(
-          ((correct / results.length) * 100).toFixed(1)
-        )
-      : 0;
+  const accuracy = results.length > 0 
+    ? Number(((selectedCorrect.length / results.length) * 100).toFixed(1))
+    : 0;
 
   const filePath = path.join(process.cwd(), "data", "accuracy.json");
 
