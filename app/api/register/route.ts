@@ -44,6 +44,9 @@ export function generateSignature(
 
 export async function POST(req: NextRequest) {
   try {
+
+    const clientIP = getClientIP(req);
+
     const body = await req.json();
 
     // Required fields
@@ -127,6 +130,7 @@ export async function POST(req: NextRequest) {
       refCode: String(body.refCode || ""),
       layer: "1",
       langCountry: "en-my",
+      clientIP,   
       ts: String(ts),
       nonce: String(nonce),
     };

@@ -5,6 +5,9 @@ const SECRET_KEY = process.env.PROVIDER_SECRET!;
 
 export async function POST(req: Request) {
   try {
+
+    const clientIP = getClientIP(req);
+
     const body = await req.json();
 
     const phoneNumber = body.phoneNumber;
@@ -22,6 +25,7 @@ export async function POST(req: Request) {
     // sort keys ascending
     const dataToSign = {
       phoneNumber: phoneNumber.toString(),
+      clientIP,
       ts: ts.toString(),
       nonce,
     };
@@ -41,19 +45,6 @@ export async function POST(req: Request) {
       .createHmac("sha256", SECRET_KEY)
       .update(payload)
       .digest("hex");
-
-    console.log({
-      payload,
-      h,
-      body: {
-        data: {
-          phoneNumber: phoneNumber.toString(),
-          ts: ts.toString(),
-          nonce,
-          h,
-        },
-      },
-    });
 
     const requestBody = {
       data: {

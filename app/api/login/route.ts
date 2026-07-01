@@ -42,6 +42,9 @@ async function safeFetchJson(url: string, options: RequestInit) {
 
 export async function POST(req: NextRequest) {
   try {
+
+    const clientIP = getClientIP(req);
+
     const body = await req.json();
 
     const ts = Math.floor(Date.now() / 1000);
@@ -114,6 +117,7 @@ export async function POST(req: NextRequest) {
       uid: providerUid,
       ts: regTs,
       nonce: regNonce,
+      clientIP,   
     };
 
     const registerSignature = generateSignature(registerRequestData);
