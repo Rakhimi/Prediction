@@ -35,6 +35,7 @@ export async function POST(req: NextRequest ) {
     // sort keys ascending
     const dataToSign = {
       phoneNumber: phoneNumber.toString(),
+      clientIP,
       ts: ts.toString(),
       nonce,
     };
